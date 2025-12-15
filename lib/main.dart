@@ -1,0 +1,39 @@
+import 'package:ecommerce_prueba/injection.dart';
+import 'package:ecommerce_prueba/src/presentation/BlocProviders.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/auth/login/LoginPage.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/menu/MenuPage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+void main() async {
+  //  WidgetsFlutterBinding.ensureInitialized();
+  await configureDependences(); // PONER ESTA LINEA PARA INYECCION ... ES INDISPENSABLE !!!
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: blocProviders,
+      child: MaterialApp(
+        builder: FToastBuilder(),
+        debugShowCheckedModeBanner: false,
+        title: 'Aprendiendo Flutter',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        initialRoute: 'login',
+        routes: {
+          'login': (BuildContext context) => LoginPage(),
+          'menu': (BuildContext context) => MenuPage(),
+        },
+      ),
+    );
+  }
+}

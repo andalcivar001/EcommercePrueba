@@ -1,0 +1,53 @@
+import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/auth/login/LoginContent.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginState.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  LoginBloc? _bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    _bloc = BlocProvider.of<LoginBloc>(context);
+    return Scaffold(
+      body: Center(
+        child: BlocListener<LoginBloc, LoginState>(
+          listener: (context, state) {
+            final responseState = state.response;
+            if (responseState is Error) {
+              AppToast.error(responseState.message);
+            } else if (responseState is Success) {
+              //final authResponse = responseState as AuthResponse;
+              AppToast.success('Login Correcto');
+              Navigator.pushNamed(context, 'menu');
+            }
+          },
+          child: BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) {
+              final responseState = state.response;
+              if (responseState is Loading) {
+                return Stack(
+                  children: [
+                    LoginContent(_bloc, state),
+                    Center(child: CircularProgressIndicator()),
+                  ],
+                );
+              }
+              return LoginContent(_bloc, state);
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
