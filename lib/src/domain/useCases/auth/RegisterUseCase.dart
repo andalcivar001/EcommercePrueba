@@ -5,5 +5,5 @@ class RegisterUseCase {
   AuthRepository authRepository;
 
   RegisterUseCase(this.authRepository);
-  ru(User user) => authRepository.register(user);
+  run(User user) => authRepository.register(user);
 }

@@ -3,7 +3,6 @@ import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class RegisterState extends Equatable {
   final BlocFormItem nombre;
@@ -28,7 +27,7 @@ class RegisterState extends Equatable {
     nombre: nombre.value,
     email: email.value,
     password: password.value,
-    fechaNacimiento: DateFormat('yyyy-MM-dd').parse(fechaNacimiento.value),
+    fechaNacimiento: fechaNacimiento.value,
   );
 
   RegisterState coypWith({

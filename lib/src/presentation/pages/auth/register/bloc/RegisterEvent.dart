@@ -16,10 +16,10 @@ class ResetFormRegisterEvent extends RegisterEvent {
 }
 
 class NameChangedRegisterEvent extends RegisterEvent {
-  final BlocFormItem name;
-  const NameChangedRegisterEvent({required this.name});
+  final BlocFormItem nombre;
+  const NameChangedRegisterEvent({required this.nombre});
   @override
-  List<Object?> get props => [name];
+  List<Object?> get props => [nombre];
 }
 
 class EmailChangedRegisterEvent extends RegisterEvent {

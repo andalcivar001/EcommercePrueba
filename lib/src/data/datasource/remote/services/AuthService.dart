@@ -31,8 +31,10 @@ class AuthService {
       Uri url = Uri.http(Apiconfig.API_ECOMMERCE, '/auth/register');
       Map<String, String> headers = {"Content-Type": "application/json"};
       String body = json.encode(user.toJson());
-      print('body  $body');
       final response = await http.post(url, headers: headers, body: body);
+      print(
+        'response service ${response.body} response.status ${response.statusCode}',
+      );
       final data = json.decode(response.body);
       if (response.statusCode == 201 || response.statusCode == 200) {
         AuthResponse authResponse = AuthResponse.fromJson(data);

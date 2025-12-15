@@ -8,6 +8,11 @@ class DefaultTextField extends StatelessWidget {
   String? initialValue;
   Function(String)? onChanged;
   String? Function(String?)? validator;
+  TextEditingController? controller;
+  bool readOnly;
+  VoidCallback? onTap;
+  TextInputAction? textInputAction;
+  Iterable<String>? autofillHints;
 
   DefaultTextField({
     Key? key,
@@ -18,6 +23,11 @@ class DefaultTextField extends StatelessWidget {
     this.initialValue,
     this.onChanged,
     this.validator,
+    this.controller,
+    this.readOnly = false,
+    this.onTap,
+    this.textInputAction,
+    this.autofillHints,
   }) : super(key: key);
 
   @override
@@ -28,9 +38,14 @@ class DefaultTextField extends StatelessWidget {
       onChanged: (text) {
         onChanged!(text);
       },
+      onTap: onTap,
       keyboardType: textInputType,
       validator: validator,
       decoration: _inputDecoration(label: label, icon: icon),
+      controller: controller,
+      readOnly: readOnly,
+      textInputAction: textInputAction,
+      autofillHints: autofillHints,
     );
   }
 

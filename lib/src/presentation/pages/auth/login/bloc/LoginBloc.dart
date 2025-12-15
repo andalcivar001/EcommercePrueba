@@ -28,7 +28,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     EmailChangedLoginEvent event,
     Emitter<LoginState> emit,
   ) async {
-    print('EMAIL CHANGED: ${event.email.value}');
     emit(
       state.coypWith(
         email: BlocFormItem(
@@ -44,7 +43,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     PasswordChangedLoginEvent event,
     Emitter<LoginState> emit,
   ) async {
-    print('PASSWORD CHANGED: ${event.password.value}');
     emit(
       state.coypWith(
         password: BlocFormItem(

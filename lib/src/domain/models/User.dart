@@ -9,7 +9,7 @@ class User {
   String nombre;
   String? email;
   String? password;
-  DateTime fechaNacimiento;
+  String? fechaNacimiento;
   String? image;
 
   User({
@@ -17,7 +17,7 @@ class User {
     required this.nombre,
     this.email,
     this.password,
-    required this.fechaNacimiento,
+    this.fechaNacimiento,
     this.image,
   });
 
@@ -31,7 +31,7 @@ class User {
     nombre: json["nombre"],
     email: json["email"],
     password: json["password"] ?? '',
-    fechaNacimiento: DateTime.parse(json["fecha_nacimiento"]),
+    fechaNacimiento: json["fecha_nacimiento"] ?? '',
     image: json["image"],
   );
 
@@ -40,8 +40,7 @@ class User {
     "nombre": nombre,
     "email": email,
     "password": password,
-    "fecha_nacimiento":
-        "${fechaNacimiento.year.toString().padLeft(4, '0')}-${fechaNacimiento.month.toString().padLeft(2, '0')}-${fechaNacimiento.day.toString().padLeft(2, '0')}",
+    "fecha_nacimiento": fechaNacimiento,
     "image": image,
   };
 }

@@ -33,6 +33,17 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     ResetFormRegisterEvent event,
     Emitter<RegisterState> emit,
   ) async {
+    emit(
+      state.coypWith(
+        nombre: const BlocFormItem(value: ''),
+        email: const BlocFormItem(value: ''),
+        password: const BlocFormItem(value: ''),
+        fechaNacimiento: const BlocFormItem(value: ''),
+        response: Initial(), // o Initial(), según tu Resource
+        formKey: formKey,
+      ),
+    );
+
     state.formKey?.currentState?.reset();
   }
 
@@ -41,11 +52,13 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     Emitter<RegisterState> emit,
   ) async {
     {
+      print('nombre ${event.nombre.value}');
+
       emit(
         state.coypWith(
           nombre: BlocFormItem(
-            value: event.name.value,
-            error: event.name.value.isNotEmpty ? null : 'Ingrese el nombre',
+            value: event.nombre.value,
+            error: event.nombre.value.isNotEmpty ? null : 'Ingrese el nombre',
           ),
           formKey: formKey,
         ),
@@ -57,6 +70,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     EmailChangedRegisterEvent event,
     Emitter<RegisterState> emit,
   ) async {
+    print('email ${event.email.value}');
     emit(
       state.coypWith(
         email: BlocFormItem(
@@ -72,6 +86,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     PasswordChangedRegisterEvent event,
     Emitter<RegisterState> emit,
   ) async {
+    print('password changed ${event.password.value}');
+
     emit(
       state.coypWith(
         password: BlocFormItem(
@@ -89,6 +105,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     FechaNacimientoChangedRegisterEvent event,
     Emitter<RegisterState> emit,
   ) async {
+    print('fecha nacimiento changed ${event.fechaNacimiento.value}');
     emit(
       state.coypWith(
         fechaNacimiento: BlocFormItem(
@@ -108,9 +125,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   ) async {
     emit(state.coypWith(response: Loading(), formKey: formKey));
 
-    Resource<AuthResponse> response = await authUseCases.register.ru(
+    Resource<AuthResponse> response = await authUseCases.register.run(
       state.toUser(),
     );
+
     emit(state.coypWith(response: response, formKey: formKey));
   }
 }

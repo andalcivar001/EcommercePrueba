@@ -1,6 +1,7 @@
 import 'package:ecommerce_prueba/injection.dart';
 import 'package:ecommerce_prueba/src/presentation/BlocProviders.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/LoginPage.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/auth/register/RegisterPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/menu/MenuPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         initialRoute: 'login',
         routes: {
           'login': (BuildContext context) => LoginPage(),
+          'register': (BuildContext context) => RegisterPage(),
           'menu': (BuildContext context) => MenuPage(),
         },
       ),
