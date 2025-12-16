@@ -1,3 +1,4 @@
+import 'package:ecommerce_prueba/src/data/datasource/local/SharedPref.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/AuthService.dart';
 import 'package:ecommerce_prueba/src/domain/models/AuthResponse.dart';
 import 'package:ecommerce_prueba/src/domain/models/User.dart';
@@ -6,8 +7,9 @@ import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   AuthService authService;
+  SharedPref sharedPref;
 
-  AuthRepositoryImpl(this.authService);
+  AuthRepositoryImpl(this.authService, this.sharedPref);
 
   @override
   Future<Resource<AuthResponse>> login(String email, String password) {
@@ -17,5 +19,27 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Resource<AuthResponse>> register(User user) {
     return authService.register(user);
+  }
+
+  @override
+  Future<AuthResponse?> getUserSession() async {
+    final data = await sharedPref.read('user');
+    print('DATA SHAREDPREF ${data}');
+    if (data != null) {
+      AuthResponse authResponse = AuthResponse.fromJson(data);
+      print('AUTHRESPONSE REPOSITORY ${authResponse}');
+      return authResponse;
+    }
+    return null;
+  }
+
+  @override
+  Future<void> saveUserSession(AuthResponse authResponse) async {
+    await sharedPref.save('user', authResponse);
+  }
+
+  @override
+  Future<bool> logout() async {
+    return await sharedPref.remove('user');
   }
 }

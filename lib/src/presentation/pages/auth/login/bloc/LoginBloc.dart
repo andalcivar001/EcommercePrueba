@@ -16,12 +16,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<PasswordChangedLoginEvent>(_onPasswordChanged);
     on<SubmittedLoginEvent>(_onSubmitted);
     on<FormResetLoginEvent>(_onFormReset);
+    on<SaveUserSessionLoginEvent>(_onSaveUserSession);
   }
 
   final formKey = GlobalKey<FormState>();
 
   Future<void> _onInit(InitLoginEvent event, Emitter<LoginState> emit) async {
+    print('ENTRO AL INIT');
+    AuthResponse? authResponse = await authUseCases.getUser.run();
+    print('PUDO OBTENER EL USER');
     emit(state.coypWith(formKey: formKey));
+    print('INICIANDO LOGIN !! ${authResponse} ');
+    if (authResponse != null) {
+      emit(state.coypWith(response: Success(AuthResponse), formKey: formKey));
+    }
   }
 
   Future<void> _onEmailChanged(
@@ -74,5 +82,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     state.formKey?.currentState?.reset();
+  }
+
+  Future<void> _onSaveUserSession(
+    SaveUserSessionLoginEvent event,
+    Emitter<LoginState> emit,
+  ) async {
+    authUseCases.saveUser.run(event.authResponse);
   }
 }

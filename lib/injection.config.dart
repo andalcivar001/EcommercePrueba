@@ -9,6 +9,8 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:ecommerce_prueba/src/data/datasource/local/SharedPref.dart'
+    as _i195;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/AuthService.dart'
     as _i1032;
 import 'package:ecommerce_prueba/src/di/appModule.dart' as _i319;
@@ -27,6 +29,8 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final appmodule = _$Appmodule();
+    gh.factory<_i195.SharedPref>(() => appmodule.sharedPref);
+    gh.factoryAsync<String>(() => appmodule.getToken);
     gh.factory<_i1032.AuthService>(() => appmodule.authService);
     gh.factory<_i732.AuthRepository>(() => appmodule.authRepository);
     gh.factory<_i203.AuthUseCases>(() => appmodule.authUseCases);

@@ -29,7 +29,8 @@ class _RegisterPageState extends State<RegisterPage> {
               AppToast.error(responseState.message);
             } else if (responseState is Success) {
               AppToast.success('Usuario creado correctamente');
-              _bloc?.add(ResetFormRegisterEvent());
+              Navigator.pushNamed(context, 'menu');
+              // _bloc?.add(ResetFormRegisterEvent());
             }
           },
           child: BlocBuilder<RegisterBloc, RegisterState>(

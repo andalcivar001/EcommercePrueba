@@ -1,6 +1,8 @@
+import 'package:ecommerce_prueba/src/domain/models/AuthResponse.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/LoginContent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginState.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
@@ -27,9 +29,9 @@ class _LoginPageState extends State<LoginPage> {
             if (responseState is Error) {
               AppToast.error(responseState.message);
             } else if (responseState is Success) {
-              //final authResponse = responseState as AuthResponse;
-              AppToast.success('Login Correcto');
-              Navigator.pushNamed(context, 'menu');
+              final authResponse = responseState.data as AuthResponse;
+              _bloc?.add(SaveUserSessionLoginEvent(authResponse: authResponse));
+              Navigator.pushNamedAndRemoveUntil(context, 'menu', (_) => false);
             }
           },
           child: BlocBuilder<LoginBloc, LoginState>(

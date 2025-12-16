@@ -33,6 +33,8 @@ class RegisterContent extends StatelessWidget {
                   SizedBox(height: 16),
                   _textPassword(),
                   SizedBox(height: 16),
+                  _textConfirmPassword(),
+                  SizedBox(height: 16),
                   _textFechaNacimiento(context),
                   SizedBox(height: 28),
                   _buttonCrear(),
@@ -145,6 +147,27 @@ class RegisterContent extends StatelessWidget {
       onChanged: (text) {
         _bloc?.add(
           PasswordChangedRegisterEvent(password: BlocFormItem(value: text)),
+        );
+      },
+    );
+  }
+
+  Widget _textConfirmPassword() {
+    return DefaultTextField(
+      label: 'Confirme Contraseña',
+      icon: Icons.lock_outline,
+      textInputAction: TextInputAction.next,
+      autofillHints: const [AutofillHints.newPassword],
+
+      validator: (value) {
+        return _state.confirmPassword.error;
+      },
+      obscureText: true,
+      onChanged: (text) {
+        _bloc?.add(
+          ConfirmPasswordChangedRegisterEvent(
+            confirmPassword: BlocFormItem(value: text),
+          ),
         );
       },
     );

@@ -16,6 +16,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<NameChangedRegisterEvent>(_onNameChanged);
     on<EmailChangedRegisterEvent>(_onEmailChanged);
     on<PasswordChangedRegisterEvent>(_onPasswordChanged);
+    on<ConfirmPasswordChangedRegisterEvent>(_onConfirmPasswordChanged);
     on<FechaNacimientoChangedRegisterEvent>(_onFechaNacimientoChanged);
     on<SubmittedRegisterEvent>(_onSubmitted);
   }
@@ -95,6 +96,26 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           error: event.password.value.isNotEmpty
               ? null
               : 'Ingrese la contraseña',
+        ),
+        formKey: formKey,
+      ),
+    );
+  }
+
+  Future<void> _onConfirmPasswordChanged(
+    ConfirmPasswordChangedRegisterEvent event,
+    Emitter<RegisterState> emit,
+  ) async {
+    print('password  ${state.password.value}');
+    emit(
+      state.coypWith(
+        confirmPassword: BlocFormItem(
+          value: event.confirmPassword.value,
+          error: event.confirmPassword.value.isEmpty
+              ? 'Ingrese la contraseña'
+              : event.confirmPassword.value != state.password.value
+              ? 'Las contraseñas no son iguales'
+              : null,
         ),
         formKey: formKey,
       ),

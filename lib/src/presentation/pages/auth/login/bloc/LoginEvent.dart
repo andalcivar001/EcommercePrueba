@@ -1,3 +1,4 @@
+import 'package:ecommerce_prueba/src/domain/models/AuthResponse.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:equatable/equatable.dart';
 
@@ -32,4 +33,13 @@ class PasswordChangedLoginEvent extends LoginEvent {
 
 class SubmittedLoginEvent extends LoginEvent {
   const SubmittedLoginEvent();
+}
+
+class SaveUserSessionLoginEvent extends LoginEvent {
+  final AuthResponse authResponse;
+
+  const SaveUserSessionLoginEvent({required this.authResponse});
+
+  @override
+  List<Object?> get props => [authResponse];
 }
