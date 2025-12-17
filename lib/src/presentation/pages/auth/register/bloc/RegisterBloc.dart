@@ -19,6 +19,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<ConfirmPasswordChangedRegisterEvent>(_onConfirmPasswordChanged);
     on<FechaNacimientoChangedRegisterEvent>(_onFechaNacimientoChanged);
     on<SubmittedRegisterEvent>(_onSubmitted);
+    on<SaveUserSessionRegisterEvent>(_onSaveUserSession);
   }
 
   final formKey = GlobalKey<FormState>();
@@ -53,8 +54,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     Emitter<RegisterState> emit,
   ) async {
     {
-      print('nombre ${event.nombre.value}');
-
       emit(
         state.coypWith(
           nombre: BlocFormItem(
@@ -71,7 +70,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     EmailChangedRegisterEvent event,
     Emitter<RegisterState> emit,
   ) async {
-    print('email ${event.email.value}');
     emit(
       state.coypWith(
         email: BlocFormItem(
@@ -87,8 +85,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     PasswordChangedRegisterEvent event,
     Emitter<RegisterState> emit,
   ) async {
-    print('password changed ${event.password.value}');
-
     emit(
       state.coypWith(
         password: BlocFormItem(
@@ -106,7 +102,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     ConfirmPasswordChangedRegisterEvent event,
     Emitter<RegisterState> emit,
   ) async {
-    print('password  ${state.password.value}');
     emit(
       state.coypWith(
         confirmPassword: BlocFormItem(
@@ -126,7 +121,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     FechaNacimientoChangedRegisterEvent event,
     Emitter<RegisterState> emit,
   ) async {
-    print('fecha nacimiento changed ${event.fechaNacimiento.value}');
     emit(
       state.coypWith(
         fechaNacimiento: BlocFormItem(
@@ -151,5 +145,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     );
 
     emit(state.coypWith(response: response, formKey: formKey));
+  }
+
+  Future<void> _onSaveUserSession(
+    SaveUserSessionRegisterEvent event,
+    Emitter<RegisterState> emit,
+  ) async {
+    await authUseCases.saveUserSession.run(event.authResponse);
   }
 }

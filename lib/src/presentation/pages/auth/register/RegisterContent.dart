@@ -138,7 +138,7 @@ class RegisterContent extends StatelessWidget {
       label: 'Contraseña',
       icon: Icons.lock_outline,
       textInputAction: TextInputAction.next,
-      autofillHints: const [AutofillHints.newPassword],
+      autofillHints: const [AutofillHints.password],
 
       validator: (value) {
         return _state.password.error;

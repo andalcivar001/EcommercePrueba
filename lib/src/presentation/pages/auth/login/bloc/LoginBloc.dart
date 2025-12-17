@@ -22,13 +22,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final formKey = GlobalKey<FormState>();
 
   Future<void> _onInit(InitLoginEvent event, Emitter<LoginState> emit) async {
-    print('ENTRO AL INIT');
-    AuthResponse? authResponse = await authUseCases.getUser.run();
-    print('PUDO OBTENER EL USER');
+    AuthResponse? authResponse = await authUseCases.getUserSession.run();
     emit(state.coypWith(formKey: formKey));
-    print('INICIANDO LOGIN !! ${authResponse} ');
     if (authResponse != null) {
-      emit(state.coypWith(response: Success(AuthResponse), formKey: formKey));
+      emit(state.coypWith(response: Success(authResponse), formKey: formKey));
     }
   }
 
@@ -88,6 +85,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     SaveUserSessionLoginEvent event,
     Emitter<LoginState> emit,
   ) async {
-    authUseCases.saveUser.run(event.authResponse);
+    await authUseCases.saveUserSession.run(event.authResponse);
   }
 }

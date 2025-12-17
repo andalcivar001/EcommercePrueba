@@ -1,3 +1,4 @@
+import 'package:ecommerce_prueba/src/domain/models/AuthResponse.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:equatable/equatable.dart';
 
@@ -52,4 +53,11 @@ class FechaNacimientoChangedRegisterEvent extends RegisterEvent {
 
 class SubmittedRegisterEvent extends RegisterEvent {
   const SubmittedRegisterEvent();
+}
+
+class SaveUserSessionRegisterEvent extends RegisterEvent {
+  final AuthResponse authResponse;
+  const SaveUserSessionRegisterEvent({required this.authResponse});
+  @override
+  List<Object?> get props => [authResponse];
 }

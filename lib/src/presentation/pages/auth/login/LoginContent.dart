@@ -123,7 +123,6 @@ class LoginContent extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            // TODO: Navegar a Register
             Navigator.pushNamed(context, 'register');
           },
           borderRadius: BorderRadius.circular(8),
@@ -150,6 +149,9 @@ class LoginContent extends StatelessWidget {
       label: 'Correo electronico',
       icon: Icons.email_outlined,
       textInputType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.next,
+      autofillHints: const [AutofillHints.email],
+
       onChanged: (text) {
         _bloc?.add(EmailChangedLoginEvent(email: BlocFormItem(value: text)));
       },
@@ -167,6 +169,8 @@ class LoginContent extends StatelessWidget {
         return _state.password.error;
       },
       obscureText: true,
+      autofillHints: const [AutofillHints.newPassword],
+      textInputAction: TextInputAction.go,
       onChanged: (text) {
         _bloc?.add(
           PasswordChangedLoginEvent(password: BlocFormItem(value: text)),

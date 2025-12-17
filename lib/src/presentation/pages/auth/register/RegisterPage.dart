@@ -1,3 +1,4 @@
+import 'package:ecommerce_prueba/src/domain/models/AuthResponse.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/RegisterContent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterBloc.dart';
@@ -28,9 +29,12 @@ class _RegisterPageState extends State<RegisterPage> {
             if (responseState is Error) {
               AppToast.error(responseState.message);
             } else if (responseState is Success) {
+              AuthResponse authResponse = responseState.data;
+              _bloc?.add(
+                SaveUserSessionRegisterEvent(authResponse: authResponse),
+              );
+              Navigator.pushNamedAndRemoveUntil(context, 'menu', (_) => false);
               AppToast.success('Usuario creado correctamente');
-              Navigator.pushNamed(context, 'menu');
-              // _bloc?.add(ResetFormRegisterEvent());
             }
           },
           child: BlocBuilder<RegisterBloc, RegisterState>(

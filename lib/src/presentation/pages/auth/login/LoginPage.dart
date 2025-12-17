@@ -31,7 +31,13 @@ class _LoginPageState extends State<LoginPage> {
             } else if (responseState is Success) {
               final authResponse = responseState.data as AuthResponse;
               _bloc?.add(SaveUserSessionLoginEvent(authResponse: authResponse));
-              Navigator.pushNamedAndRemoveUntil(context, 'menu', (_) => false);
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  'home',
+                  (_) => false,
+                );
+              });
             }
           },
           child: BlocBuilder<LoginBloc, LoginState>(

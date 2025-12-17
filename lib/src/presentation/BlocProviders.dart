@@ -4,6 +4,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginBlo
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 List<BlocProvider> blocProviders = [
@@ -15,5 +16,9 @@ List<BlocProvider> blocProviders = [
   BlocProvider<RegisterBloc>(
     create: (context) =>
         RegisterBloc(locator<AuthUseCases>())..add(InitRegisterEvent()),
+  ),
+
+  BlocProvider<HomeBloc>(
+    create: (context) => HomeBloc(locator<AuthUseCases>()),
   ),
 ];

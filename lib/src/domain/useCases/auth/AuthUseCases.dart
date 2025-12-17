@@ -7,14 +7,14 @@ import 'package:ecommerce_prueba/src/domain/useCases/auth/SaveUserSessionUseCase
 class AuthUseCases {
   LoginUseCase login;
   RegisterUseCase register;
-  GetUserSessionUseCase getUser;
-  SaveUserSessionUseCase saveUser;
+  GetUserSessionUseCase getUserSession;
+  SaveUserSessionUseCase saveUserSession;
   LogoutUseCase logout;
   AuthUseCases({
     required this.login,
     required this.register,
-    required this.getUser,
-    required this.saveUser,
+    required this.getUserSession,
+    required this.saveUserSession,
     required this.logout,
   });
 }

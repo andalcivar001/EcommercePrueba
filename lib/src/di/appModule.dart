@@ -43,8 +43,8 @@ abstract class Appmodule {
   AuthUseCases get authUseCases => AuthUseCases(
     login: LoginUseCase(authRepository),
     register: RegisterUseCase(authRepository),
-    getUser: GetUserSessionUseCase(authRepository),
-    saveUser: SaveUserSessionUseCase(authRepository),
+    getUserSession: GetUserSessionUseCase(authRepository),
+    saveUserSession: SaveUserSessionUseCase(authRepository),
     logout: LogoutUseCase(authRepository),
   );
 }
