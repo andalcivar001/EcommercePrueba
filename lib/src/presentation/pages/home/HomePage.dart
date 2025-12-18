@@ -2,6 +2,7 @@ import 'package:ecommerce_prueba/main.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeState.dart';
+import 'package:ecommerce_prueba/src/presentation/profile/info/ProfileInfoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,11 +18,7 @@ class _HomePageState extends State<HomePage> {
 
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = const [
-    Center(child: Text('Dashboard')),
-    Center(child: Text('Perfil')),
-    Center(child: Text('Configuración')),
-  ];
+  final List<Widget> _pages = const [ProfileInfoPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -57,19 +54,22 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
+                      SizedBox(height: 15),
                       CircleAvatar(
                         radius: 40,
+
                         backgroundColor: Colors.white,
                         child: Icon(
                           Icons.person,
                           size: 45,
+
                           color: Color(0xFF1E3C72),
                         ),
                       ),
                       SizedBox(height: 12),
                       Text(
-                        'Administrador',
+                        state.user!.nombre.toUpperCase(),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -78,7 +78,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        'admin@ecommerce.com',
+                        state.user?.email ?? '',
+                        style: TextStyle(color: Colors.white70, fontSize: 14),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        state.user?.telefono ?? '',
                         style: TextStyle(color: Colors.white70, fontSize: 14),
                       ),
                     ],
@@ -87,30 +92,14 @@ class _HomePageState extends State<HomePage> {
 
                 /// ITEMS
                 _drawerItem(
-                  icon: Icons.dashboard_outlined,
-                  text: 'Dashboard',
-                  index: 0,
-                ),
-                _drawerItem(
                   icon: Icons.person_outline,
                   text: 'Perfil',
-                  index: 1,
-                ),
-                _drawerItem(
-                  icon: Icons.settings_outlined,
-                  text: 'Configuración',
-                  index: 2,
+                  index: 0,
                 ),
 
                 const Spacer(),
 
                 const Divider(),
-
-                _drawerItem(
-                  icon: Icons.person_2_outlined,
-                  text: 'Actualizar usuario',
-                  index: -1,
-                ),
 
                 _drawerItem(
                   icon: Icons.logout,
@@ -126,7 +115,11 @@ class _HomePageState extends State<HomePage> {
         },
       ),
 
-      body: _pages[_selectedIndex],
+      body: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          return _pages[_selectedIndex];
+        },
+      ),
     );
   }
 

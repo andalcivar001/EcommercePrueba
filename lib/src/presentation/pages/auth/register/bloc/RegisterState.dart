@@ -8,6 +8,7 @@ class RegisterState extends Equatable {
   final BlocFormItem nombre;
   final BlocFormItem email;
   final BlocFormItem password;
+  final BlocFormItem telefono;
   final BlocFormItem confirmPassword;
   final BlocFormItem fechaNacimiento;
   final Resource? response;
@@ -17,6 +18,7 @@ class RegisterState extends Equatable {
     this.nombre = const BlocFormItem(error: 'Ingrese nombre'),
     this.email = const BlocFormItem(error: 'Ingrese email'),
     this.password = const BlocFormItem(error: 'Ingrese password'),
+    this.telefono = const BlocFormItem(error: 'Ingrese telefono'),
     this.confirmPassword = const BlocFormItem(
       error: 'Ingrese la confirmacion de password',
     ),
@@ -30,6 +32,7 @@ class RegisterState extends Equatable {
   toUser() => User(
     nombre: nombre.value,
     email: email.value,
+    telefono: telefono.value,
     password: password.value,
     fechaNacimiento: fechaNacimiento.value,
   );
@@ -38,6 +41,7 @@ class RegisterState extends Equatable {
     BlocFormItem? nombre,
     BlocFormItem? email,
     BlocFormItem? password,
+    BlocFormItem? telefono,
     BlocFormItem? confirmPassword,
     BlocFormItem? fechaNacimiento,
     Resource? response,
@@ -47,6 +51,7 @@ class RegisterState extends Equatable {
       nombre: nombre ?? this.nombre,
       email: email ?? this.email,
       password: password ?? this.password,
+      telefono: telefono ?? this.telefono,
       confirmPassword: confirmPassword ?? this.confirmPassword,
       fechaNacimiento: fechaNacimiento ?? this.fechaNacimiento,
       response: response,
@@ -60,6 +65,7 @@ class RegisterState extends Equatable {
     nombre,
     email,
     password,
+    telefono,
     confirmPassword,
     fechaNacimiento,
     response,

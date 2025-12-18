@@ -20,7 +20,7 @@ class RegisterContent extends StatelessWidget {
         child: Stack(
           children: [
             // 🔹 Icono Back FUERA del Card
-            Positioned(child: DefaultIconBack(left: 18, top: 25)),
+            Positioned(child: DefaultIconBack(left: 18, top: 5)),
 
             // 🔹 Card centrado
             Center(
@@ -37,6 +37,9 @@ class RegisterContent extends StatelessWidget {
                         _textNombre(),
                         const SizedBox(height: 16),
                         _textEmail(),
+                        const SizedBox(height: 16),
+                        _textTelefono(),
+                        const SizedBox(height: 16),
                         const SizedBox(height: 16),
                         _textPassword(),
                         const SizedBox(height: 16),
@@ -138,6 +141,24 @@ class RegisterContent extends StatelessWidget {
       },
       validator: (value) {
         return _state.email.error;
+      },
+    );
+  }
+
+  Widget _textTelefono() {
+    return DefaultTextField(
+      label: 'Teléfono',
+      icon: Icons.phone,
+      textInputAction: TextInputAction.next,
+      autofillHints: const [AutofillHints.telephoneNumber],
+      textInputType: TextInputType.number,
+      onChanged: (text) {
+        _bloc?.add(
+          TelefonoChangedRegisterEvent(telefono: BlocFormItem(value: text)),
+        );
+      },
+      validator: (value) {
+        return _state.telefono.error;
       },
     );
   }

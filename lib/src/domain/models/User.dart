@@ -9,6 +9,7 @@ class User {
   String nombre;
   String? email;
   String? password;
+  String? telefono;
   String? fechaNacimiento;
   String? image;
 
@@ -18,12 +19,13 @@ class User {
     this.email,
     this.password,
     this.fechaNacimiento,
+    this.telefono,
     this.image,
   });
 
   @override
   String toString() {
-    return 'User{id: $id, nombre: $nombre,  email: $email,  password: $password,  fechaNacimiento: $fechaNacimiento, image: $image)}}';
+    return 'User{id: $id, nombre: $nombre,  email: $email,  password: $password, telefono: $telefono,  fechaNacimiento: $fechaNacimiento, image: $image)}}';
   }
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -31,6 +33,7 @@ class User {
     nombre: json["nombre"] ?? '',
     email: json["email"] ?? '',
     password: json["password"] ?? '',
+    telefono: json["telefono"] ?? '',
     fechaNacimiento: json["fecha_nacimiento"] ?? '',
     image: json["image"] ?? '',
   );
@@ -40,6 +43,7 @@ class User {
     "nombre": nombre,
     "email": email,
     "password": password,
+    "telefono": telefono,
     "fecha_nacimiento": fechaNacimiento,
     "image": image,
   };

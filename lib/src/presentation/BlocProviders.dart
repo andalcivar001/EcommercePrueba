@@ -5,6 +5,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginEve
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeEvent.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 List<BlocProvider> blocProviders = [
@@ -19,6 +20,7 @@ List<BlocProvider> blocProviders = [
   ),
 
   BlocProvider<HomeBloc>(
-    create: (context) => HomeBloc(locator<AuthUseCases>()),
+    create: (context) =>
+        HomeBloc(locator<AuthUseCases>())..add(InitHomeEvent()),
   ),
 ];

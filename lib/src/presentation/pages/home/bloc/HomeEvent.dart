@@ -7,6 +7,10 @@ abstract class HomeEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class InitHomeEvent extends HomeEvent {
+  const InitHomeEvent();
+}
+
 class PageChangeHomeEvent extends HomeEvent {
   final int pageIndex;
   const PageChangeHomeEvent({required this.pageIndex});

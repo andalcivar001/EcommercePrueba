@@ -15,6 +15,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<ResetFormRegisterEvent>(_onResetForm);
     on<NameChangedRegisterEvent>(_onNameChanged);
     on<EmailChangedRegisterEvent>(_onEmailChanged);
+    on<TelefonoChangedRegisterEvent>(_onTelefonoChanged);
     on<PasswordChangedRegisterEvent>(_onPasswordChanged);
     on<ConfirmPasswordChangedRegisterEvent>(_onConfirmPasswordChanged);
     on<FechaNacimientoChangedRegisterEvent>(_onFechaNacimientoChanged);
@@ -81,6 +82,23 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     );
   }
 
+  Future<void> _onTelefonoChanged(
+    TelefonoChangedRegisterEvent event,
+    Emitter<RegisterState> emit,
+  ) async {
+    emit(
+      state.coypWith(
+        telefono: BlocFormItem(
+          value: event.telefono.value,
+          error: event.telefono.value.isNotEmpty
+              ? null
+              : 'Ingresea el telefono',
+        ),
+        formKey: formKey,
+      ),
+    );
+  }
+
   Future<void> _onPasswordChanged(
     PasswordChangedRegisterEvent event,
     Emitter<RegisterState> emit,
@@ -90,7 +108,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         password: BlocFormItem(
           value: event.password.value,
           error: event.password.value.isNotEmpty
-              ? null
+              ? event.password.value.length <= 3
+                    ? 'Contraseña debe tener mas de 3 caracteres'
+                    : null
               : 'Ingrese la contraseña',
         ),
         formKey: formKey,
@@ -110,6 +130,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
               ? 'Ingrese la contraseña'
               : event.confirmPassword.value != state.password.value
               ? 'Las contraseñas no son iguales'
+              : event.confirmPassword.value.length <= 3
+              ? 'Confirmación de Contraseña debe tener mas de 3 caracteres'
               : null,
         ),
         formKey: formKey,

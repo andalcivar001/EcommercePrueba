@@ -37,6 +37,13 @@ class PasswordChangedRegisterEvent extends RegisterEvent {
   List<Object?> get props => [password];
 }
 
+class TelefonoChangedRegisterEvent extends RegisterEvent {
+  final BlocFormItem telefono;
+  const TelefonoChangedRegisterEvent({required this.telefono});
+  @override
+  List<Object?> get props => [telefono];
+}
+
 class ConfirmPasswordChangedRegisterEvent extends RegisterEvent {
   final BlocFormItem confirmPassword;
   const ConfirmPasswordChangedRegisterEvent({required this.confirmPassword});
