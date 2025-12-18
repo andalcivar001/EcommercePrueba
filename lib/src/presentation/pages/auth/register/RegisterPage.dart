@@ -33,7 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
               _bloc?.add(
                 SaveUserSessionRegisterEvent(authResponse: authResponse),
               );
-              Navigator.pushNamedAndRemoveUntil(context, 'menu', (_) => false);
+              Navigator.pushNamedAndRemoveUntil(context, 'home', (_) => false);
               AppToast.success('Usuario creado correctamente');
             }
           },

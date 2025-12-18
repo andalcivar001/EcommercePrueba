@@ -3,6 +3,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/Regis
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterState.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/DefaultIconBack.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/DefaultTextField.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/DefaultButton.dart';
 import 'package:flutter/material.dart';
@@ -12,41 +13,49 @@ class RegisterContent extends StatelessWidget {
   RegisterState _state;
 
   RegisterContent(this._bloc, this._state);
-
   @override
   Widget build(BuildContext context) {
     return _buildBackground(
-      child: Center(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(24),
-          child: Form(
-            key: _state.formKey,
-            child: _buildCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildHeader(),
-                  SizedBox(height: 32),
-                  _textNombre(),
-                  SizedBox(height: 16),
-                  _textEmail(),
-                  SizedBox(height: 16),
-                  _textPassword(),
-                  SizedBox(height: 16),
-                  _textConfirmPassword(),
-                  SizedBox(height: 16),
-                  _textFechaNacimiento(context),
-                  SizedBox(height: 28),
-                  _buttonCrear(),
-                ],
+      child: SafeArea(
+        child: Stack(
+          children: [
+            // 🔹 Icono Back FUERA del Card
+            Positioned(child: DefaultIconBack(left: 18, top: 25)),
+
+            // 🔹 Card centrado
+            Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: _state.formKey,
+                  child: _buildCard(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildHeader(),
+                        const SizedBox(height: 32),
+                        _textNombre(),
+                        const SizedBox(height: 16),
+                        _textEmail(),
+                        const SizedBox(height: 16),
+                        _textPassword(),
+                        const SizedBox(height: 16),
+                        _textConfirmPassword(),
+                        const SizedBox(height: 16),
+                        _textFechaNacimiento(context),
+                        const SizedBox(height: 28),
+                        _buttonCrear(),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
-
   // ====== Widgets privados "clave" (no todos) ======
 
   Widget _buildBackground({required Widget child}) {
