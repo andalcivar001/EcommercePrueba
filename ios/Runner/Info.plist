@@ -44,6 +44,11 @@
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Requiere permisos para acceder a la galeria de fotos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Requiere permisos para acceder a la camara</string>
+	
 	<true/>
 </dict>
 </plist>

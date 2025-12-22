@@ -23,6 +23,15 @@ se instala la extension Bloc por Felix Angelov
 
 path: ^1.9.1 ... libreria para trabajar directamente con archivos
 
+image picker .. para seleccionar imagen de galeria o foto
+
+// se agregan estas lineas para darle permisos a la camara y galeria en IOS en esta ruta: <project root>/ios/Runner/Info.plist
+
+<!-- <key>NSPhotoLibraryUsageDescription</key>
+	<string>Requiere permisos para acceder a la galeria de fotos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Requiere permisos para acceder a la camara</string> -->
+
 el dispose se ejecuta cuando se cierra de pantalla actual
 
 flutter packages pub run build_runner watch .. ejecutar ese comando para crear el archivo de inyeccion

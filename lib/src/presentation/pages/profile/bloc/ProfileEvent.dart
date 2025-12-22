@@ -42,6 +42,14 @@ class FechaNacimientoProfileEvent extends ProfileEvent {
   List<Object?> get props => [fechaNacimiento];
 }
 
+class PickImageProfileEvent extends ProfileEvent {
+  const PickImageProfileEvent();
+}
+
+class TakePhotoProfileEvent extends ProfileEvent {
+  const TakePhotoProfileEvent();
+}
+
 class FormSubmittedProfileEvent extends ProfileEvent {
   const FormSubmittedProfileEvent();
 }

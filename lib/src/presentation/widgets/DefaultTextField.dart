@@ -34,7 +34,7 @@ class DefaultTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       obscureText: obscureText,
-      initialValue: initialValue,
+      initialValue: controller == null ? initialValue : null,
       onChanged: (text) {
         onChanged!(text);
       },

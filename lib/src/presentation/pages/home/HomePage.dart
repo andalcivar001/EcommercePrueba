@@ -2,7 +2,7 @@ import 'package:ecommerce_prueba/main.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeState.dart';
-import 'package:ecommerce_prueba/src/presentation/profile/info/ProfileInfoPage.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/profile/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +18,10 @@ class _HomePageState extends State<HomePage> {
 
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = const [ProfileInfoPage()];
+  final List<Widget> _pages = const [
+    Center(child: Text('Bienvenido al Panel')),
+    ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +96,8 @@ class _HomePageState extends State<HomePage> {
                 /// ITEMS
                 _drawerItem(
                   icon: Icons.person_outline,
-                  text: 'Perfil',
-                  index: 0,
+                  text: 'Actualizar Perfil',
+                  index: 1,
                 ),
 
                 const Spacer(),

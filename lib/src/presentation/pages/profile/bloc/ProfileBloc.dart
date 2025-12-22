@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ecommerce_prueba/src/domain/models/AuthResponse.dart';
 import 'package:ecommerce_prueba/src/domain/models/User.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart';
@@ -6,16 +8,19 @@ import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileStat
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   AuthUseCases authUseCases;
 
   ProfileBloc(this.authUseCases) : super(ProfileState()) {
     on<InitProfileEvent>(_onInit);
-    // on<NombreChangedProfileEvent>(_onNombreChanged);
-    // on<TelefonoChangedProfileEvent>(_onTelefonoChanged);
-    // on<FechaNacimientoProfileEvent>(_onFechaNacimiento);
-    // on<FormSubmittedProfileEvent>(_onFormSubmitted);
+    on<NombreChangedProfileEvent>(_onNombreChanged);
+    on<TelefonoChangedProfileEvent>(_onTelefonoChanged);
+    on<FechaNacimientoProfileEvent>(_onFechaNacimiento);
+    on<PickImageProfileEvent>(_onPickImage);
+    on<TakePhotoProfileEvent>(_onTakePhoto);
+    on<FormSubmittedProfileEvent>(_onFormSubmitted);
     // on<ResetFormProfileEvent>(_onResetForm);
   }
 
@@ -28,8 +33,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     AuthResponse? authResponse = await authUseCases.getUserSession.run();
     if (authResponse != null) {
       final User user = authResponse.user;
+      final String fecha = user.fechaNacimiento = user.fechaNacimiento!
+          .substring(0, 10);
+      user.fechaNacimiento = fecha;
+      // user.image =
+      //     'https://firebasestorage.googleapis.com/v0/b/ecommerce-imagenes-3b10a.firebasestorage.app/o/user.png?alt=media&token=dee71b6a-bdd4-45ed-96a8-fe4155fa5c1c';
+      // print('PROFILE USER $user');
       emit(
         state.copyWith(
+          user: user,
           id: user.id,
           nombre: BlocFormItem(value: user.nombre),
           telefono: BlocFormItem(value: user.telefono ?? ''),
@@ -39,4 +51,81 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       );
     }
   }
+
+  Future<void> _onNombreChanged(
+    NombreChangedProfileEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    print('PROFILE STATE NOMBRE ${event.nombre.value}');
+    emit(
+      state.copyWith(
+        nombre: BlocFormItem(
+          value: event.nombre.value,
+          error: event.nombre.value.isNotEmpty ? null : 'Ingrese el nombre',
+        ),
+        formKey: formKey,
+      ),
+    );
+  }
+
+  Future<void> _onTelefonoChanged(
+    TelefonoChangedProfileEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        telefono: BlocFormItem(
+          value: event.telefono.value,
+          error: event.telefono.value.isNotEmpty ? null : 'Ingrese el telefono',
+        ),
+        formKey: formKey,
+      ),
+    );
+  }
+
+  Future<void> _onFechaNacimiento(
+    FechaNacimientoProfileEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    print('FECHA NACIMIENTO PROFILE ${event.fechaNacimiento.value}');
+    emit(
+      state.copyWith(
+        fechaNacimiento: BlocFormItem(
+          value: event.fechaNacimiento.value,
+          error: event.fechaNacimiento.value.isNotEmpty
+              ? null
+              : 'Ingrese fecha de nacimiento',
+        ),
+        formKey: formKey,
+      ),
+    );
+  }
+
+  Future<void> _onPickImage(
+    PickImageProfileEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      print('IMAGE PROFILE ${image.path}');
+      emit(state.copyWith(image: File(image.path), formKey: formKey));
+    }
+  }
+
+  Future<void> _onTakePhoto(
+    TakePhotoProfileEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      emit(state.copyWith(image: File(image.path), formKey: formKey));
+    }
+  }
+
+  Future<void> _onFormSubmitted(
+    FormSubmittedProfileEvent event,
+    Emitter<ProfileState> emit,
+  ) async {}
 }
