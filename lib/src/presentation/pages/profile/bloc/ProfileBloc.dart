@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:ecommerce_prueba/src/domain/models/AuthResponse.dart';
 import 'package:ecommerce_prueba/src/domain/models/User.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/users/UsersUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileState.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
@@ -12,8 +14,9 @@ import 'package:image_picker/image_picker.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   AuthUseCases authUseCases;
+  UsersUseCases usersUseCases;
 
-  ProfileBloc(this.authUseCases) : super(ProfileState()) {
+  ProfileBloc(this.authUseCases, this.usersUseCases) : super(ProfileState()) {
     on<InitProfileEvent>(_onInit);
     on<NombreChangedProfileEvent>(_onNombreChanged);
     on<TelefonoChangedProfileEvent>(_onTelefonoChanged);
@@ -38,7 +41,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       user.fechaNacimiento = fecha;
       // user.image =
       //     'https://firebasestorage.googleapis.com/v0/b/ecommerce-imagenes-3b10a.firebasestorage.app/o/user.png?alt=media&token=dee71b6a-bdd4-45ed-96a8-fe4155fa5c1c';
-      // print('PROFILE USER $user');
       emit(
         state.copyWith(
           user: user,
@@ -46,6 +48,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           nombre: BlocFormItem(value: user.nombre),
           telefono: BlocFormItem(value: user.telefono ?? ''),
           fechaNacimiento: BlocFormItem(value: user.fechaNacimiento ?? ''),
+          imagenUrl: user.imagen,
           formKey: formKey,
         ),
       );
@@ -56,7 +59,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     NombreChangedProfileEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    print('PROFILE STATE NOMBRE ${event.nombre.value}');
     emit(
       state.copyWith(
         nombre: BlocFormItem(
@@ -87,7 +89,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     FechaNacimientoProfileEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    print('FECHA NACIMIENTO PROFILE ${event.fechaNacimiento.value}');
     emit(
       state.copyWith(
         fechaNacimiento: BlocFormItem(
@@ -108,7 +109,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      print('IMAGE PROFILE ${image.path}');
       emit(state.copyWith(image: File(image.path), formKey: formKey));
     }
   }
@@ -127,5 +127,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> _onFormSubmitted(
     FormSubmittedProfileEvent event,
     Emitter<ProfileState> emit,
-  ) async {}
+  ) async {
+    print('entro al event submmit');
+    emit(state.copyWith(response: Loading(), formKey: formKey));
+    final response = await usersUseCases.update.run(
+      state.id,
+      state.toUser(),
+      state.imagen,
+    );
+    print('RESPONSE $response');
+    emit(state.copyWith(response: response, formKey: formKey));
+  }
 }

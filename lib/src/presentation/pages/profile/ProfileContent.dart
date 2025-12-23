@@ -31,9 +31,8 @@ class ProfileContent extends StatelessWidget {
                   key: _state.formKey,
                   child: _buildCard(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        _imageAvatar(context, _state.image),
+                        _imageAvatar(context, _state.imagen, _state.imagenUrl),
                         _buildHeader(),
                         SizedBox(height: 32),
                         _textNombre(),
@@ -56,16 +55,7 @@ class ProfileContent extends StatelessWidget {
   }
 
   Widget _buildBackground({required Widget child}) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF1E3C72), Color(0xFF2A5298)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: child,
-    );
+    return Container(color: Colors.white, child: child);
   }
 
   Widget _buildHeader() {
@@ -93,11 +83,15 @@ class ProfileContent extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: const Color(0xFF1E3C72), // azul corporativo
+          width: 1.5,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
-            blurRadius: 25,
-            offset: const Offset(0, 12),
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 18,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -105,34 +99,55 @@ class ProfileContent extends StatelessWidget {
     );
   }
 
-  Widget _imageAvatar(BuildContext context, File? image) {
+  Widget _imageAvatar(
+    BuildContext context,
+    File? imagenState,
+    String? imagenUser,
+  ) {
+    const primary = Color(0xFF1E3C72);
+
     return GestureDetector(
       onTap: () {
         SelectOptionImageDialog(
           context,
-          () {
-            _bloc?.add(PickImageProfileEvent());
-          },
-          () {
-            _bloc?.add(TakePhotoProfileEvent());
-          },
+          () => _bloc?.add(PickImageProfileEvent()),
+          () => _bloc?.add(TakePhotoProfileEvent()),
         );
       },
-      child: image == null
-          ? CircleAvatar(
-              radius: 40,
-              backgroundColor: Colors.grey[300],
-              child: Icon(Icons.person, size: 45, color: Color(0xFF1E3C72)),
-            )
-          : ClipOval(
-              child: Image.network(
-                image.path,
-                width: 80,
-                height: 80,
-                fit: BoxFit
-                    .contain, // esto hace que encaje en el tabaño del circulo
-              ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: primary, width: 2),
             ),
+            child: ClipOval(
+              child: imagenState != null
+                  ? Image.file(imagenState, fit: BoxFit.cover)
+                  : imagenUser != null
+                  ? FadeInImage.assetNetwork(
+                      image: imagenUser,
+                      placeholder: 'assets/img/user_image.png',
+                      fit: BoxFit.cover,
+                      fadeInDuration: Duration(seconds: 1),
+                    )
+                  : Container(),
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Seleccionar imagen',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              color: primary,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -214,7 +229,7 @@ class ProfileContent extends StatelessWidget {
 
   Widget _buttonActualizar() {
     return DefaultButton(
-      text: 'Crear',
+      text: 'Actualizar',
       onPressed: () {
         if (_state.formKey!.currentState!.validate()) {
           _bloc?.add(FormSubmittedProfileEvent());

@@ -13,8 +13,10 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<Resource<User>> update(int id, User user, File? file) async {
     if (file != null) {
+      print('UPDATE CON IMAGEN');
       return await userService.updateImage(user, id, file);
     } else {
+      print('UPDATE SIN IMAGEN');
       return await userService.update(user, id);
     }
   }

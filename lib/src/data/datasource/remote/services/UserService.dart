@@ -17,18 +17,18 @@ class UserService {
       Uri url = Uri.http(Apiconfig.API_ECOMMERCE, '/users/$id');
       Map<String, String> headers = {"Content-Type": "application/json"};
       String body = json.encode(user.toJson());
-      final response = await http.post(url, headers: headers, body: body);
+      final response = await http.put(url, headers: headers, body: body);
       final data = json.decode(response.body);
 
       if (response.statusCode == 201 || response.statusCode == 200) {
         User userResponse = User.fromJson(data);
         return Success(userResponse);
       } else {
-        //print('Error  ${data}');
+        print('ERROR UPDATE USER SERVICE  ${data}');
         return Error(listToString(data['message']));
       }
     } catch (e) {
-      print('Error register: $e');
+      print('ERROR ACTUALIZAR USUARIO: $e');
       return Error(e.toString());
     }
   }

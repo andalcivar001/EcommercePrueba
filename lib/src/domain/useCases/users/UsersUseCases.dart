@@ -1,7 +1,7 @@
 import 'package:ecommerce_prueba/src/domain/useCases/users/UpdateUsersUseCase.dart';
 
-class UsersUseCase {
+class UsersUseCases {
   UpdateUsersUseCase update;
 
-  UsersUseCase({required this.update});
+  UsersUseCases({required this.update});
 }

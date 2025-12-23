@@ -12,7 +12,8 @@ class ProfileState extends Equatable {
   final BlocFormItem telefono;
   final BlocFormItem fechaNacimiento;
   final GlobalKey<FormState>? formKey;
-  final File? image;
+  final File? imagen;
+  final String? imagenUrl;
   final Resource? response;
   final User? user;
 
@@ -24,10 +25,17 @@ class ProfileState extends Equatable {
       error: 'Ingrese la fecha de nacimiento',
     ),
     this.formKey,
-    this.image,
+    this.imagen,
+    this.imagenUrl,
     this.response,
     this.user,
   });
+
+  toUser() => User(
+    nombre: nombre.value,
+    telefono: telefono.value,
+    fechaNacimiento: fechaNacimiento.value,
+  );
 
   ProfileState copyWith({
     int? id,
@@ -37,6 +45,7 @@ class ProfileState extends Equatable {
     GlobalKey<FormState>? formKey,
     Resource? response,
     File? image,
+    String? imagenUrl,
     User? user,
   }) {
     return ProfileState(
@@ -44,7 +53,8 @@ class ProfileState extends Equatable {
       nombre: nombre ?? this.nombre,
       telefono: telefono ?? this.telefono,
       fechaNacimiento: fechaNacimiento ?? this.fechaNacimiento,
-      image: image ?? this.image,
+      imagenUrl: imagenUrl ?? this.imagenUrl,
+      imagen: image,
       formKey: formKey,
       response: response,
       user: user,
@@ -52,5 +62,12 @@ class ProfileState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [nombre, fechaNacimiento, telefono, image, user];
+  List<Object?> get props => [
+    nombre,
+    fechaNacimiento,
+    telefono,
+    imagen,
+    user,
+    imagenUrl,
+  ];
 }

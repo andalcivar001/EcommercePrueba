@@ -11,7 +11,7 @@ class User {
   String? password;
   String? telefono;
   String? fechaNacimiento;
-  String? image;
+  String? imagen;
 
   User({
     this.id,
@@ -20,12 +20,12 @@ class User {
     this.password,
     this.fechaNacimiento,
     this.telefono,
-    this.image,
+    this.imagen,
   });
 
   @override
   String toString() {
-    return 'User{id: $id, nombre: $nombre,  email: $email,  password: $password, telefono: $telefono,  fechaNacimiento: $fechaNacimiento, image: $image)}}';
+    return 'User{id: $id, nombre: $nombre,  email: $email,  password: $password, telefono: $telefono,  fechaNacimiento: $fechaNacimiento, imagen: $imagen)}}';
   }
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -35,7 +35,7 @@ class User {
     password: json["password"] ?? '',
     telefono: json["telefono"] ?? '',
     fechaNacimiento: json["fecha_nacimiento"] ?? '',
-    image: json["image"] ?? '',
+    imagen: json["imagen"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {
@@ -45,6 +45,6 @@ class User {
     "password": password,
     "telefono": telefono,
     "fecha_nacimiento": fechaNacimiento,
-    "image": image,
+    "imagen": imagen,
   };
 }

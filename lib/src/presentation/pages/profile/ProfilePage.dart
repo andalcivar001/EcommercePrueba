@@ -34,19 +34,17 @@ class _ProfilePageState extends State<ProfilePage> {
           },
           child: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
-              final res = state.response;
-              return Stack(
-                children: [
-                  ProfileContent(_bloc, state, state.user),
-                  if (res is Loading)
-                    Positioned.fill(
-                      child: ColoredBox(
-                        color: Color(0x66000000),
-                        child: Center(child: CircularProgressIndicator()),
-                      ),
-                    ),
-                ],
-              );
+              final responseState = state.response;
+
+              if (responseState is Loading) {
+                return Stack(
+                  children: [
+                    ProfileContent(_bloc, state, state.user),
+                    Center(child: CircularProgressIndicator()),
+                  ],
+                );
+              }
+              return ProfileContent(_bloc, state, state.user);
             },
           ),
         ),

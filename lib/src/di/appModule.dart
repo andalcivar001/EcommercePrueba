@@ -13,7 +13,7 @@ import 'package:ecommerce_prueba/src/domain/useCases/auth/LogoutUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/RegisterUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/SaveUserSessionUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/users/UpdateUsersUseCase.dart';
-import 'package:ecommerce_prueba/src/domain/useCases/users/UsersUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/users/UsersUseCases.dart';
 import 'package:injectable/injectable.dart';
 
 @module
@@ -60,6 +60,6 @@ abstract class Appmodule {
   );
 
   @injectable
-  UsersUseCase get userUseCase =>
-      UsersUseCase(update: UpdateUsersUseCase(userRepository));
+  UsersUseCases get userUseCase =>
+      UsersUseCases(update: UpdateUsersUseCase(userRepository));
 }

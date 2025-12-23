@@ -5,5 +5,5 @@ import 'dart:io';
 class UpdateUsersUseCase {
   UserRepository userRepository;
   UpdateUsersUseCase(this.userRepository);
-  run(int id, User user, File file) => userRepository.update(id, user, file);
+  run(int id, User user, File? file) => userRepository.update(id, user, file);
 }

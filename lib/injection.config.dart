@@ -22,7 +22,7 @@ import 'package:ecommerce_prueba/src/domain/repository/UserRepository.dart'
     as _i584;
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart'
     as _i203;
-import 'package:ecommerce_prueba/src/domain/useCases/users/UsersUseCase.dart'
+import 'package:ecommerce_prueba/src/domain/useCases/users/UsersUseCases.dart'
     as _i989;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
@@ -42,7 +42,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i732.AuthRepository>(() => appmodule.authRepository);
     gh.factory<_i584.UserRepository>(() => appmodule.userRepository);
     gh.factory<_i203.AuthUseCases>(() => appmodule.authUseCases);
-    gh.factory<_i989.UsersUseCase>(() => appmodule.userUseCase);
+    gh.factory<_i989.UsersUseCases>(() => appmodule.userUseCase);
     return this;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:ecommerce_prueba/injection.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/users/UsersUseCases.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterBloc.dart';
@@ -27,6 +28,7 @@ List<BlocProvider> blocProviders = [
   ),
   BlocProvider<ProfileBloc>(
     create: (context) =>
-        ProfileBloc(locator<AuthUseCases>())..add(InitProfileEvent()),
+        ProfileBloc(locator<AuthUseCases>(), locator<UsersUseCases>())
+          ..add(InitProfileEvent()),
   ),
 ];
