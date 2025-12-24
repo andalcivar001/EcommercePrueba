@@ -14,16 +14,13 @@ class AuthService {
       String body = json.encode({'email': email, 'password': password});
       final response = await http.post(url, headers: headers, body: body);
       final data = json.decode(response.body);
-      print('LOGIN SERVICE DATA $data');
       if (response.statusCode == 201 || response.statusCode == 200) {
         AuthResponse authResponse = AuthResponse.fromJson(data);
-        print('LOGIN SERVICE AUTHRESPONSE $authResponse');
         return Success(authResponse);
       } else {
         return Error(listToString(data['message']));
       }
     } catch (e) {
-      print('Error: $e');
       return Error(e.toString());
     }
   }

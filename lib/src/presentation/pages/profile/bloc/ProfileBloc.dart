@@ -24,7 +24,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<PickImageProfileEvent>(_onPickImage);
     on<TakePhotoProfileEvent>(_onTakePhoto);
     on<FormSubmittedProfileEvent>(_onFormSubmitted);
-    // on<ResetFormProfileEvent>(_onResetForm);
+    on<UpdateUserSessionProfileEvent>(_onUpdateUserSession);
+    on<UsuarioActualizadoProfileEvent>(_onUsuarioActualizado);
+    on<ResetFormProfileEvent>(_onResetForm);
   }
 
   final formKey = GlobalKey<FormState>();
@@ -39,9 +41,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       final String fecha = user.fechaNacimiento = user.fechaNacimiento!
           .substring(0, 10);
       user.fechaNacimiento = fecha;
-      // user.image =
-      //     'https://firebasestorage.googleapis.com/v0/b/ecommerce-imagenes-3b10a.firebasestorage.app/o/user.png?alt=media&token=dee71b6a-bdd4-45ed-96a8-fe4155fa5c1c';
-
       emit(
         state.copyWith(
           user: user,
@@ -129,14 +128,40 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     FormSubmittedProfileEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    print('entro al event submmit');
     emit(state.copyWith(response: Loading(), formKey: formKey));
-    Resource<User> response = await usersUseCases.update.run(
+
+    Resource response = await usersUseCases.update.run(
       state.id,
       state.toUser(),
       state.imagen,
     );
-
     emit(state.copyWith(response: response, formKey: formKey));
+  }
+
+  Future<void> _onUpdateUserSession(
+    UpdateUserSessionProfileEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    AuthResponse authResponse = await authUseCases.getUserSession.run();
+    authResponse.user.nombre = event.user.nombre;
+    authResponse.user.telefono = event.user.telefono;
+    authResponse.user.fechaNacimiento = event.user.fechaNacimiento;
+    emit(state.copyWith(user: authResponse.user));
+    await authUseCases.saveUserSession.run(authResponse);
+    emit(state.copyWith(usuarioActualizado: true));
+  }
+
+  Future<void> _onUsuarioActualizado(
+    UsuarioActualizadoProfileEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(state.copyWith(usuarioActualizado: event.usuarioActualizado));
+  }
+
+  Future<void> _onResetForm(
+    ResetFormProfileEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    state.formKey?.currentState?.reset();
   }
 }

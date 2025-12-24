@@ -24,7 +24,8 @@ List<BlocProvider> blocProviders = [
 
   BlocProvider<HomeBloc>(
     create: (context) =>
-        HomeBloc(locator<AuthUseCases>())..add(InitHomeEvent()),
+        // HomeBloc(locator<AuthUseCases>())..add(InitHomeEvent()),
+        HomeBloc(locator<AuthUseCases>()),
   ),
   BlocProvider<ProfileBloc>(
     create: (context) =>

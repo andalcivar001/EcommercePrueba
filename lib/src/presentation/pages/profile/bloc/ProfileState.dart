@@ -16,6 +16,7 @@ class ProfileState extends Equatable {
   final String? imagenUrl;
   final Resource? response;
   final User? user;
+  final bool? usuarioActualizado;
 
   const ProfileState({
     this.id = 0,
@@ -29,6 +30,7 @@ class ProfileState extends Equatable {
     this.imagenUrl,
     this.response,
     this.user,
+    this.usuarioActualizado = false,
   });
 
   toUser() => User(
@@ -47,6 +49,7 @@ class ProfileState extends Equatable {
     File? imagen,
     String? imagenUrl,
     User? user,
+    bool? usuarioActualizado,
   }) {
     return ProfileState(
       id: id ?? this.id,
@@ -57,7 +60,8 @@ class ProfileState extends Equatable {
       imagen: imagen ?? this.imagen,
       formKey: formKey,
       response: response,
-      user: user,
+      user: user ?? this.user,
+      usuarioActualizado: usuarioActualizado ?? this.usuarioActualizado,
     );
   }
 
@@ -69,5 +73,7 @@ class ProfileState extends Equatable {
     imagen,
     user,
     imagenUrl,
+    response,
+    usuarioActualizado,
   ];
 }

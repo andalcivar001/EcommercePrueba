@@ -20,6 +20,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _onInit(InitHomeEvent event, Emitter<HomeState> emit) async {
     AuthResponse? authResponse = await authUseCases.getUserSession.run();
     if (authResponse != null) {
+      print('HOMEBLOC USESR ${authResponse.user}');
       emit(state.copyWith(user: authResponse.user));
     }
   }

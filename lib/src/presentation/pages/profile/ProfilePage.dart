@@ -1,7 +1,10 @@
 import 'package:ecommerce_prueba/src/domain/models/User.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/ProfileContent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileState.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +32,23 @@ class _ProfilePageState extends State<ProfilePage> {
               AppToast.error(responseState.message);
             } else if (responseState is Success) {
               User user = responseState.data;
-              AppToast.success('Usuario ${user.id} actualizado correctamente');
+
+              _bloc?.add(UpdateUserSessionProfileEvent(user: user));
+
+              AppToast.success('Perfil actualizado correctamente');
+            }
+            if (state.usuarioActualizado == true) {
+              context.read<HomeBloc>().add(InitHomeEvent());
+
+              //actualizo el state para que no ejecute 2 veces
+              _bloc?.add(
+                UsuarioActualizadoProfileEvent(usuarioActualizado: false),
+              );
+
+              //reseteo el formulario
+              _bloc?.add(ResetFormProfileEvent());
+
+              Navigator.pop(context);
             }
           },
           child: BlocBuilder<ProfileBloc, ProfileState>(

@@ -24,6 +24,14 @@ class _HomePageState extends State<HomePage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _bloc?.add(InitHomeEvent());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     _bloc = BlocProvider.of<HomeBloc>(context);
     return Scaffold(

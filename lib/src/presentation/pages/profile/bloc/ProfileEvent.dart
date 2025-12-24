@@ -57,3 +57,18 @@ class FormSubmittedProfileEvent extends ProfileEvent {
 class ResetFormProfileEvent extends ProfileEvent {
   const ResetFormProfileEvent();
 }
+
+class UpdateUserSessionProfileEvent extends ProfileEvent {
+  final User user;
+  const UpdateUserSessionProfileEvent({required this.user});
+  @override
+  List<Object?> get props => [user];
+}
+
+// se añade
+class UsuarioActualizadoProfileEvent extends ProfileEvent {
+  final bool usuarioActualizado;
+  const UsuarioActualizadoProfileEvent({required this.usuarioActualizado});
+  @override
+  List<Object?> get props => [usuarioActualizado];
+}
