@@ -41,6 +41,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       user.fechaNacimiento = fecha;
       // user.image =
       //     'https://firebasestorage.googleapis.com/v0/b/ecommerce-imagenes-3b10a.firebasestorage.app/o/user.png?alt=media&token=dee71b6a-bdd4-45ed-96a8-fe4155fa5c1c';
+
       emit(
         state.copyWith(
           user: user,
@@ -109,7 +110,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      emit(state.copyWith(image: File(image.path), formKey: formKey));
+      emit(state.copyWith(imagen: File(image.path), formKey: formKey));
     }
   }
 
@@ -120,7 +121,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
     if (image != null) {
-      emit(state.copyWith(image: File(image.path), formKey: formKey));
+      emit(state.copyWith(imagen: File(image.path), formKey: formKey));
     }
   }
 
@@ -130,12 +131,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     print('entro al event submmit');
     emit(state.copyWith(response: Loading(), formKey: formKey));
-    final response = await usersUseCases.update.run(
+    Resource<User> response = await usersUseCases.update.run(
       state.id,
       state.toUser(),
       state.imagen,
     );
-    print('RESPONSE $response');
+
     emit(state.copyWith(response: response, formKey: formKey));
   }
 }

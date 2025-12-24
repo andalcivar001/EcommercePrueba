@@ -127,14 +127,22 @@ class ProfileContent extends StatelessWidget {
             child: ClipOval(
               child: imagenState != null
                   ? Image.file(imagenState, fit: BoxFit.cover)
-                  : imagenUser != null
+                  : imagenUser != null && imagenUser.isNotEmpty
                   ? FadeInImage.assetNetwork(
                       image: imagenUser,
                       placeholder: 'assets/img/user_image.png',
                       fit: BoxFit.cover,
                       fadeInDuration: Duration(seconds: 1),
                     )
-                  : Container(),
+                  : CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.person,
+                        size: 45,
+                        color: Color(0xFF1E3C72),
+                      ),
+                    ),
             ),
           ),
           const SizedBox(height: 8),

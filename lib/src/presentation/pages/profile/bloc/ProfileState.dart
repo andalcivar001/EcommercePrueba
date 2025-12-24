@@ -44,7 +44,7 @@ class ProfileState extends Equatable {
     BlocFormItem? fechaNacimiento,
     GlobalKey<FormState>? formKey,
     Resource? response,
-    File? image,
+    File? imagen,
     String? imagenUrl,
     User? user,
   }) {
@@ -54,7 +54,7 @@ class ProfileState extends Equatable {
       telefono: telefono ?? this.telefono,
       fechaNacimiento: fechaNacimiento ?? this.fechaNacimiento,
       imagenUrl: imagenUrl ?? this.imagenUrl,
-      imagen: image,
+      imagen: imagen ?? this.imagen,
       formKey: formKey,
       response: response,
       user: user,
