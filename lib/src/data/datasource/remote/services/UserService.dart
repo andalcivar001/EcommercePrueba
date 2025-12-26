@@ -15,7 +15,6 @@ class UserService {
   UserService(this.token);
   Future<Resource<User>> update(User user, int id) async {
     try {
-      print('Metodo actualizar sin imagen');
       Uri url = Uri.http(Apiconfig.API_ECOMMERCE, '/users/$id');
 
       Map<String, String> headers = {
@@ -25,21 +24,17 @@ class UserService {
       String body = json.encode({
         'nombre': user.nombre,
         'telefono': user.telefono,
-        'fechaNacimiento': user.fechaNacimiento,
+        'fecha_nacimiento': user.fechaNacimiento,
       });
       final response = await http.put(url, headers: headers, body: body);
       final data = json.decode(response.body);
       if (response.statusCode == 201 || response.statusCode == 200) {
         User userResponse = User.fromJson(data);
-        print('SERVICE USUARIO ACTUALIZADO OK $data');
         return Success(userResponse);
       } else {
-        print('SERVICE USUARIO ERROR ${data['message']}');
-
         return Error(listToString(data['message']));
       }
     } catch (e) {
-      print('Error: $e');
       return Error(e.toString());
     }
   }
@@ -60,27 +55,22 @@ class UserService {
           contentType: MediaType('image', 'jpg'),
         ),
       );
-
       request.fields['user'] = json.encode({
         'nombre': user.nombre,
         'telefono': user.telefono,
-        'fechaNacimiento': user.fechaNacimiento,
+        'fecha_nacimiento': user.fechaNacimiento,
       });
-
       final response = await request.send();
       final data = json.decode(
         await response.stream.transform(utf8.decoder).first,
       );
-
       if (response.statusCode == 201 || response.statusCode == 200) {
         User userResponse = User.fromJson(data);
         return Success(userResponse);
       } else {
-        print('Error  ${data}');
         return Error(listToString(data['message']));
       }
     } catch (e) {
-      print('Error register: $e');
       return Error(e.toString());
     }
   }

@@ -48,7 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
               //reseteo el formulario
               _bloc?.add(ResetFormProfileEvent());
 
-              Navigator.pop(context);
+              //              Navigator.pop(context);
             }
           },
           child: BlocBuilder<ProfileBloc, ProfileState>(

@@ -2,6 +2,7 @@ import 'package:ecommerce_prueba/main.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeState.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/ProductPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = const [
     Center(child: Text('Bienvenido al Panel')),
     ProfilePage(),
+    ProductPage(),
   ];
 
   @override
@@ -49,6 +51,9 @@ class _HomePageState extends State<HomePage> {
 
       drawer: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
+          final String imagen = state.user?.imagen ?? '';
+          const primary = Color(0xFF1E3C72);
+
           return Drawer(
             child: Column(
               children: [
@@ -67,18 +72,35 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(height: 15),
-                      CircleAvatar(
-                        radius: 40,
+                      imagen.isNotEmpty
+                          ? Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: primary, width: 2),
+                              ),
+                              child: ClipOval(
+                                child: FadeInImage.assetNetwork(
+                                  image: imagen,
+                                  placeholder: 'assets/img/user_image.png',
+                                  fit: BoxFit.cover,
+                                  fadeInDuration: Duration(seconds: 1),
+                                ),
+                              ),
+                            )
+                          : CircleAvatar(
+                              radius: 40,
 
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.person,
-                          size: 45,
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.person,
+                                size: 45,
 
-                          color: Color(0xFF1E3C72),
-                        ),
-                      ),
-                      SizedBox(height: 12),
+                                color: Color(0xFF1E3C72),
+                              ),
+                            ),
+                      SizedBox(height: 8),
                       Text(
                         state.user!.nombre.toUpperCase(),
                         style: TextStyle(
@@ -107,6 +129,7 @@ class _HomePageState extends State<HomePage> {
                   text: 'Actualizar Perfil',
                   index: 1,
                 ),
+                _drawerItem(icon: Icons.list_alt, text: 'Productos', index: 2),
 
                 const Spacer(),
 

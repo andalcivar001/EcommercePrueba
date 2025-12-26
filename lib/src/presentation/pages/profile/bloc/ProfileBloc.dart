@@ -146,6 +146,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     authResponse.user.nombre = event.user.nombre;
     authResponse.user.telefono = event.user.telefono;
     authResponse.user.fechaNacimiento = event.user.fechaNacimiento;
+    authResponse.user.imagen = event.user.imagen;
+
     emit(state.copyWith(user: authResponse.user));
     await authUseCases.saveUserSession.run(authResponse);
     emit(state.copyWith(usuarioActualizado: true));

@@ -24,10 +24,8 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<AuthResponse?> getUserSession() async {
     final data = await sharedPref.read('user');
-    print('DATA SHAREDPREF ${data}');
     if (data != null) {
       AuthResponse authResponse = AuthResponse.fromJson(data);
-      print('AUTHRESPONSE REPOSITORY ${authResponse}');
       return authResponse;
     }
     return null;

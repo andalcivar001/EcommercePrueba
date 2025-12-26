@@ -8,7 +8,7 @@ class HomeState extends Equatable {
   const HomeState({this.pageIndex, this.user});
 
   HomeState copyWith({int? pageIndex, User? user}) {
-    return HomeState(pageIndex: pageIndex, user: user);
+    return HomeState(pageIndex: pageIndex, user: user ?? this.user);
   }
 
   @override
