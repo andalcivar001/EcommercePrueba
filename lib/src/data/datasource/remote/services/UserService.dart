@@ -13,7 +13,7 @@ class UserService {
   Future<String> token;
 
   UserService(this.token);
-  Future<Resource<User>> update(User user, int id) async {
+  Future<Resource<User>> update(User user, String id) async {
     try {
       Uri url = Uri.http(Apiconfig.API_ECOMMERCE, '/users/$id');
 
@@ -24,8 +24,9 @@ class UserService {
       String body = json.encode({
         'nombre': user.nombre,
         'telefono': user.telefono,
-        'fecha_nacimiento': user.fechaNacimiento,
+        'fechaNacimiento': user.fechaNacimiento,
       });
+
       final response = await http.put(url, headers: headers, body: body);
       final data = json.decode(response.body);
       if (response.statusCode == 201 || response.statusCode == 200) {
@@ -39,7 +40,7 @@ class UserService {
     }
   }
 
-  Future<Resource<User>> updateImage(User user, int id, File file) async {
+  Future<Resource<User>> updateImage(User user, String id, File file) async {
     try {
       Uri url = Uri.http(Apiconfig.API_ECOMMERCE, '/users/upload/$id');
 
@@ -58,7 +59,7 @@ class UserService {
       request.fields['user'] = json.encode({
         'nombre': user.nombre,
         'telefono': user.telefono,
-        'fecha_nacimiento': user.fechaNacimiento,
+        'fechaNacimiento': user.fechaNacimiento,
       });
       final response = await request.send();
       final data = json.decode(

@@ -6,7 +6,6 @@ import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginEve
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileEvent.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

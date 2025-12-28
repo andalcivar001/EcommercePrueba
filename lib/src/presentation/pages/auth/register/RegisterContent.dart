@@ -117,7 +117,7 @@ class RegisterContent extends StatelessWidget {
     return DefaultTextField(
       label: 'Nombre',
       icon: Icons.person,
-      textInputType: TextInputType.emailAddress,
+      textInputType: TextInputType.name,
       textInputAction: TextInputAction.next,
       autofillHints: const [AutofillHints.name],
       onChanged: (text) {

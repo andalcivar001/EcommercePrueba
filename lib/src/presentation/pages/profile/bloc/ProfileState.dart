@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 class ProfileState extends Equatable {
-  final int id;
+  final String id;
   final BlocFormItem nombre;
   final BlocFormItem telefono;
   final BlocFormItem fechaNacimiento;
@@ -19,7 +19,7 @@ class ProfileState extends Equatable {
   final bool? usuarioActualizado;
 
   const ProfileState({
-    this.id = 0,
+    this.id = '',
     this.nombre = const BlocFormItem(error: 'Ingrese el nombre'),
     this.telefono = const BlocFormItem(error: 'Ingrese el telefono'),
     this.fechaNacimiento = const BlocFormItem(
@@ -40,7 +40,7 @@ class ProfileState extends Equatable {
   );
 
   ProfileState copyWith({
-    int? id,
+    String? id,
     BlocFormItem? nombre,
     BlocFormItem? telefono,
     BlocFormItem? fechaNacimiento,

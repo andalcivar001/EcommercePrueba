@@ -5,7 +5,7 @@ User userFromJson(String str) => User.fromJson(json.decode(str));
 String userToJson(User data) => json.encode(data.toJson());
 
 class User {
-  int? id;
+  String? id;
   String nombre;
   String? email;
   String? password;
@@ -25,26 +25,26 @@ class User {
 
   @override
   String toString() {
-    return 'User{id: $id, nombre: $nombre,  email: $email,  password: $password, telefono: $telefono,  fechaNacimiento: $fechaNacimiento, imagen: $imagen)}}';
+    return 'User{_id: $id, nombre: $nombre,  email: $email,  password: $password, telefono: $telefono,  fechaNacimiento: $fechaNacimiento, imagen: $imagen)}}';
   }
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"] ?? 0,
+    id: json["_id"] ?? 0,
     nombre: json["nombre"] ?? '',
     email: json["email"] ?? '',
     password: json["password"] ?? '',
     telefono: json["telefono"] ?? '',
-    fechaNacimiento: json["fecha_nacimiento"] ?? '',
+    fechaNacimiento: json["fechaNacimiento"] ?? '',
     imagen: json["imagen"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
+    "_id": id,
     "nombre": nombre,
     "email": email,
     "password": password,
     "telefono": telefono,
-    "fecha_nacimiento": fechaNacimiento,
+    "fechaNacimiento": fechaNacimiento,
     "imagen": imagen,
   };
 }

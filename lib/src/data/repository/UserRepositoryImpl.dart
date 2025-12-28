@@ -11,7 +11,7 @@ class UserRepositoryImpl extends UserRepository {
   UserRepositoryImpl(this.userService);
 
   @override
-  Future<Resource<User>> update(int id, User user, File? file) async {
+  Future<Resource<User>> update(String id, User user, File? file) async {
     if (file != null) {
       return await userService.updateImage(user, id, file);
     } else {
