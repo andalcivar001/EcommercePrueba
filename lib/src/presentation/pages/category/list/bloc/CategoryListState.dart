@@ -10,7 +10,7 @@ class CategoryListState extends Equatable {
   CategoryListState copyWith({String? busqueda, Resource? response}) {
     return CategoryListState(
       busqueda: busqueda ?? this.busqueda,
-      response: response ?? this.response,
+      response: response,
     );
   }
 
