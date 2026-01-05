@@ -15,8 +15,7 @@ class UserService {
   UserService(this.token);
   Future<Resource<User>> update(User user, String id) async {
     try {
-      Uri url = Uri.http(Apiconfig.API_ECOMMERCE, '/users/$id');
-
+      Uri url = Uri.parse('${Apiconfig.API_ECOMMERCE}/users/$id');
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": await token,
@@ -42,7 +41,7 @@ class UserService {
 
   Future<Resource<User>> updateImage(User user, String id, File file) async {
     try {
-      Uri url = Uri.http(Apiconfig.API_ECOMMERCE, '/users/upload/$id');
+      Uri url = Uri.parse('${Apiconfig.API_ECOMMERCE}/users/upload/$id');
 
       final request = http.MultipartRequest('PUT', url);
       request.headers['Authorization'] = await token;

@@ -1,10 +1,13 @@
 import 'package:ecommerce_prueba/injection.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/users/UsersUseCases.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileEvent.dart';
@@ -30,5 +33,9 @@ List<BlocProvider> blocProviders = [
     create: (context) =>
         ProfileBloc(locator<AuthUseCases>(), locator<UsersUseCases>())
           ..add(InitProfileEvent()),
+  ),
+
+  BlocProvider<CategoryListBloc>(
+    create: (context) => CategoryListBloc(locator<CategoryUseCases>()),
   ),
 ];

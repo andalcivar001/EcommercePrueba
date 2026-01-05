@@ -1,4 +1,5 @@
 import 'package:ecommerce_prueba/main.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/list/CategoryListPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeState.dart';
@@ -22,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = const [
     Center(child: Text('Bienvenido al Panel')),
     ProfilePage(),
+    CategoryListPage(),
     ProductPage(),
   ];
 
@@ -129,7 +131,9 @@ class _HomePageState extends State<HomePage> {
                   text: 'Actualizar Perfil',
                   index: 1,
                 ),
-                _drawerItem(icon: Icons.list_alt, text: 'Productos', index: 2),
+                _drawerItem(icon: Icons.category, text: 'Categoria', index: 2),
+
+                _drawerItem(icon: Icons.list_alt, text: 'Productos', index: 3),
 
                 const Spacer(),
 

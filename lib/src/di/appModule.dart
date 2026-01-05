@@ -1,11 +1,16 @@
 import 'package:ecommerce_prueba/src/data/datasource/local/SharedPref.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/AuthService.dart';
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/CategoryService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/UserService.dart';
 import 'package:ecommerce_prueba/src/data/repository/AuthRepositoryImpl.dart';
+import 'package:ecommerce_prueba/src/data/repository/CategoryRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/UserRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/domain/models/AuthResponse.dart';
 import 'package:ecommerce_prueba/src/domain/repository/AuthRepository.dart';
+import 'package:ecommerce_prueba/src/domain/repository/CategoryRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/UserRepository.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Category/GetCategoriesUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/GetUserSessionUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/LoginUseCase.dart';
@@ -22,7 +27,7 @@ abstract class Appmodule {
   SharedPref get sharedPref => SharedPref();
 
   @injectable
-  Future<String> get getToken async {
+  Future<String> get token async {
     String token = "";
     final userSession = await sharedPref.read('user');
     if (userSession != null) {
@@ -38,7 +43,10 @@ abstract class Appmodule {
   AuthService get authService => AuthService();
 
   @injectable
-  UserService get userService => UserService(getToken);
+  UserService get userService => UserService(token);
+
+  @injectable
+  CategoryService get categoryService => CategoryService(token);
 
   /******** REPOSITORIOS *********** */ ////
   @injectable
@@ -47,6 +55,10 @@ abstract class Appmodule {
 
   @injectable
   UserRepository get userRepository => UserRepositoryImpl(userService);
+
+  @injectable
+  CategoryRepository get categoryRepository =>
+      CategoryRepositoryImpl(categoryService);
 
   /********* USECASE *******/
   ///
@@ -62,4 +74,8 @@ abstract class Appmodule {
   @injectable
   UsersUseCases get userUseCase =>
       UsersUseCases(update: UpdateUsersUseCase(userRepository));
+
+  @injectable
+  CategoryUseCases get categoryUseCases =>
+      CategoryUseCases(getCategories: GetCategoriesUseCase(categoryRepository));
 }
