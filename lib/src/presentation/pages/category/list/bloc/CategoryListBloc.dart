@@ -3,6 +3,7 @@ import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.d
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListState.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
@@ -13,19 +14,18 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
     on<BusquedaChangedListEvent>(_onBusquedaChanged);
   }
 
+  final formKey = GlobalKey<FormState>();
+
   Future<void> _onInit(
     InitCategoryListEvent event,
     Emitter<CategoryListState> emit,
   ) async {
+    emit(state.copyWith(formKey: formKey));
     final Resource response = await categoryUseCases.getCategories.run();
     if (response is Success) {
-      emit(state.copyWith(response: Loading()));
+      emit(state.copyWith(response: Loading(), formKey: formKey));
 
-      final List<Category> listCategory = response.data as List<Category>;
-      listCategory.forEach((categoria) {
-        print('categoria ${categoria.toJson()}');
-      });
-      emit(state.copyWith(response: response));
+      emit(state.copyWith(response: response, formKey: formKey));
     }
   }
 
@@ -33,6 +33,6 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
     BusquedaChangedListEvent event,
     Emitter<CategoryListState> emit,
   ) async {
-    emit(state.copyWith(busqueda: event.busqueda));
+    emit(state.copyWith(busqueda: event.busqueda, formKey: formKey));
   }
 }

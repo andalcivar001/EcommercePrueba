@@ -18,14 +18,14 @@ class CategoryListPage extends StatefulWidget {
 class _CategoryListPageState extends State<CategoryListPage> {
   CategoryListBloc? _bloc;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _bloc?.add(InitCategoryListEvent());
-    });
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     _bloc?.add(InitCategoryListEvent());
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +35,9 @@ class _CategoryListPageState extends State<CategoryListPage> {
         listener: (context, state) {
           final responseState = state.response;
           print('responseState $responseState');
-          if (responseState is Success) {
-            _bloc?.add(InitCategoryListEvent());
-          }
+          // if (responseState is Success) {
+          //   _bloc?.add(InitCategoryListEvent());
+          // }
           if (responseState is Error) {
             AppToast.error(responseState.message);
           }
@@ -46,16 +46,46 @@ class _CategoryListPageState extends State<CategoryListPage> {
           builder: (context, state) {
             final response = state.response;
             print('RESPONSE $response');
+
             if (response is Success) {
               List<Category> categories = response.data as List<Category>;
-              return ListView.builder(
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  return CategoryListItem(_bloc, categories[index]);
-                },
+              return Padding(
+                padding: EdgeInsetsGeometry.all(16),
+                child: Column(
+                  children: [
+                    TextField(
+                      //  controller: SearchController(),
+                      onChanged: (text) {
+                        _bloc?.add(BusquedaChangedListEvent(busqueda: text));
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Buscar...',
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) {
+                          return CategoryListItem(_bloc, categories[index]);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               );
             }
-            return Container();
+
+            if (response is Loading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            return const SizedBox();
           },
         ),
       ),

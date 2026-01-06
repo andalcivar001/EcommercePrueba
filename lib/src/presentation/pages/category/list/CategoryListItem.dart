@@ -9,6 +9,28 @@ class CategoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(_category.descripcion);
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 6),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: ListTile(
+        title: Text(
+          _category.descripcion,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.edit, color: Colors.blue),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.delete, color: Colors.red),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

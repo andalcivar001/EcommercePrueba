@@ -36,6 +36,8 @@ List<BlocProvider> blocProviders = [
   ),
 
   BlocProvider<CategoryListBloc>(
-    create: (context) => CategoryListBloc(locator<CategoryUseCases>()),
+    create: (context) =>
+        CategoryListBloc(locator<CategoryUseCases>())
+          ..add(InitCategoryListEvent()),
   ),
 ];
