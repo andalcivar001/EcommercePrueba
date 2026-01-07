@@ -1,11 +1,17 @@
 import 'package:ecommerce_prueba/src/domain/models/Category.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormState.dart';
+import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/DefaultTextField.dart';
 import 'package:flutter/material.dart';
 
 class CategoryFormContent extends StatelessWidget {
   Category? category;
+  CategoryFormBloc? bloc;
+  CategoryFormState state;
 
-  CategoryFormContent(this.category);
+  CategoryFormContent(this.bloc, this.state, this.category);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +48,7 @@ class CategoryFormContent extends StatelessWidget {
                           'Mantenimiento de Categoría',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 26,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -66,7 +72,17 @@ class CategoryFormContent extends StatelessWidget {
       icon: Icons.edit,
       textInputType: TextInputType.text,
       textInputAction: TextInputAction.done,
-      onChanged: (text) {},
+      onChanged: (text) {
+        bloc?.add(
+          DescripcionChangedCategoryFormEvent(
+            descripcion: BlocFormItem(value: text),
+          ),
+        );
+      },
+      initialValue: category?.descripcion ?? '',
+      validator: (value) {
+        return state.descripcion.error;
+      },
     );
   }
 }
