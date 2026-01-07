@@ -2,6 +2,7 @@ import 'package:ecommerce_prueba/injection.dart';
 import 'package:ecommerce_prueba/src/presentation/BlocProviders.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/LoginPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/RegisterPage.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/form/CategoryFormPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/HomePage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/ProfilePage.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
           'register': (BuildContext context) => RegisterPage(),
           'home': (BuildContext context) => HomePage(),
           'profile/info': (BuildContext context) => ProfilePage(),
+          'category/form': (BuildContext context) => CategoryFormPage(),
         },
       ),
     );

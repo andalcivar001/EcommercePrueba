@@ -6,6 +6,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginBlo
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/RegisterEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
@@ -40,4 +41,6 @@ List<BlocProvider> blocProviders = [
         CategoryListBloc(locator<CategoryUseCases>())
           ..add(InitCategoryListEvent()),
   ),
+
+  BlocProvider<CategoryFormBloc>(create: (context) => CategoryFormBloc()),
 ];

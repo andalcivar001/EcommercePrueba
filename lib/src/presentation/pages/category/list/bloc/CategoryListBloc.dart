@@ -21,11 +21,19 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
     Emitter<CategoryListState> emit,
   ) async {
     emit(state.copyWith(formKey: formKey));
-    final Resource response = await categoryUseCases.getCategories.run();
-    if (response is Success) {
-      emit(state.copyWith(response: Loading(), formKey: formKey));
 
-      emit(state.copyWith(response: response, formKey: formKey));
+    emit(state.copyWith(response: Loading(), formKey: formKey));
+
+    final Resource response = await categoryUseCases.getCategories.run();
+
+    if (response is Success) {
+      emit(
+        state.copyWith(
+          response: response,
+          listaCategoryResp: response.data,
+          formKey: formKey,
+        ),
+      );
     }
   }
 
@@ -33,6 +41,20 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
     BusquedaChangedListEvent event,
     Emitter<CategoryListState> emit,
   ) async {
-    emit(state.copyWith(busqueda: event.busqueda, formKey: formKey));
+    final filtrado = state.listaCategoryResp!
+        .where(
+          (x) => x.descripcion.toLowerCase().contains(
+            event.busqueda.toLowerCase(),
+          ),
+        )
+        .toList();
+
+    emit(
+      state.copyWith(
+        busqueda: event.busqueda,
+        response: Success(filtrado),
+        formKey: formKey,
+      ),
+    );
   }
 }

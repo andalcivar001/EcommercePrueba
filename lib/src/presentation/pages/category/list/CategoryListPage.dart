@@ -31,10 +31,16 @@ class _CategoryListPageState extends State<CategoryListPage> {
   Widget build(BuildContext context) {
     _bloc = BlocProvider.of<CategoryListBloc>(context);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, 'category/form');
+        },
+        backgroundColor: Colors.blue[700],
+        child: Icon(Icons.add, color: Colors.white),
+      ),
       body: BlocListener<CategoryListBloc, CategoryListState>(
         listener: (context, state) {
           final responseState = state.response;
-          print('responseState $responseState');
           // if (responseState is Success) {
           //   _bloc?.add(InitCategoryListEvent());
           // }
@@ -45,7 +51,6 @@ class _CategoryListPageState extends State<CategoryListPage> {
         child: BlocBuilder<CategoryListBloc, CategoryListState>(
           builder: (context, state) {
             final response = state.response;
-            print('RESPONSE $response');
 
             if (response is Success) {
               List<Category> categories = response.data as List<Category>;
