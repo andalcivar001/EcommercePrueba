@@ -2,6 +2,7 @@ import 'package:ecommerce_prueba/src/domain/models/Category.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/CategoryFormContent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormState.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,10 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print('ENTRO AL INIT ADDPOSTFRAMECALLBACK ${category?.toJson()}');
+      bloc?.add(InitCategoryFormEvent(category: category));
+    });
   }
 
   @override
@@ -29,6 +33,7 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
     if (ModalRoute.of(context)?.settings.arguments != null) {
       category = ModalRoute.of(context)?.settings.arguments as Category;
     }
+    bloc = BlocProvider.of<CategoryFormBloc>(context);
     print('CATEGORY ${category?.toJson()}');
     return Scaffold(
       body: Center(

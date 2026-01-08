@@ -1,3 +1,4 @@
+import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormState.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
@@ -5,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoryFormBloc extends Bloc<CategoryFormEvent, CategoryFormState> {
-  CategoryFormBloc() : super(CategoryFormState()) {
+  CategoryUseCases categoryUseCases;
+
+  CategoryFormBloc(this.categoryUseCases) : super(CategoryFormState()) {
     on<InitCategoryFormEvent>(_onInit);
     on<DescripcionChangedCategoryFormEvent>(_onDescripcionChanged);
     on<FormSubmittedCategoryFormEvent>(_onFormSubmitted);
@@ -16,6 +19,7 @@ class CategoryFormBloc extends Bloc<CategoryFormEvent, CategoryFormState> {
     InitCategoryFormEvent event,
     Emitter<CategoryFormState> emit,
   ) async {
+    print('INIT FORM CATEGORy');
     emit(
       state.coypWith(
         id: event.category?.id ?? '',
@@ -34,5 +38,11 @@ class CategoryFormBloc extends Bloc<CategoryFormEvent, CategoryFormState> {
   Future<void> _onFormSubmitted(
     FormSubmittedCategoryFormEvent event,
     Emitter<CategoryFormState> emit,
-  ) async {}
+  ) async {
+    if (state.id.isNotEmpty) {
+      print('VA A ACTUALIZAR');
+    } else {
+      print('VA A CREAR');
+    }
+  }
 }

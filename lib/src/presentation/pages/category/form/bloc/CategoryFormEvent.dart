@@ -1,7 +1,6 @@
 import 'package:ecommerce_prueba/src/domain/models/Category.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 abstract class CategoryFormEvent extends Equatable {
   const CategoryFormEvent();

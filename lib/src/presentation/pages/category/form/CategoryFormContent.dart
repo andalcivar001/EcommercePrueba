@@ -3,6 +3,8 @@ import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/Categ
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormState.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/DefaultButton.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/DefaultTextField.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +26,7 @@ class CategoryFormContent extends StatelessWidget {
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(24),
                 child: Form(
+                  key: state.formKey,
                   child: Container(
                     padding: EdgeInsets.all(24),
                     decoration: BoxDecoration(
@@ -54,6 +57,8 @@ class CategoryFormContent extends StatelessWidget {
                         ),
                         SizedBox(height: 16),
                         _textDescripcion(),
+                        SizedBox(height: 16),
+                        _buttonActualizar(),
                       ],
                     ),
                   ),
@@ -82,6 +87,19 @@ class CategoryFormContent extends StatelessWidget {
       initialValue: category?.descripcion ?? '',
       validator: (value) {
         return state.descripcion.error;
+      },
+    );
+  }
+
+  Widget _buttonActualizar() {
+    return DefaultButton(
+      text: category == null ? 'Crear' : 'Actualizar',
+      onPressed: () {
+        if (state.formKey!.currentState!.validate()) {
+          bloc?.add(FormSubmittedCategoryFormEvent());
+        } else {
+          AppToast.error('Formulario inválido');
+        }
       },
     );
   }

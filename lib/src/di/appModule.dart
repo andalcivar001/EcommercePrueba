@@ -10,7 +10,9 @@ import 'package:ecommerce_prueba/src/domain/repository/AuthRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/CategoryRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/UserRepository.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Category/CreateCategoryUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/GetCategoriesUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Category/UpdateCategoryUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/GetUserSessionUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/LoginUseCase.dart';
@@ -76,6 +78,9 @@ abstract class Appmodule {
       UsersUseCases(update: UpdateUsersUseCase(userRepository));
 
   @injectable
-  CategoryUseCases get categoryUseCases =>
-      CategoryUseCases(getCategories: GetCategoriesUseCase(categoryRepository));
+  CategoryUseCases get categoryUseCases => CategoryUseCases(
+    getCategories: GetCategoriesUseCase(categoryRepository),
+    create: CreateCategoryUseCase(categoryRepository),
+    update: UpdateCategoryUseCase(categoryRepository),
+  );
 }

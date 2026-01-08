@@ -42,5 +42,7 @@ List<BlocProvider> blocProviders = [
           ..add(InitCategoryListEvent()),
   ),
 
-  BlocProvider<CategoryFormBloc>(create: (context) => CategoryFormBloc()),
+  BlocProvider<CategoryFormBloc>(
+    create: (context) => CategoryFormBloc(locator<CategoryUseCases>()),
+  ),
 ];

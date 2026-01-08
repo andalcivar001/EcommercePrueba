@@ -12,4 +12,14 @@ class CategoryRepositoryImpl extends CategoryRepository {
   Future<Resource<List<Category>>> getCategories() async {
     return await categoryService.getCategories();
   }
+
+  @override
+  Future<Resource<Category>> create(Category category) async {
+    return await categoryService.create(category);
+  }
+
+  @override
+  Future<Resource<Category>> update(Category category, String id) async {
+    return await categoryService.update(category, id);
+  }
 }
