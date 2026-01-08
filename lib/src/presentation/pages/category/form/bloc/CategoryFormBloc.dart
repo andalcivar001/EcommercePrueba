@@ -1,4 +1,6 @@
+import 'package:ecommerce_prueba/src/domain/models/Category.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormState.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
@@ -19,7 +21,6 @@ class CategoryFormBloc extends Bloc<CategoryFormEvent, CategoryFormState> {
     InitCategoryFormEvent event,
     Emitter<CategoryFormState> emit,
   ) async {
-    print('INIT FORM CATEGORy');
     emit(
       state.coypWith(
         id: event.category?.id ?? '',
@@ -33,16 +34,44 @@ class CategoryFormBloc extends Bloc<CategoryFormEvent, CategoryFormState> {
   Future<void> _onDescripcionChanged(
     DescripcionChangedCategoryFormEvent event,
     Emitter<CategoryFormState> emit,
-  ) async {}
+  ) async {
+    emit(
+      state.coypWith(
+        descripcion: BlocFormItem(
+          value: event.descripcion.value,
+          error: event.descripcion.value.isEmpty
+              ? null
+              : 'Ingrese la descripcion',
+        ),
+        formKey: formKey,
+      ),
+    );
+  }
 
   Future<void> _onFormSubmitted(
     FormSubmittedCategoryFormEvent event,
     Emitter<CategoryFormState> emit,
   ) async {
+    if (state.descripcion.value.isEmpty) {
+      print('descripcion esta vaciaa');
+    }
+    print('ENTRO ${state.descripcion.value}');
+    emit(state.coypWith(response: Loading(), formKey: formKey));
+
+    final category = Category(
+      id: state.id,
+      descripcion: state.descripcion.value,
+      isActive: state.isActive,
+    );
     if (state.id.isNotEmpty) {
-      print('VA A ACTUALIZAR');
+      final Resource response = await categoryUseCases.update.run(
+        category,
+        state.id,
+      );
+      emit(state.coypWith(response: response, formKey: formKey));
     } else {
-      print('VA A CREAR');
+      final Resource response = await categoryUseCases.create.run(category);
+      emit(state.coypWith(response: response, formKey: formKey));
     }
   }
 }

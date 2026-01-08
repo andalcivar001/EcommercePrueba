@@ -23,7 +23,6 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      print('ENTRO AL INIT ADDPOSTFRAMECALLBACK ${category?.toJson()}');
       bloc?.add(InitCategoryFormEvent(category: category));
     });
   }
@@ -34,7 +33,6 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
       category = ModalRoute.of(context)?.settings.arguments as Category;
     }
     bloc = BlocProvider.of<CategoryFormBloc>(context);
-    print('CATEGORY ${category?.toJson()}');
     return Scaffold(
       body: Center(
         child: BlocListener<CategoryFormBloc, CategoryFormState>(

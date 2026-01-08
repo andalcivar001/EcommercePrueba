@@ -33,9 +33,12 @@ class CategoryService {
 
   Future<Resource<Category>> create(Category category) async {
     try {
-      Uri url = Uri.parse('${Apiconfig.API_ECOMMERCE}/auth/register');
+      Uri url = Uri.parse('${Apiconfig.API_ECOMMERCE}/category');
 
-      Map<String, String> headers = {"Content-Type": "application/json"};
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "Authorization": await token,
+      };
       String body = json.encode(category.toJson());
       final response = await http.post(url, headers: headers, body: body);
       final data = json.decode(response.body);

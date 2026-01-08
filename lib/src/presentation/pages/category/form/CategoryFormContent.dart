@@ -84,7 +84,7 @@ class CategoryFormContent extends StatelessWidget {
           ),
         );
       },
-      initialValue: category?.descripcion ?? '',
+      initialValue: category?.descripcion,
       validator: (value) {
         return state.descripcion.error;
       },
