@@ -61,6 +61,7 @@ class CategoryService {
         "Authorization": await token,
       };
       String body = json.encode({
+        'nombre': category.nombre,
         'descripcion': category.descripcion,
         'isActive': category.isActive,
       });
@@ -72,6 +73,27 @@ class CategoryService {
         return Success(categoryResponse);
       } else {
         return Error(listToString(data['message']));
+      }
+    } catch (e) {
+      return Error(e.toString());
+    }
+  }
+
+  Future<Resource<bool>> delete(String id) async {
+    try {
+      Uri url = Uri.parse('${Apiconfig.API_ECOMMERCE}/category/$id');
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "Authorization": await token,
+      };
+
+      final response = await http.delete(url, headers: headers);
+      final data = json.decode(response.body);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        bool deletedResponse = data as bool;
+        return Success(deletedResponse);
+      } else {
+        return Error(listToString(data));
       }
     } catch (e) {
       return Error(e.toString());

@@ -12,6 +12,7 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
   CategoryListBloc(this.categoryUseCases) : super(CategoryListState()) {
     on<InitCategoryListEvent>(_onInit);
     on<BusquedaChangedListEvent>(_onBusquedaChanged);
+    on<DeleteCategoryListEvent>(_onDelete);
   }
 
   final formKey = GlobalKey<FormState>();
@@ -25,16 +26,17 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
     emit(state.copyWith(response: Loading(), formKey: formKey));
 
     final Resource response = await categoryUseCases.getCategories.run();
-
+    List<Category> listaCategory = [];
     if (response is Success) {
-      emit(
-        state.copyWith(
-          response: response,
-          listaCategoryResp: response.data,
-          formKey: formKey,
-        ),
-      );
+      listaCategory = response.data as List<Category>;
     }
+    emit(
+      state.copyWith(
+        response: response,
+        listaCategoryResp: listaCategory,
+        formKey: formKey,
+      ),
+    );
   }
 
   Future<void> _onBusquedaChanged(
@@ -43,9 +45,9 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
   ) async {
     final filtrado = state.listaCategoryResp!
         .where(
-          (x) => x.descripcion.toLowerCase().contains(
-            event.busqueda.toLowerCase(),
-          ),
+          (x) =>
+              x.nombre.toLowerCase().contains(event.busqueda.toLowerCase()) ||
+              x.nombre.toLowerCase().contains(event.busqueda.toLowerCase()),
         )
         .toList();
 
@@ -57,4 +59,9 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
       ),
     );
   }
+
+  Future<void> _onDelete(
+    DeleteCategoryListEvent event,
+    Emitter<CategoryListState> emit,
+  ) async {}
 }

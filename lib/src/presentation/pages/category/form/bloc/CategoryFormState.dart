@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 class CategoryFormState extends Equatable {
   final String id;
+  final BlocFormItem nombre;
   final BlocFormItem descripcion;
   final bool isActive;
   final Resource? response;
@@ -12,6 +13,7 @@ class CategoryFormState extends Equatable {
 
   const CategoryFormState({
     this.id = '',
+    this.nombre = const BlocFormItem(error: 'Ingrese nombre'),
     this.descripcion = const BlocFormItem(error: 'Ingrese descripcion'),
     this.response,
     this.formKey,
@@ -20,6 +22,7 @@ class CategoryFormState extends Equatable {
 
   CategoryFormState coypWith({
     String? id,
+    BlocFormItem? nombre,
     BlocFormItem? descripcion,
     Resource? response,
     GlobalKey<FormState>? formKey,
@@ -27,6 +30,7 @@ class CategoryFormState extends Equatable {
   }) {
     return CategoryFormState(
       id: id ?? this.id,
+      nombre: nombre ?? this.nombre,
       descripcion: descripcion ?? this.descripcion,
       isActive: isActive ?? this.isActive,
       response: response,
@@ -36,5 +40,5 @@ class CategoryFormState extends Equatable {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [id, descripcion, isActive];
+  List<Object?> get props => [id, nombre, descripcion, isActive, response];
 }

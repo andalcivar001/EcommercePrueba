@@ -19,3 +19,7 @@ class BusquedaChangedListEvent extends CategoryListEvent {
   // TODO: implement props
   List<Object?> get props => [busqueda];
 }
+
+class DeleteCategoryListEvent extends CategoryListEvent {
+  const DeleteCategoryListEvent();
+}

@@ -58,26 +58,44 @@ class _CategoryListPageState extends State<CategoryListPage> {
                 padding: EdgeInsetsGeometry.all(16),
                 child: Column(
                   children: [
-                    TextField(
-                      //  controller: SearchController(),
-                      onChanged: (text) {
-                        _bloc?.add(BusquedaChangedListEvent(busqueda: text));
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Buscar...',
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
+                    Container(
+                      child: categories.length > 0
+                          ? TextField(
+                              //  controller: SearchController(),
+                              onChanged: (text) {
+                                _bloc?.add(
+                                  BusquedaChangedListEvent(busqueda: text),
+                                );
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Buscar...',
+                                prefixIcon: Icon(Icons.search),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            )
+                          : Container(),
                     ),
-                    const SizedBox(height: 16),
 
+                    const SizedBox(height: 16),
+                    Container(
+                      margin: EdgeInsets.only(top: 15),
+                      child: categories.length == 0
+                          ? Text(
+                              'No hay categorias creadas',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : Container(),
+                    ),
                     Expanded(
                       child: ListView.builder(
                         itemCount: categories.length,
                         itemBuilder: (context, index) {
-                          return CategoryListItem(_bloc, categories[index]);
+                          return CategoryListItem(categories[index]);
                         },
                       ),
                     ),

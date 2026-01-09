@@ -5,6 +5,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/Categ
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/DefaultButton.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/DefaultIconBack.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/DefaultTextField.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +23,7 @@ class CategoryFormContent extends StatelessWidget {
       child: SafeArea(
         child: Stack(
           children: [
+            DefaultIconBack(left: 20, top: 15, color: Colors.black),
             Center(
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(24),
@@ -56,6 +58,8 @@ class CategoryFormContent extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 16),
+                        _textNombre(),
+                        SizedBox(height: 16),
                         _textDescripcion(),
                         SizedBox(height: 16),
                         _buttonActualizar(),
@@ -71,9 +75,28 @@ class CategoryFormContent extends StatelessWidget {
     );
   }
 
+  Widget _textNombre() {
+    return DefaultTextField(
+      label: 'Nombre',
+      icon: Icons.add_home,
+      textInputType: TextInputType.text,
+      textInputAction: TextInputAction.next,
+      onChanged: (text) {
+        bloc?.add(
+          NombreChangedCategoryFormEvent(nombre: BlocFormItem(value: text)),
+        );
+      },
+      initialValue: category?.nombre,
+      validator: (value) {
+        return state.nombre.error;
+      },
+    );
+  }
+
   Widget _textDescripcion() {
     return DefaultTextField(
       label: 'Descripcion',
+      maxLines: 4,
       icon: Icons.edit,
       textInputType: TextInputType.text,
       textInputAction: TextInputAction.done,

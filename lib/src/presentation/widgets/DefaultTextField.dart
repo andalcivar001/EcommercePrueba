@@ -13,6 +13,7 @@ class DefaultTextField extends StatelessWidget {
   VoidCallback? onTap;
   TextInputAction? textInputAction;
   Iterable<String>? autofillHints;
+  int maxLines;
 
   DefaultTextField({
     Key? key,
@@ -28,11 +29,13 @@ class DefaultTextField extends StatelessWidget {
     this.onTap,
     this.textInputAction,
     this.autofillHints,
+    this.maxLines = 1,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: maxLines,
       obscureText: obscureText,
       initialValue: controller == null ? initialValue : null,
       onChanged: (text) {

@@ -1,11 +1,9 @@
 import 'package:ecommerce_prueba/src/domain/models/Category.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListBloc.dart';
 import 'package:flutter/material.dart';
 
 class CategoryListItem extends StatelessWidget {
-  CategoryListBloc? _bloc;
   Category _category;
-  CategoryListItem(this._bloc, this._category);
+  CategoryListItem(this._category);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +12,7 @@ class CategoryListItem extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: ListTile(
         title: Text(
-          _category.descripcion,
+          _category.nombre,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         trailing: Row(

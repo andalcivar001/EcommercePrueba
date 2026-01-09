@@ -16,6 +16,13 @@ class InitCategoryFormEvent extends CategoryFormEvent {
   List<Object?> get props => [category];
 }
 
+class NombreChangedCategoryFormEvent extends CategoryFormEvent {
+  final BlocFormItem nombre;
+  const NombreChangedCategoryFormEvent({required this.nombre});
+  @override
+  List<Object?> get props => [nombre];
+}
+
 class DescripcionChangedCategoryFormEvent extends CategoryFormEvent {
   final BlocFormItem descripcion;
   const DescripcionChangedCategoryFormEvent({required this.descripcion});

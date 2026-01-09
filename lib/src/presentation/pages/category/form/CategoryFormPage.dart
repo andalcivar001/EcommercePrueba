@@ -4,6 +4,8 @@ import 'package:ecommerce_prueba/src/presentation/pages/category/form/CategoryFo
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormState.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,12 +38,15 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
     return Scaffold(
       body: Center(
         child: BlocListener<CategoryFormBloc, CategoryFormState>(
+          listenWhen: (previous, current) =>
+              previous.response != current.response,
           listener: (context, state) {
             final responseState = state.response;
             if (responseState is Error) {
               AppToast.error(responseState.message);
             } else if (responseState is Success) {
               AppToast.success('Categoría guardada correctamente');
+              context.read<CategoryListBloc>().add(InitCategoryListEvent());
             }
           },
           child: BlocBuilder<CategoryFormBloc, CategoryFormState>(
@@ -51,6 +56,7 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
               return Stack(
                 children: [
                   CategoryFormContent(bloc, state, category),
+
                   if (r is Loading)
                     const Positioned.fill(
                       child: ColoredBox(
