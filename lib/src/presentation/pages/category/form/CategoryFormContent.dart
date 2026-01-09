@@ -62,6 +62,8 @@ class CategoryFormContent extends StatelessWidget {
                         SizedBox(height: 16),
                         _textDescripcion(),
                         SizedBox(height: 16),
+                        _switchEstado(),
+                        SizedBox(height: 16),
                         _buttonActualizar(),
                       ],
                     ),
@@ -123,6 +125,24 @@ class CategoryFormContent extends StatelessWidget {
         } else {
           AppToast.error('Formulario inválido');
         }
+      },
+    );
+  }
+
+  Widget _switchEstado() {
+    return SwitchListTile(
+      title: Text('Estado:', style: TextStyle(fontSize: 14)),
+      value: state.isActive,
+      // esto maneja el color del circulo interno pequeño cuando esta activo
+      activeThumbColor: Colors.white,
+      // esto maneja el color del contorno del switch cuando esta activo
+      activeTrackColor: Colors.green,
+      // esto maneja el color del circulo interno pequeño cuando esta inactivo
+      inactiveThumbColor: Colors.grey,
+      // esto maneja el color del contorno del switch cuando esta inactivo
+      inactiveTrackColor: Colors.grey.shade300,
+      onChanged: (value) {
+        bloc?.add(EstadoChangedCategoryFormEvent(isActive: value));
       },
     );
   }

@@ -17,7 +17,7 @@ class CategoryFormState extends Equatable {
     this.descripcion = const BlocFormItem(error: 'Ingrese descripcion'),
     this.response,
     this.formKey,
-    this.isActive = false,
+    this.isActive = true,
   });
 
   CategoryFormState coypWith({

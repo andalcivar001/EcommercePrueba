@@ -15,6 +15,8 @@ import 'package:ecommerce_prueba/src/data/datasource/remote/services/AuthService
     as _i1032;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/CategoryService.dart'
     as _i858;
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/SubCategoryService.dart'
+    as _i879;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/UserService.dart'
     as _i1052;
 import 'package:ecommerce_prueba/src/di/appModule.dart' as _i319;
@@ -22,12 +24,16 @@ import 'package:ecommerce_prueba/src/domain/repository/AuthRepository.dart'
     as _i732;
 import 'package:ecommerce_prueba/src/domain/repository/CategoryRepository.dart'
     as _i596;
+import 'package:ecommerce_prueba/src/domain/repository/SubCategoryRepository.dart'
+    as _i888;
 import 'package:ecommerce_prueba/src/domain/repository/UserRepository.dart'
     as _i584;
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart'
     as _i203;
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart'
     as _i138;
+import 'package:ecommerce_prueba/src/domain/useCases/SubCategory/SubCategoryUseCases.dart'
+    as _i807;
 import 'package:ecommerce_prueba/src/domain/useCases/users/UsersUseCases.dart'
     as _i713;
 import 'package:get_it/get_it.dart' as _i174;
@@ -46,12 +52,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1032.AuthService>(() => appmodule.authService);
     gh.factory<_i1052.UserService>(() => appmodule.userService);
     gh.factory<_i858.CategoryService>(() => appmodule.categoryService);
+    gh.factory<_i879.SubCategoryService>(() => appmodule.subCategoryService);
     gh.factory<_i732.AuthRepository>(() => appmodule.authRepository);
     gh.factory<_i584.UserRepository>(() => appmodule.userRepository);
     gh.factory<_i596.CategoryRepository>(() => appmodule.categoryRepository);
+    gh.factory<_i888.SubCategoryRepository>(
+      () => appmodule.subCategoryRepository,
+    );
     gh.factory<_i203.AuthUseCases>(() => appmodule.authUseCases);
     gh.factory<_i713.UsersUseCases>(() => appmodule.userUseCase);
     gh.factory<_i138.CategoryUseCases>(() => appmodule.categoryUseCases);
+    gh.factory<_i807.SubCategoryUseCases>(() => appmodule.subCategoryUseCases);
     return this;
   }
 }

@@ -14,6 +14,7 @@ class CategoryFormBloc extends Bloc<CategoryFormEvent, CategoryFormState> {
     on<InitCategoryFormEvent>(_onInit);
     on<NombreChangedCategoryFormEvent>(_onNombreChanged);
     on<DescripcionChangedCategoryFormEvent>(_onDescripcionChanged);
+    on<EstadoChangedCategoryFormEvent>(_onEstadoChanged);
     on<FormSubmittedCategoryFormEvent>(_onFormSubmitted);
   }
   final formKey = GlobalKey<FormState>();
@@ -27,7 +28,7 @@ class CategoryFormBloc extends Bloc<CategoryFormEvent, CategoryFormState> {
         id: event.category?.id ?? '',
         nombre: BlocFormItem(value: event.category?.nombre ?? ''),
         descripcion: BlocFormItem(value: event.category?.descripcion ?? ''),
-        isActive: event.category?.isActive ?? false,
+        isActive: event.category?.isActive ?? true,
         formKey: formKey,
       ),
     );
@@ -63,6 +64,13 @@ class CategoryFormBloc extends Bloc<CategoryFormEvent, CategoryFormState> {
         formKey: formKey,
       ),
     );
+  }
+
+  Future<void> _onEstadoChanged(
+    EstadoChangedCategoryFormEvent event,
+    Emitter<CategoryFormState> emit,
+  ) async {
+    emit(state.coypWith(isActive: event.isActive, formKey: formKey));
   }
 
   Future<void> _onFormSubmitted(

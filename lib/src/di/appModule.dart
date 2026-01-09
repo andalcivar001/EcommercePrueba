@@ -1,19 +1,27 @@
 import 'package:ecommerce_prueba/src/data/datasource/local/SharedPref.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/AuthService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/CategoryService.dart';
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/SubCategoryService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/UserService.dart';
 import 'package:ecommerce_prueba/src/data/repository/AuthRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/CategoryRepositoryImpl.dart';
+import 'package:ecommerce_prueba/src/data/repository/SubCategoryRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/UserRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/domain/models/AuthResponse.dart';
 import 'package:ecommerce_prueba/src/domain/repository/AuthRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/CategoryRepository.dart';
+import 'package:ecommerce_prueba/src/domain/repository/SubCategoryRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/UserRepository.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CreateCategoryUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/DeleteCategoryUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/GetCategoriesUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/UpdateCategoryUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/SubCategory/CreateSubCategoryUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/SubCategory/DeleteSubCategoryUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/SubCategory/GetSubCategoriesUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/SubCategory/SubCategoryUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/SubCategory/UpdateSubCategoryUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/GetUserSessionUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/LoginUseCase.dart';
@@ -42,6 +50,7 @@ abstract class Appmodule {
   }
 
   /******* SERVICIOS *****/
+  ///
   @injectable
   AuthService get authService => AuthService();
 
@@ -50,6 +59,9 @@ abstract class Appmodule {
 
   @injectable
   CategoryService get categoryService => CategoryService(token);
+
+  @injectable
+  SubCategoryService get subCategoryService => SubCategoryService(token);
 
   /******** REPOSITORIOS *********** */ ////
   @injectable
@@ -62,6 +74,9 @@ abstract class Appmodule {
   @injectable
   CategoryRepository get categoryRepository =>
       CategoryRepositoryImpl(categoryService);
+
+  SubCategoryRepository get subCategoryRepository =>
+      SubCategoryRepositoryImpl(subCategoryService);
 
   /********* USECASE *******/
   ///
@@ -84,5 +99,13 @@ abstract class Appmodule {
     create: CreateCategoryUseCase(categoryRepository),
     update: UpdateCategoryUseCase(categoryRepository),
     delete: DeleteCategoryUseCase(categoryRepository),
+  );
+
+  @injectable
+  SubCategoryUseCases get subCategoryUseCases => SubCategoryUseCases(
+    getSubCategories: GetSubCategoriesUseCase(subCategoryRepository),
+    create: CreateSubCategoryUseCase(subCategoryRepository),
+    update: UpdateSubCategoryUseCase(subCategoryRepository),
+    delete: DeleteSubCategoryUseCase(subCategoryRepository),
   );
 }

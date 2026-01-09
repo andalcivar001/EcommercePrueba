@@ -47,7 +47,9 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
         .where(
           (x) =>
               x.nombre.toLowerCase().contains(event.busqueda.toLowerCase()) ||
-              x.nombre.toLowerCase().contains(event.busqueda.toLowerCase()),
+              (x.descripcion ?? '').toLowerCase().contains(
+                event.busqueda.toLowerCase(),
+              ),
         )
         .toList();
 
@@ -66,7 +68,6 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
   ) async {
     emit(state.copyWith(responseDelete: Loading(), formKey: formKey));
     final response = await categoryUseCases.delete.run(event.id);
-    print('RESPONSE DELETE CATEGORY $response');
     emit(state.copyWith(responseDelete: response, formKey: formKey));
   }
 }

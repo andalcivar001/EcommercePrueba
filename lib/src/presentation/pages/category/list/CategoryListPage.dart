@@ -18,15 +18,6 @@ class CategoryListPage extends StatefulWidget {
 class _CategoryListPageState extends State<CategoryListPage> {
   CategoryListBloc? _bloc;
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     _bloc?.add(InitCategoryListEvent());
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     _bloc = BlocProvider.of<CategoryListBloc>(context);
@@ -53,8 +44,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
           if (responseDeleteState is Success) {
             AppToast.success('Categoria eliminada correctamente');
             _bloc?.add(InitCategoryListEvent());
-          }
-          if (responseDeleteState is Error) {
+          } else if (responseDeleteState is Error) {
             AppToast.error(responseDeleteState.message);
           }
         },

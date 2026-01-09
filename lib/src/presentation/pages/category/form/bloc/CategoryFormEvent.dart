@@ -30,6 +30,13 @@ class DescripcionChangedCategoryFormEvent extends CategoryFormEvent {
   List<Object?> get props => [descripcion];
 }
 
+class EstadoChangedCategoryFormEvent extends CategoryFormEvent {
+  final bool isActive;
+  const EstadoChangedCategoryFormEvent({required this.isActive});
+  @override
+  List<Object?> get props => [isActive];
+}
+
 class FormSubmittedCategoryFormEvent extends CategoryFormEvent {
   const FormSubmittedCategoryFormEvent();
 }

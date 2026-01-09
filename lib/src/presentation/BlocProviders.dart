@@ -1,5 +1,6 @@
 import 'package:ecommerce_prueba/injection.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/SubCategory/SubCategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/users/UsersUseCases.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
@@ -12,6 +13,8 @@ import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/Categ
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/bloc/SubCategoryListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/bloc/SubCategoryListEvent.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 List<BlocProvider> blocProviders = [
@@ -44,5 +47,11 @@ List<BlocProvider> blocProviders = [
 
   BlocProvider<CategoryFormBloc>(
     create: (context) => CategoryFormBloc(locator<CategoryUseCases>()),
+  ),
+
+  BlocProvider<SubCategoryListBloc>(
+    create: (context) =>
+        SubCategoryListBloc(locator<SubCategoryUseCases>())
+          ..add(InitSubCategoryListEvent()),
   ),
 ];
