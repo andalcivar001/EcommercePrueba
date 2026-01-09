@@ -11,6 +11,7 @@ import 'package:ecommerce_prueba/src/domain/repository/CategoryRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/UserRepository.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CreateCategoryUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Category/DeleteCategoryUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/GetCategoriesUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/UpdateCategoryUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart';
@@ -82,5 +83,6 @@ abstract class Appmodule {
     getCategories: GetCategoriesUseCase(categoryRepository),
     create: CreateCategoryUseCase(categoryRepository),
     update: UpdateCategoryUseCase(categoryRepository),
+    delete: DeleteCategoryUseCase(categoryRepository),
   );
 }

@@ -1,9 +1,12 @@
 import 'package:ecommerce_prueba/src/domain/models/Category.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListEvent.dart';
 import 'package:flutter/material.dart';
 
 class CategoryListItem extends StatelessWidget {
   Category _category;
-  CategoryListItem(this._category);
+  CategoryListBloc? bloc;
+  CategoryListItem(this.bloc, this._category);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,9 @@ class CategoryListItem extends StatelessWidget {
               icon: Icon(Icons.edit, color: Colors.blue),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                bloc?.add(DeleteCategoryListEvent(id: _category.id));
+              },
               icon: Icon(Icons.delete, color: Colors.red),
             ),
           ],

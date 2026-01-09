@@ -21,5 +21,6 @@ class BusquedaChangedListEvent extends CategoryListEvent {
 }
 
 class DeleteCategoryListEvent extends CategoryListEvent {
-  const DeleteCategoryListEvent();
+  final String id;
+  const DeleteCategoryListEvent({required this.id});
 }

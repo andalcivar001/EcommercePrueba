@@ -22,4 +22,9 @@ class CategoryRepositoryImpl extends CategoryRepository {
   Future<Resource<Category>> update(Category category, String id) async {
     return await categoryService.update(category, id);
   }
+
+  @override
+  Future<Resource<bool>> delete(String id) async {
+    return await categoryService.delete(id);
+  }
 }

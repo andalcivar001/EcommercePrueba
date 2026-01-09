@@ -93,9 +93,12 @@ class CategoryService {
         bool deletedResponse = data as bool;
         return Success(deletedResponse);
       } else {
+        print('error eliminando la categoria $data');
+
         return Error(listToString(data));
       }
     } catch (e) {
+      print('error trycatch ${e.toString()}');
       return Error(e.toString());
     }
   }

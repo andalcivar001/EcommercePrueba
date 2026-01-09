@@ -63,5 +63,10 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
   Future<void> _onDelete(
     DeleteCategoryListEvent event,
     Emitter<CategoryListState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(responseDelete: Loading(), formKey: formKey));
+    final response = await categoryUseCases.delete.run(event.id);
+    print('RESPONSE DELETE CATEGORY $response');
+    emit(state.copyWith(responseDelete: response, formKey: formKey));
+  }
 }

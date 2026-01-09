@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class CategoryListState extends Equatable {
   final String? busqueda;
   final Resource? response;
+  final Resource? responseDelete;
   final List<Category>? listaCategoryResp;
   final GlobalKey<FormState>? formKey;
   const CategoryListState({
@@ -13,6 +14,7 @@ class CategoryListState extends Equatable {
     this.response,
     this.formKey,
     this.listaCategoryResp,
+    this.responseDelete,
   });
 
   CategoryListState copyWith({
@@ -20,16 +22,23 @@ class CategoryListState extends Equatable {
     Resource? response,
     GlobalKey<FormState>? formKey,
     List<Category>? listaCategoryResp,
+    Resource? responseDelete,
   }) {
     return CategoryListState(
       busqueda: busqueda ?? this.busqueda,
       listaCategoryResp: listaCategoryResp ?? this.listaCategoryResp,
       response: response,
       formKey: formKey,
+      responseDelete: responseDelete,
     );
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [busqueda, response, listaCategoryResp];
+  List<Object?> get props => [
+    busqueda,
+    response,
+    listaCategoryResp,
+    responseDelete,
+  ];
 }

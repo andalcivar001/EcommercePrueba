@@ -5,6 +5,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeEvent.dart
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeState.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/ProductPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/ProfilePage.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/SubCategoryListPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
     Center(child: Text('Bienvenido al Panel')),
     ProfilePage(),
     CategoryListPage(),
+    SubCategoryListPage(),
     ProductPage(),
   ];
 
@@ -133,7 +135,13 @@ class _HomePageState extends State<HomePage> {
                 ),
                 _drawerItem(icon: Icons.category, text: 'Categoria', index: 2),
 
-                _drawerItem(icon: Icons.list_alt, text: 'Productos', index: 3),
+                _drawerItem(
+                  icon: Icons.square_foot,
+                  text: 'SubCategoria',
+                  index: 3,
+                ),
+
+                _drawerItem(icon: Icons.list_alt, text: 'Productos', index: 4),
 
                 const Spacer(),
 

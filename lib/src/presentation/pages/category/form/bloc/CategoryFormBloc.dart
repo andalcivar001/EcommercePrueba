@@ -78,8 +78,6 @@ class CategoryFormBloc extends Bloc<CategoryFormEvent, CategoryFormState> {
       isActive: state.isActive,
     );
 
-    print('CATEGORY BLOC ${category.toJson()}');
-
     if (state.id.isNotEmpty) {
       Resource response = await categoryUseCases.update.run(category, state.id);
       emit(state.coypWith(response: response, formKey: formKey));

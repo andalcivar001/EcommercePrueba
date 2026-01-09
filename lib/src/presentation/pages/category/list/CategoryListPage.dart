@@ -42,10 +42,20 @@ class _CategoryListPageState extends State<CategoryListPage> {
         listener: (context, state) {
           final responseState = state.response;
           // if (responseState is Success) {
+          //   AppToast.success('Categoria eliminada correctamente');
           //   _bloc?.add(InitCategoryListEvent());
           // }
           if (responseState is Error) {
             AppToast.error(responseState.message);
+          }
+
+          final responseDeleteState = state.responseDelete;
+          if (responseDeleteState is Success) {
+            AppToast.success('Categoria eliminada correctamente');
+            _bloc?.add(InitCategoryListEvent());
+          }
+          if (responseDeleteState is Error) {
+            AppToast.error(responseDeleteState.message);
           }
         },
         child: BlocBuilder<CategoryListBloc, CategoryListState>(
@@ -58,6 +68,28 @@ class _CategoryListPageState extends State<CategoryListPage> {
                 padding: EdgeInsetsGeometry.all(16),
                 child: Column(
                   children: [
+                    Container(
+                      child: Text(
+                        'Categorias',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.5,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 20),
+
+                      width: double.infinity,
+                      height: 3,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1E3C72),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
                     Container(
                       child: categories.length > 0
                           ? TextField(
@@ -95,9 +127,13 @@ class _CategoryListPageState extends State<CategoryListPage> {
                       child: ListView.builder(
                         itemCount: categories.length,
                         itemBuilder: (context, index) {
-                          return CategoryListItem(categories[index]);
+                          return CategoryListItem(_bloc, categories[index]);
                         },
                       ),
+                    ),
+                    Text(
+                      'Cantidad de categorias: ${categories.length.toString()}',
+                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                     ),
                   ],
                 ),

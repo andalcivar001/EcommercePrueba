@@ -7,4 +7,6 @@ abstract class CategoryRepository {
   Future<Resource<Category>> create(Category category);
 
   Future<Resource<Category>> update(Category category, String id);
+
+  Future<Resource<bool>> delete(String id);
 }
