@@ -10,12 +10,14 @@ SubCategory subCategoryFromJson(String str) =>
 String subCategoryToJson(SubCategory data) => json.encode(data.toJson());
 
 class SubCategory {
+  String id;
   String nombre;
   String? descripcion;
   String idCategory;
   bool isActive;
 
   SubCategory({
+    required this.id,
     required this.nombre,
     this.descripcion,
     required this.idCategory,
@@ -23,6 +25,7 @@ class SubCategory {
   });
 
   factory SubCategory.fromJson(Map<String, dynamic> json) => SubCategory(
+    id: json["_id"],
     nombre: json["nombre"],
     descripcion: json["descripcion"] ?? '',
     idCategory: json["idCategory"],
@@ -30,6 +33,7 @@ class SubCategory {
   );
 
   Map<String, dynamic> toJson() => {
+    "_id": id,
     "nombre": nombre,
     "descripcion": descripcion ?? '',
     "idCategory": idCategory,

@@ -23,7 +23,9 @@ class _SubCategoryListPageState extends State<SubCategoryListPage> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, 'subcategory/form');
+        },
         backgroundColor: Colors.blue[700],
         child: Icon(Icons.add, color: Colors.white),
       ),

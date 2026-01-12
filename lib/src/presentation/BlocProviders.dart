@@ -13,6 +13,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/Categ
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/subcategory/form/bloc/SubCategoryFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/bloc/SubCategoryListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/bloc/SubCategoryListEvent.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,5 +54,11 @@ List<BlocProvider> blocProviders = [
     create: (context) =>
         SubCategoryListBloc(locator<SubCategoryUseCases>())
           ..add(InitSubCategoryListEvent()),
+  ),
+  BlocProvider<SubCategoryFormBloc>(
+    create: (context) => SubCategoryFormBloc(
+      locator<SubCategoryUseCases>(),
+      locator<CategoryUseCases>(),
+    ),
   ),
 ];
