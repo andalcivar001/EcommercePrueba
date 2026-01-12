@@ -9,8 +9,8 @@ abstract class SubCategoryFormEvent extends Equatable {
 }
 
 class InitSubCategoryFormEvent extends SubCategoryFormEvent {
-  SubCategory? subCategory;
-  InitSubCategoryFormEvent({required this.subCategory});
+  final SubCategory? subCategory;
+  const InitSubCategoryFormEvent({required this.subCategory});
   @override
   List<Object?> get props => [subCategory];
 }
@@ -45,4 +45,8 @@ class EstadoChangedSubCategoryFormEvent extends SubCategoryFormEvent {
 
 class SubmittedSubCategoryFormEvent extends SubCategoryFormEvent {
   const SubmittedSubCategoryFormEvent();
+}
+
+class ResetSubCategoryFormEvent extends SubCategoryFormEvent {
+  const ResetSubCategoryFormEvent();
 }

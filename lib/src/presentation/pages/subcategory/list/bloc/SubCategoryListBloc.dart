@@ -13,7 +13,7 @@ class SubCategoryListBloc
     : super(SubCategoryListState()) {
     on<InitSubCategoryListEvent>(_onInit);
     on<BusquedaChangedSubCategoryListEvent>(_onBusquedaChanged);
-    on<DeletedSubCategoryListEvent>(_onDeleted);
+    on<DeleteSubCategoryListEvent>(_onDeleted);
   }
   final formKey = GlobalKey<FormState>();
 
@@ -61,7 +61,11 @@ class SubCategoryListBloc
   }
 
   Future<void> _onDeleted(
-    DeletedSubCategoryListEvent event,
+    DeleteSubCategoryListEvent event,
     Emitter<SubCategoryListState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(responseDeleted: Loading(), formKey: formKey));
+    final Resource response = await subCategoryUseCases.delete.run(event.id);
+    emit(state.copyWith(responseDeleted: response, formKey: formKey));
+  }
 }

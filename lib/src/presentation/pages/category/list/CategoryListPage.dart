@@ -51,7 +51,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
         child: BlocBuilder<CategoryListBloc, CategoryListState>(
           builder: (context, state) {
             final response = state.response;
-
+            final responseDelete = state.responseDelete;
             if (response is Success) {
               List<Category> categories = response.data as List<Category>;
               return Padding(
@@ -130,7 +130,7 @@ class _CategoryListPageState extends State<CategoryListPage> {
               );
             }
 
-            if (response is Loading) {
+            if (response is Loading || responseDelete is Loading) {
               return const Center(child: CircularProgressIndicator());
             }
 

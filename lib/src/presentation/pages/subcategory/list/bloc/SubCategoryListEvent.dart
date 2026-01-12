@@ -18,6 +18,9 @@ class BusquedaChangedSubCategoryListEvent extends SubCategoryListEvent {
   List<Object?> get props => [busqueda];
 }
 
-class DeletedSubCategoryListEvent extends SubCategoryListEvent {
-  const DeletedSubCategoryListEvent();
+class DeleteSubCategoryListEvent extends SubCategoryListEvent {
+  final String id;
+  const DeleteSubCategoryListEvent({required this.id});
+  @override
+  List<Object?> get props => [id];
 }

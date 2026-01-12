@@ -31,44 +31,48 @@ class _SubCategoryFormPageState extends State<SubCategoryFormPage> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    bloc?.add(ResetSubCategoryFormEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (ModalRoute.of(context)?.settings.arguments != null) {
       subcategory = ModalRoute.of(context)?.settings.arguments as SubCategory;
     }
     bloc = BlocProvider.of<SubCategoryFormBloc>(context);
     return Scaffold(
-      body: Center(
-        child: BlocListener<SubCategoryFormBloc, SubCategoryFormState>(
-          listener: (context, state) {
-            final responseState = state.response;
-            if (responseState is Error) {
-              AppToast.error(responseState.message);
-            } else if (responseState is Success) {
-              AppToast.success('Subcategoría guardada correctamente');
-              context.read<SubCategoryListBloc>().add(
-                InitSubCategoryListEvent(),
-              );
-            }
-          },
-          child: BlocBuilder<SubCategoryFormBloc, SubCategoryFormState>(
-            builder: (context, state) {
-              final r = state.response;
+      body: BlocListener<SubCategoryFormBloc, SubCategoryFormState>(
+        listener: (context, state) {
+          final responseState = state.response;
+          if (responseState is Error) {
+            AppToast.error(responseState.message);
+          } else if (responseState is Success) {
+            AppToast.success('Subcategoría guardada correctamente');
+            context.read<SubCategoryListBloc>().add(InitSubCategoryListEvent());
+          }
+        },
+        child: BlocBuilder<SubCategoryFormBloc, SubCategoryFormState>(
+          builder: (context, state) {
+            final rC = state.responseCategory;
+            final r = state.response;
 
-              return Stack(
-                children: [
-                  SubCategoryFormContent(bloc, state, subcategory),
+            return Stack(
+              children: [
+                SubCategoryFormContent(bloc, state, subcategory),
 
-                  if (r is Loading)
-                    const Positioned.fill(
-                      child: ColoredBox(
-                        color: Color(0x66000000),
-                        child: Center(child: CircularProgressIndicator()),
-                      ),
+                if (rC is Loading || r is Loading)
+                  const Positioned.fill(
+                    child: ColoredBox(
+                      color: Color(0x66000000),
+                      child: Center(child: CircularProgressIndicator()),
                     ),
-                ],
-              );
-            },
-          ),
+                  ),
+              ],
+            );
+          },
         ),
       ),
     );

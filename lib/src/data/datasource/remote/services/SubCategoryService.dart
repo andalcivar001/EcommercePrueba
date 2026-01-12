@@ -65,7 +65,7 @@ class SubCategoryService {
       String body = json.encode({
         'nombre': subCategory.nombre,
         'descripcion': subCategory.descripcion,
-        'idCateogry': subCategory.idCategory,
+        'idCategory': subCategory.idCategory,
         'isActive': subCategory.isActive,
       });
 

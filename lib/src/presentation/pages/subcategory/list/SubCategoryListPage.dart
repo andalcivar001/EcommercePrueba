@@ -47,6 +47,7 @@ class _SubCategoryListPageState extends State<SubCategoryListPage> {
         child: BlocBuilder<SubCategoryListBloc, SubCategoryListState>(
           builder: (context, state) {
             final response = state.response;
+            final responseDelete = state.responseDelete;
             if (response is Success) {
               List<SubCategory> subcategories =
                   response.data as List<SubCategory>;
@@ -130,7 +131,7 @@ class _SubCategoryListPageState extends State<SubCategoryListPage> {
               );
             }
 
-            if (response is Loading) {
+            if (response is Loading || responseDelete is Loading) {
               return const Center(child: CircularProgressIndicator());
             }
 

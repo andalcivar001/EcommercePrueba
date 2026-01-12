@@ -6,6 +6,7 @@ import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/form/bloc/SubCategoryFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/form/bloc/SubCategoryFormState.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,6 +22,7 @@ class SubCategoryFormBloc
     on<CategoriaChangedSubCategoryFormEvent>(_onCategoriaChanged);
     on<EstadoChangedSubCategoryFormEvent>(_onEstadoChanged);
     on<SubmittedSubCategoryFormEvent>(_onSubmitted);
+    on<ResetSubCategoryFormEvent>(_onReset);
   }
 
   final formKey = GlobalKey<FormState>();
@@ -29,26 +31,28 @@ class SubCategoryFormBloc
     InitSubCategoryFormEvent event,
     Emitter<SubCategoryFormState> emit,
   ) async {
-    List<Category> listCategory = [];
+    emit(state.copyWith(responseCategory: Loading()));
+
+    List<Category> listCategory = const [];
 
     final responseList = await categoryUseCases.getCategories.run();
+
     if (responseList is Success) {
       listCategory = responseList.data as List<Category>;
     }
+
     emit(
       state.copyWith(
+        responseCategory: Success(true),
         id: event.subCategory?.id ?? '',
         nombre: BlocFormItem(value: event.subCategory?.nombre ?? ''),
         descripcion: BlocFormItem(value: event.subCategory?.descripcion ?? ''),
-        categoria: event.subCategory?.idCategory ?? '',
+        categoria: event.subCategory?.idCategory,
         isActive: event.subCategory?.isActive ?? true,
         listCategory: listCategory,
         formKey: formKey,
       ),
     );
-    listCategory.forEach((x) {
-      print('CATEGORY ${x.toJson()}');
-    });
   }
 
   Future<void> _onNombreChanged(
@@ -101,15 +105,27 @@ class SubCategoryFormBloc
     SubmittedSubCategoryFormEvent event,
     Emitter<SubCategoryFormState> emit,
   ) async {
+    print('STATE NOMBRE ${state.nombre.value}');
+    if (state.nombre.value.isEmpty) {
+      AppToast.warning('ingrese el nombre');
+      return;
+    }
+
+    if (state.categoria == null) {
+      AppToast.warning('Debe seleccionar la categoria');
+      return;
+    }
+
     emit(state.copyWith(response: Loading(), formKey: formKey));
     final subCategory = SubCategory(
       id: state.id,
       nombre: state.nombre.value,
       descripcion: state.descripcion.value,
-      idCategory: state.categoria,
+      idCategory: state.categoria ?? '',
       isActive: state.isActive,
     );
-    if (state.id.length == 0) {
+
+    if (state.id.isEmpty) {
       final Resource response = await subCategoryUseCases.create.run(
         subCategory,
       );
@@ -121,5 +137,17 @@ class SubCategoryFormBloc
       );
       emit(state.copyWith(response: response, formKey: formKey));
     }
+  }
+
+  Future<void> _onReset(
+    ResetSubCategoryFormEvent event,
+    Emitter<SubCategoryFormState> emit,
+  ) async {
+    emit(
+      SubCategoryFormState(
+        formKey: state.formKey,
+        listCategory: state.listCategory,
+      ),
+    );
   }
 }

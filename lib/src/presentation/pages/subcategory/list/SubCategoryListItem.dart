@@ -1,5 +1,6 @@
 import 'package:ecommerce_prueba/src/domain/models/SubCategory.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/bloc/SubCategoryListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/bloc/SubCategoryListEvent.dart';
 import 'package:flutter/material.dart';
 
 class SubCategoryListItem extends StatelessWidget {
@@ -32,7 +33,9 @@ class SubCategoryListItem extends StatelessWidget {
               icon: Icon(Icons.edit, color: Colors.blue),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                bloc?.add(DeleteSubCategoryListEvent(id: subCategory.id));
+              },
               icon: Icon(Icons.delete, color: Colors.red),
             ),
           ],

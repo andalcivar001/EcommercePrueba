@@ -23,10 +23,15 @@ class CategoryFormBloc extends Bloc<CategoryFormEvent, CategoryFormState> {
     InitCategoryFormEvent event,
     Emitter<CategoryFormState> emit,
   ) async {
+    final nombreValue = event.category?.nombre ?? '';
+
     emit(
       state.coypWith(
         id: event.category?.id ?? '',
-        nombre: BlocFormItem(value: event.category?.nombre ?? ''),
+        nombre: BlocFormItem(
+          value: nombreValue,
+          error: nombreValue.isNotEmpty ? null : 'Ingrese el nombre',
+        ),
         descripcion: BlocFormItem(value: event.category?.descripcion ?? ''),
         isActive: event.category?.isActive ?? true,
         formKey: formKey,

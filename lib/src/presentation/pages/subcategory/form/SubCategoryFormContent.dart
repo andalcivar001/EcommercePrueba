@@ -7,7 +7,6 @@ import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/DefaultButton.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/DefaultIconBack.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/DefaultTextField.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 class SubCategoryFormContent extends StatelessWidget {
@@ -30,7 +29,7 @@ class SubCategoryFormContent extends StatelessWidget {
                 child: Form(
                   key: state.formKey,
                   child: Container(
-                    padding: EdgeInsets.all(24),
+                    padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(24),
@@ -91,7 +90,10 @@ class SubCategoryFormContent extends StatelessWidget {
         );
       },
       validator: (value) {
-        return state.nombre.error;
+        if (value == null || value.trim().isEmpty) {
+          return 'Ingrese la descripcion';
+        }
+        return null;
       },
     );
   }
@@ -117,37 +119,43 @@ class SubCategoryFormContent extends StatelessWidget {
   }
 
   Widget _dropDownCategory() {
-    return Container(
-      margin: EdgeInsets.only(top: 5, left: 17, right: 17),
-      child: DropdownButton(
-        hint: Text(
-          'Categoria',
-          style: TextStyle(fontSize: 16, color: Colors.grey),
+    return Padding(
+      padding: const EdgeInsets.only(top: 5, left: 3, right: 3),
+      child: SizedBox(
+        width: double.infinity,
+        child: DropdownMenu<String>(
+          initialSelection: state.categoria,
+          label: const Text('Categoría'),
+          leadingIcon: const Icon(Icons.category),
+          dropdownMenuEntries: state.listCategory!
+              .map(
+                (x) => DropdownMenuEntry<String>(value: x.id, label: x.nombre),
+              )
+              .toList(),
+          onSelected: (value) {
+            if (value == null) return;
+            bloc?.add(CategoriaChangedSubCategoryFormEvent(categoria: value));
+          },
         ),
-        items: _dropDownItems(),
-        value: state.categoria,
-        onChanged: (value) {
-          bloc?.add(CategoriaChangedSubCategoryFormEvent(categoria: value!));
-        },
       ),
     );
   }
 
-  List<DropdownMenuItem<String>> _dropDownItems() {
-    List<DropdownMenuItem<String>> list = [];
-    state.listCategory!.forEach((x) {
-      list.add(
-        DropdownMenuItem(
-          child: Container(
-            margin: EdgeInsets.only(top: 7),
-            child: Text(x.nombre),
-          ),
-          value: x.id,
-        ),
-      );
-    });
-    return list;
-  }
+  // List<DropdownMenuItem<String>> _dropDownItems() {
+  //   List<DropdownMenuItem<String>> list = [];
+  //   state.listCategory!.forEach((x) {
+  //     list.add(
+  //       DropdownMenuItem(
+  //         value: x.id,x
+  //         child: Container(
+  //           margin: EdgeInsets.only(top: 7),
+  //           child: Text(x.nombre),
+  //         ),
+  //       ),
+  //     );
+  //   });
+  //   return list;
+  // }
 
   Widget _buttonActualizar() {
     return DefaultButton(
@@ -164,6 +172,7 @@ class SubCategoryFormContent extends StatelessWidget {
 
   Widget _switchEstado() {
     return SwitchListTile(
+      title: Text('Estado:', style: TextStyle(fontSize: 14)),
       value: state.isActive,
       onChanged: (value) {
         bloc?.add(EstadoChangedSubCategoryFormEvent(isActive: value));

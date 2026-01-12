@@ -27,4 +27,16 @@ class AppToast {
       fontSize: 14.0,
     );
   }
+
+  static void warning(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 2,
+      backgroundColor: Colors.yellow.shade600,
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
+  }
 }
