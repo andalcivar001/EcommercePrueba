@@ -81,7 +81,9 @@ class _CategoryListPageState extends State<CategoryListPage> {
                       ),
                     ),
                     Container(
-                      child: categories.length > 0
+                      child:
+                          categories.isNotEmpty ||
+                              state.listaCategoryResp!.isNotEmpty
                           ? TextField(
                               //  controller: SearchController(),
                               onChanged: (text) {

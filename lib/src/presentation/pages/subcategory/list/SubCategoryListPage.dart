@@ -77,7 +77,9 @@ class _SubCategoryListPageState extends State<SubCategoryListPage> {
                       ),
                     ),
                     Container(
-                      child: subcategories.length > 0
+                      child:
+                          subcategories.isNotEmpty ||
+                              state.listaSubCategoriaResp!.isNotEmpty
                           ? TextField(
                               //  controller: SearchController(),
                               onChanged: (text) {
