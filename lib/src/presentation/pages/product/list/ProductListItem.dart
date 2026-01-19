@@ -96,7 +96,13 @@ class Productlistitem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    'product/form',
+                    arguments: product.id,
+                  );
+                },
                 child: Icon(Icons.edit, size: 20, color: Colors.blue),
               ),
               SizedBox(height: 4),

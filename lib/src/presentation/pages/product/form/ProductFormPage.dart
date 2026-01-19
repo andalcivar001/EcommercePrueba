@@ -1,3 +1,6 @@
+import 'package:ecommerce_prueba/src/domain/models/Category.dart';
+import 'package:ecommerce_prueba/src/domain/models/Product.dart';
+import 'package:ecommerce_prueba/src/domain/models/SubCategory.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/ProductFormContent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormBloc.dart';
@@ -64,8 +67,34 @@ class _ProductFormPageState extends State<ProductFormPage> {
             final response = state.response;
             final responseCategory = state.responseCategory;
             final responseSubcategory = state.responseSubcategory;
+            final responseProduct = state.responseProduct;
 
-            return Stack(children: [ProductFormContent()]);
+            return Stack(
+              children: [
+                ProductFormContent(
+                  bloc,
+                  state,
+                  responseProduct is Success
+                      ? responseProduct.data as Product
+                      : null,
+                  responseCategory is Success
+                      ? responseCategory.data as List<Category>
+                      : [],
+                  responseSubcategory is Success
+                      ? responseSubcategory.data as List<SubCategory>
+                      : [],
+                ),
+                if (response is Loading ||
+                    responseCategory is Loading ||
+                    responseSubcategory is Loading)
+                  const Positioned.fill(
+                    child: ColoredBox(
+                      color: Color(0x66000000),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  ),
+              ],
+            );
           },
         ),
       ),

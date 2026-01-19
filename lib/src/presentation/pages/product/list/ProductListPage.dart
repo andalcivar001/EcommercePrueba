@@ -7,7 +7,6 @@ import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/Produc
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 class ProductListPage extends StatefulWidget {
   const ProductListPage({super.key});
@@ -24,7 +23,9 @@ class _ProductListPageState extends State<ProductListPage> {
     bloc = BlocProvider.of<ProductListBloc>(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, 'product/form');
+        },
         backgroundColor: Colors.blue[700],
         child: Icon(Icons.add, color: Colors.white),
       ),

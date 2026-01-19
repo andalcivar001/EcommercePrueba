@@ -13,6 +13,7 @@ import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:injectable/injectable.dart';
 
 class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
   ProductUseCases productUseCases;
@@ -40,23 +41,12 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     InitProductFormEvent event,
     Emitter<ProductFormState> emit,
   ) async {
-    List<Category> listaCategory = const [];
-    List<SubCategory> listaSubcategorias = const [];
-
     emit(state.copyWith(responseCategory: Loading(), formKey: formKey));
     final Resource responseCategorias = await categoryUseCases.getCategories
         .run();
 
-    if (responseCategorias is Success) {
-      listaCategory = responseCategorias.data;
-    }
-
     emit(
-      state.copyWith(
-        responseCategory: responseCategorias,
-        listaCategorias: listaCategory,
-        formKey: formKey,
-      ),
+      state.copyWith(responseCategory: responseCategorias, formKey: formKey),
     );
 
     emit(state.copyWith(responseSubcategory: Loading(), formKey: formKey));
@@ -65,38 +55,46 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
         .getSubCategories
         .run();
 
-    if (responseSubCategorias is Success) {
-      listaSubcategorias = responseSubCategorias.data;
-    }
-
     emit(
       state.copyWith(
         responseSubcategory: responseSubCategorias,
-        listaSubcategorias: listaSubcategorias,
         formKey: formKey,
       ),
     );
 
     if (event.id.isNotEmpty) {
-      emit(state.copyWith(response: Loading(), formKey: formKey));
-      Resource response;
+      emit(state.copyWith(responseProduct: Loading(), formKey: formKey));
+      Resource responseProduct;
       Product product;
-      response = await productUseCases.getBydId.run(event.id);
-      if (response is Success) {
-        product = response.data as Product;
-      }
+      responseProduct = await productUseCases.getBydId.run(event.id);
 
-      String descripcion = product.descripcion;
+      String descripcion = '',
+          codAlterno = '',
+          idCategory = '',
+          idSubcategory = '';
+      int stock = 0;
+      if (responseProduct is Success) {
+        product = responseProduct.data as Product;
+        descripcion = product.descripcion;
+        codAlterno = product.codAlterno ?? '';
+        stock = product.stock;
+        idCategory = product.idCategory;
+        idSubcategory = product.idSubcategory;
+      }
 
       emit(
         state.copyWith(
-          response: response,
-          product: product,
+          responseProduct: responseProduct,
           id: event.id,
           descripcion: BlocFormItem(
             value: descripcion,
             error: descripcion.isNotEmpty ? null : 'Ingrese la descripcion',
           ),
+          codAlterno: codAlterno,
+          stock: stock,
+          idCategory: idCategory,
+          idSubcategory: idSubcategory,
+          formKey: formKey,
         ),
       );
     }

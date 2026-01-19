@@ -1,8 +1,5 @@
 import 'dart:io';
 
-import 'package:ecommerce_prueba/src/domain/models/Category.dart';
-import 'package:ecommerce_prueba/src/domain/models/Product.dart';
-import 'package:ecommerce_prueba/src/domain/models/SubCategory.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:equatable/equatable.dart';
@@ -18,12 +15,10 @@ class ProductFormState extends Equatable {
   final Resource? response;
   final Resource? responseCategory;
   final Resource? responseSubcategory;
+  final Resource? responseProduct;
   final File? file1;
   final File? file2;
   final GlobalKey<FormState>? formKey;
-  final List<Category> listaCategorias;
-  final List<SubCategory> listaSubcategorias;
-  Product? product;
 
   ProductFormState({
     this.id = '',
@@ -38,9 +33,7 @@ class ProductFormState extends Equatable {
     this.formKey,
     this.file1,
     this.file2,
-    this.listaCategorias = const [],
-    this.listaSubcategorias = const [],
-    this.product,
+    this.responseProduct,
   });
 
   ProductFormState copyWith({
@@ -56,9 +49,7 @@ class ProductFormState extends Equatable {
     GlobalKey<FormState>? formKey,
     File? file1,
     File? file2,
-    List<Category>? listaCategorias,
-    List<SubCategory>? listaSubcategorias,
-    Product? product,
+    Resource? responseProduct,
   }) {
     return ProductFormState(
       id: id ?? this.id,
@@ -73,9 +64,7 @@ class ProductFormState extends Equatable {
       formKey: formKey,
       file1: file1 ?? this.file1,
       file2: file2 ?? this.file2,
-      listaCategorias: listaCategorias ?? this.listaCategorias,
-      listaSubcategorias: listaSubcategorias ?? this.listaSubcategorias,
-      product: product,
+      responseProduct: responseProduct,
     );
   }
 
@@ -91,10 +80,8 @@ class ProductFormState extends Equatable {
     response,
     file1,
     file2,
-    listaCategorias,
-    listaSubcategorias,
     responseCategory,
     responseSubcategory,
-    product,
+    responseProduct,
   ];
 }
