@@ -1,3 +1,4 @@
+import 'package:ecommerce_prueba/src/domain/models/Category.dart';
 import 'package:ecommerce_prueba/src/domain/models/SubCategory.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:equatable/equatable.dart';
@@ -9,6 +10,7 @@ class SubCategoryListState extends Equatable {
   final String? busqueda;
   final GlobalKey<FormState>? formKey;
   final List<SubCategory>? listaSubCategoriaResp;
+  final List<Category>? listaCategoria;
 
   const SubCategoryListState({
     this.response,
@@ -16,6 +18,7 @@ class SubCategoryListState extends Equatable {
     this.busqueda,
     this.formKey,
     this.listaSubCategoriaResp,
+    this.listaCategoria,
   });
 
   SubCategoryListState copyWith({
@@ -24,6 +27,7 @@ class SubCategoryListState extends Equatable {
     String? busqueda,
     GlobalKey<FormState>? formKey,
     List<SubCategory>? listaSubCategoriaResp,
+    List<Category>? listaCategoria,
   }) {
     return SubCategoryListState(
       response: response,
@@ -32,6 +36,7 @@ class SubCategoryListState extends Equatable {
       formKey: formKey,
       listaSubCategoriaResp:
           listaSubCategoriaResp ?? this.listaSubCategoriaResp,
+      listaCategoria: listaCategoria ?? this.listaCategoria,
     );
   }
 

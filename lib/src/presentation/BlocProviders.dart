@@ -1,5 +1,6 @@
 import 'package:ecommerce_prueba/injection.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Product/ProductUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/SubCategory/SubCategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/users/UsersUseCases.dart';
@@ -11,6 +12,9 @@ import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/Categ
 import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/form/bloc/SubCategoryFormBloc.dart';
@@ -51,14 +55,29 @@ List<BlocProvider> blocProviders = [
   ),
 
   BlocProvider<SubCategoryListBloc>(
-    create: (context) =>
-        SubCategoryListBloc(locator<SubCategoryUseCases>())
-          ..add(InitSubCategoryListEvent()),
+    create: (context) => SubCategoryListBloc(
+      locator<SubCategoryUseCases>(),
+      locator<CategoryUseCases>(),
+    )..add(InitSubCategoryListEvent()),
   ),
   BlocProvider<SubCategoryFormBloc>(
     create: (context) => SubCategoryFormBloc(
       locator<SubCategoryUseCases>(),
       locator<CategoryUseCases>(),
+    ),
+  ),
+
+  BlocProvider<ProductListBloc>(
+    create: (context) =>
+        ProductListBloc(locator<ProductUseCases>())
+          ..add(InitProductListEvent()),
+  ),
+
+  BlocProvider<ProductFormBloc>(
+    create: (context) => ProductFormBloc(
+      locator<ProductUseCases>(),
+      locator<CategoryUseCases>(),
+      locator<SubCategoryUseCases>(),
     ),
   ),
 ];

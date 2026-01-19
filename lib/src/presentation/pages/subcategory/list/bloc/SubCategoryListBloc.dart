@@ -1,4 +1,6 @@
+import 'package:ecommerce_prueba/src/domain/models/Category.dart';
 import 'package:ecommerce_prueba/src/domain/models/SubCategory.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/SubCategory/SubCategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/bloc/SubCategoryListEvent.dart';
@@ -8,8 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SubCategoryListBloc
     extends Bloc<SubCategoryListEvent, SubCategoryListState> {
+  CategoryUseCases categoryUseCases;
   SubCategoryUseCases subCategoryUseCases;
-  SubCategoryListBloc(this.subCategoryUseCases)
+  SubCategoryListBloc(this.subCategoryUseCases, this.categoryUseCases)
     : super(SubCategoryListState()) {
     on<InitSubCategoryListEvent>(_onInit);
     on<BusquedaChangedSubCategoryListEvent>(_onBusquedaChanged);
@@ -23,8 +26,17 @@ class SubCategoryListBloc
   ) async {
     emit(state.copyWith(formKey: formKey));
     emit(state.copyWith(response: Loading(), formKey: formKey));
-    final Resource response = await subCategoryUseCases.getSubCategories.run();
+    Resource response;
+
+    List<Category> listaCategoria = [];
+    response = await categoryUseCases.getCategories.run();
+
+    if (response is Success) {
+      listaCategoria = response.data as List<Category>;
+    }
+
     List<SubCategory> listaSubcategorias = [];
+    response = await subCategoryUseCases.getSubCategories.run();
 
     if (response is Success) {
       listaSubcategorias = response.data as List<SubCategory>;
@@ -35,6 +47,7 @@ class SubCategoryListBloc
         response: response,
         listaSubCategoriaResp: listaSubcategorias,
         formKey: formKey,
+        listaCategoria: listaCategoria,
       ),
     );
   }

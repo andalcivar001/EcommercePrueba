@@ -1,66 +1,64 @@
-import 'package:ecommerce_prueba/src/domain/models/Category.dart';
+import 'package:ecommerce_prueba/src/domain/models/Product.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/category/list/CategoryListItem.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListBloc.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListEvent.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListState.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/list/ProductListItem.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListState.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
-class CategoryListPage extends StatefulWidget {
-  const CategoryListPage({super.key});
+class ProductListPage extends StatefulWidget {
+  const ProductListPage({super.key});
 
   @override
-  State<CategoryListPage> createState() => _CategoryListPageState();
+  State<ProductListPage> createState() => _ProductListPageState();
 }
 
-class _CategoryListPageState extends State<CategoryListPage> {
-  CategoryListBloc? _bloc;
+class _ProductListPageState extends State<ProductListPage> {
+  ProductListBloc? bloc;
 
   @override
   Widget build(BuildContext context) {
-    _bloc = BlocProvider.of<CategoryListBloc>(context);
+    bloc = BlocProvider.of<ProductListBloc>(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, 'category/form');
-        },
+        onPressed: () {},
         backgroundColor: Colors.blue[700],
         child: Icon(Icons.add, color: Colors.white),
       ),
-      body: BlocListener<CategoryListBloc, CategoryListState>(
+      body: BlocListener<ProductListBloc, ProductListState>(
         listener: (context, state) {
           final responseState = state.response;
           if (responseState is Error) {
             AppToast.error(
-              'Error al cargar las categorias  ${responseState.message}',
+              'Error al cargar los productos ${responseState.message}',
             );
           }
-
           final responseDeleteState = state.responseDelete;
           if (responseDeleteState is Success) {
             AppToast.success('Categoria eliminada correctamente');
-            _bloc?.add(InitCategoryListEvent());
+            bloc?.add(InitProductListEvent());
           } else if (responseDeleteState is Error) {
             AppToast.error(
-              'Error eliminando la categoria ${responseDeleteState.message} ',
+              'Error eliminando el producto ${responseDeleteState.message}',
             );
           }
         },
-        child: BlocBuilder<CategoryListBloc, CategoryListState>(
+        child: BlocBuilder<ProductListBloc, ProductListState>(
           builder: (context, state) {
             final response = state.response;
             final responseDelete = state.responseDelete;
             if (response is Success) {
-              List<Category> categories = response.data as List<Category>;
+              List<Product> products = response.data as List<Product>;
               return Padding(
                 padding: EdgeInsetsGeometry.all(16),
                 child: Column(
                   children: [
                     Container(
                       child: Text(
-                        'Categorias',
+                        'Productos',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
@@ -82,13 +80,14 @@ class _CategoryListPageState extends State<CategoryListPage> {
                     ),
                     Container(
                       child:
-                          categories.isNotEmpty ||
-                              state.listaCategoryResp!.isNotEmpty
+                          products.isNotEmpty || state.listaProduct!.isNotEmpty
                           ? TextField(
                               //  controller: SearchController(),
                               onChanged: (text) {
-                                _bloc?.add(
-                                  BusquedaChangedListEvent(busqueda: text),
+                                bloc?.add(
+                                  BusquedaChangedProductListEvent(
+                                    busqueda: text,
+                                  ),
                                 );
                               },
                               decoration: InputDecoration(
@@ -105,9 +104,9 @@ class _CategoryListPageState extends State<CategoryListPage> {
                     const SizedBox(height: 5),
                     Container(
                       margin: EdgeInsets.only(top: 5),
-                      child: categories.length == 0
+                      child: products.length == 0
                           ? Text(
-                              'No hay categorias creadas',
+                              'No hay productos creados',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -117,14 +116,14 @@ class _CategoryListPageState extends State<CategoryListPage> {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: categories.length,
+                        itemCount: products.length,
                         itemBuilder: (context, index) {
-                          return CategoryListItem(_bloc, categories[index]);
+                          return Productlistitem(bloc, products[index]);
                         },
                       ),
                     ),
                     Text(
-                      'Cantidad de categorias: ${categories.length.toString()}',
+                      'Cantidad de productos: ${products.length.toString()}',
                       style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                     ),
                   ],

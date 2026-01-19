@@ -1,3 +1,4 @@
+import 'package:ecommerce_prueba/src/domain/models/Category.dart';
 import 'package:ecommerce_prueba/src/domain/models/SubCategory.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/SubCategoryListItem.dart';
@@ -48,9 +49,14 @@ class _SubCategoryListPageState extends State<SubCategoryListPage> {
           builder: (context, state) {
             final response = state.response;
             final responseDelete = state.responseDelete;
+            List<Category> listaCategoria = state.listaCategoria ?? [];
             if (response is Success) {
               List<SubCategory> subcategories =
                   response.data as List<SubCategory>;
+
+              subcategories.sort(
+                (a, b) => a.idCategory.compareTo(b.idCategory),
+              );
 
               return Padding(
                 padding: EdgeInsetsGeometry.all(16),
@@ -100,10 +106,10 @@ class _SubCategoryListPageState extends State<SubCategoryListPage> {
                           : Container(),
                     ),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 5),
                     Container(
-                      margin: EdgeInsets.only(top: 15),
-                      child: subcategories.length == 0
+                      margin: EdgeInsets.only(top: 5),
+                      child: subcategories.isEmpty
                           ? Text(
                               'No hay subcategorias creadas',
                               style: TextStyle(
@@ -113,13 +119,18 @@ class _SubCategoryListPageState extends State<SubCategoryListPage> {
                             )
                           : Container(),
                     ),
+
                     Expanded(
                       child: ListView.builder(
                         itemCount: subcategories.length,
                         itemBuilder: (context, index) {
+                          Category categoria = listaCategoria.firstWhere(
+                            (x) => x.id == subcategories[index].idCategory,
+                          );
                           return SubCategoryListItem(
                             bloc,
                             subcategories[index],
+                            categoria,
                           );
                         },
                       ),

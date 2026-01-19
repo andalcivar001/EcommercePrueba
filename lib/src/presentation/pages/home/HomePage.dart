@@ -3,7 +3,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/category/list/CategoryLi
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeState.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/product/ProductPage.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/list/ProductListPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/ProfilePage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/SubCategoryListPage.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     ProfilePage(),
     CategoryListPage(),
     SubCategoryListPage(),
-    ProductPage(),
+    ProductListPage(),
   ];
 
   @override
