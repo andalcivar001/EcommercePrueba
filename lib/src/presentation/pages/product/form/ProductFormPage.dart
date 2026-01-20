@@ -1,5 +1,4 @@
 import 'package:ecommerce_prueba/src/domain/models/Category.dart';
-import 'package:ecommerce_prueba/src/domain/models/Product.dart';
 import 'package:ecommerce_prueba/src/domain/models/SubCategory.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/ProductFormContent.dart';
@@ -18,23 +17,31 @@ class ProductFormPage extends StatefulWidget {
 }
 
 class _ProductFormPageState extends State<ProductFormPage> {
-  ProductFormBloc? bloc;
+  late ProductFormBloc? bloc;
   String? id;
+  bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || _initialized) return;
+
+      bloc = BlocProvider.of<ProductFormBloc>(context);
+
+      final args = ModalRoute.of(context)?.settings.arguments;
+      id = args is String ? args : null;
+
       bloc?.add(InitProductFormEvent(id: id ?? ''));
+
+      _initialized = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     bloc = BlocProvider.of<ProductFormBloc>(context);
-    if (ModalRoute.of(context)?.settings.arguments != null) {
-      id = ModalRoute.of(context)?.settings.arguments as String;
-    }
 
     return Scaffold(
       body: BlocListener<ProductFormBloc, ProductFormState>(
@@ -67,16 +74,12 @@ class _ProductFormPageState extends State<ProductFormPage> {
             final response = state.response;
             final responseCategory = state.responseCategory;
             final responseSubcategory = state.responseSubcategory;
-            final responseProduct = state.responseProduct;
 
             return Stack(
               children: [
                 ProductFormContent(
                   bloc,
                   state,
-                  responseProduct is Success
-                      ? responseProduct.data as Product
-                      : null,
                   responseCategory is Success
                       ? responseCategory.data as List<Category>
                       : [],

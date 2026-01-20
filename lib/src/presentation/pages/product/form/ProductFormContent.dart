@@ -1,11 +1,10 @@
 import 'package:ecommerce_prueba/src/domain/models/Category.dart';
-import 'package:ecommerce_prueba/src/domain/models/Product.dart';
 import 'package:ecommerce_prueba/src/domain/models/SubCategory.dart';
-import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormState.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
+import 'package:ecommerce_prueba/src/presentation/utils/SelectOptionImageDialog.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/DefaultButton.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/DefaultTextField.dart';
@@ -14,14 +13,12 @@ import 'package:flutter/material.dart';
 class ProductFormContent extends StatelessWidget {
   ProductFormBloc? bloc;
   ProductFormState state;
-  Product? product;
   List<Category> listaCategories = [];
   List<SubCategory> listaSubCategories = [];
 
   ProductFormContent(
     this.bloc,
     this.state,
-    this.product,
     this.listaCategories,
     this.listaSubCategories,
   );
@@ -86,9 +83,9 @@ class ProductFormContent extends StatelessWidget {
                     SizedBox(height: 16),
                     Row(
                       children: [
-                        _seleccionarImagen1(),
+                        _seleccionarImagen1(context),
                         SizedBox(width: 10),
-                        _seleccionarImagen2(),
+                        _seleccionarImagen2(context),
                       ],
                     ),
                     SizedBox(height: 16),
@@ -120,60 +117,104 @@ class ProductFormContent extends StatelessWidget {
     );
   }
 
-  Widget _seleccionarImagen1() {
+  Widget _seleccionarImagen1(BuildContext context) {
     return Expanded(
       child: AspectRatio(
         aspectRatio: 1,
         child: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            SelectOptionImageDialog(
+              context,
+              () => bloc?.add(PickImageProductFormEvent1()),
+              () => bloc?.add(TakePhotoProductFormEvent1()),
+            );
+          },
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Color(0xFF1E3C72),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.black, width: 1.5),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.add_photo_alternate, size: 36, color: Colors.black),
-                SizedBox(height: 8),
-                Text(
-                  'Seleccionar\nimagen',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black),
-                ),
-              ],
-            ),
+            child: state.file1 == null && state.imagenUrl1 == null
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.add_photo_alternate,
+                        size: 36,
+                        color: Colors.white,
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Seleccionar\nimagen',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  )
+                : state.file1 != null
+                ? Image.file(state.file1!, fit: BoxFit.cover)
+                : state.imagenUrl1 != null
+                ? FadeInImage.assetNetwork(
+                    image: state.imagenUrl1!,
+                    placeholder: 'assets/img/user_image.png',
+                    fit: BoxFit.fill,
+
+                    fadeInDuration: Duration(seconds: 1),
+                  )
+                : Container(),
           ),
         ),
       ),
     );
   }
 
-  Widget _seleccionarImagen2() {
+  Widget _seleccionarImagen2(BuildContext context) {
     return Expanded(
       child: AspectRatio(
         aspectRatio: 1,
         child: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            SelectOptionImageDialog(
+              context,
+              () => bloc?.add(PickImageProductFormEvent2()),
+              () => bloc?.add(TakePhotoProductFormEvent2()),
+            );
+          },
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Color(0xFF1E3C72),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.black, width: 1.5),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.add_photo_alternate, size: 36, color: Colors.black),
-                SizedBox(height: 8),
-                Text(
-                  'Seleccionar\nimagen',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black),
-                ),
-              ],
-            ),
+            child: state.file2 == null && state.imagenUrl2 == null
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.add_photo_alternate,
+                        size: 36,
+                        color: Colors.white,
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Seleccionar\nimagen',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  )
+                : state.file2 != null
+                ? Image.file(state.file2!, fit: BoxFit.cover)
+                : state.imagenUrl2 != null
+                ? FadeInImage.assetNetwork(
+                    image: state.imagenUrl2!,
+                    placeholder: 'assets/img/user_image.png',
+                    fit: BoxFit.fill,
+
+                    fadeInDuration: Duration(seconds: 1),
+                  )
+                : Container(),
           ),
         ),
       ),
@@ -182,10 +223,12 @@ class ProductFormContent extends StatelessWidget {
 
   Widget _textDescripcion() {
     return DefaultTextField(
+      key: ValueKey('descripcion-${state.id}'),
+
       label: 'Descripción',
       icon: Icons.edit,
       textInputAction: TextInputAction.next,
-      initialValue: product?.descripcion ?? '',
+      initialValue: state.descripcion.value,
       onChanged: (text) {
         bloc?.add(
           DescripcionChangedProductFormEvent(
@@ -201,10 +244,11 @@ class ProductFormContent extends StatelessWidget {
 
   Widget _textCodAlterno() {
     return DefaultTextField(
+      key: ValueKey('codAlterno-${state.id}'),
       label: 'Cod. Alterno',
       icon: Icons.qr_code,
       textInputAction: TextInputAction.next,
-      initialValue: product?.codAlterno ?? '',
+      initialValue: state.codAlterno ?? '',
       onChanged: (text) {
         bloc?.add(CodAlternoChangedProductFormEvent(codAlterno: text));
       },
@@ -213,11 +257,12 @@ class ProductFormContent extends StatelessWidget {
 
   Widget _textStock() {
     return DefaultTextField(
+      key: ValueKey('stock-${state.id}'),
       label: 'Stock',
       icon: Icons.numbers,
       textInputType: TextInputType.number,
       textInputAction: TextInputAction.next,
-      initialValue: product?.stock.toString(),
+      initialValue: state.stock.toString(),
       onChanged: (text) {
         bloc?.add(StockChangedProductFormEvent(stock: int.tryParse(text) ?? 0));
       },
@@ -231,7 +276,7 @@ class ProductFormContent extends StatelessWidget {
   }
 
   Widget _dropDownCategory() {
-    final idExists = product?.id ?? '';
+    final idExists = state.id;
     return DropdownButtonFormField<String>(
       initialValue: idExists.isNotEmpty ? state.idCategory : null,
       decoration: const InputDecoration(
@@ -256,25 +301,28 @@ class ProductFormContent extends StatelessWidget {
   }
 
   Widget _dropDownSubcategory() {
-    final exists = listaSubCategories.any((x) => x.id == state.idSubcategory);
+    final subs = listaSubCategories
+        .where((x) => x.idCategory == state.idCategory)
+        .toList();
+    final exists = subs.any((x) => x.id == state.idSubcategory);
     return DropdownButtonFormField<String>(
       initialValue: exists ? state.idSubcategory : null,
       decoration: InputDecoration(
         labelText: 'Subategoría',
         prefixIcon: Icon(Icons.subdirectory_arrow_right),
         border: OutlineInputBorder(),
-        hintText: state.idCategory.isEmpty
-            ? 'Primero elija una categoría'
-            : 'Seleccione una subcategoría',
+        // hintText: state.idCategory.isEmpty
+        //     ? 'Primero elija una categoría'
+        //     : 'Seleccione una subcategoría',
       ),
-      items: listaSubCategories.map((SubCategory x) {
+      items: subs.map((SubCategory x) {
         return DropdownMenuItem<String>(value: x.id, child: Text(x.nombre));
       }).toList(),
       onChanged: state.idCategory.isEmpty
           ? null
           : (value) {
               bloc?.add(
-                SubcategoryChangedProductFormEvent(idSubcategory: value ?? ''),
+                SubcategoryChangedProductFormEvent(idSubcategory: value!),
               );
             },
       validator: (value) {
@@ -302,7 +350,7 @@ class ProductFormContent extends StatelessWidget {
 
   Widget _buttonActualizar() {
     return DefaultButton(
-      text: product == null ? 'Crear' : 'Actualizar',
+      text: state.id.isEmpty ? 'Crear' : 'Actualizar',
       onPressed: () {
         if (state.formKey!.currentState!.validate()) {
           // bloc?.add(SubmittedSubCategoryFormEvent());

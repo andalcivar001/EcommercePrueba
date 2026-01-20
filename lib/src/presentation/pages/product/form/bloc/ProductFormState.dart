@@ -24,6 +24,8 @@ class ProductFormState extends Equatable {
   final bool isActive;
   final List<Category> listaCategories;
   final List<SubCategory> listaSubCategories;
+  final String? imagenUrl1;
+  final String? imagenUrl2;
 
   ProductFormState({
     this.id = '',
@@ -42,6 +44,8 @@ class ProductFormState extends Equatable {
     this.isActive = true,
     this.listaCategories = const [],
     this.listaSubCategories = const [],
+    this.imagenUrl1,
+    this.imagenUrl2,
   });
 
   ProductFormState copyWith({
@@ -61,6 +65,8 @@ class ProductFormState extends Equatable {
     bool? isActive,
     List<Category>? listaCategories,
     List<SubCategory>? listaSubCategories,
+    String? imagenUrl1,
+    String? imagenUrl2,
   }) {
     return ProductFormState(
       id: id ?? this.id,
@@ -79,6 +85,8 @@ class ProductFormState extends Equatable {
       isActive: isActive ?? this.isActive,
       listaCategories: listaCategories ?? this.listaCategories,
       listaSubCategories: listaSubCategories ?? this.listaSubCategories,
+      imagenUrl1: imagenUrl1 ?? this.imagenUrl1,
+      imagenUrl2: imagenUrl2 ?? this.imagenUrl2,
     );
   }
 
@@ -100,5 +108,7 @@ class ProductFormState extends Equatable {
     isActive,
     listaCategories,
     listaSubCategories,
+    imagenUrl1,
+    imagenUrl2,
   ];
 }

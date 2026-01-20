@@ -13,7 +13,6 @@ import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:injectable/injectable.dart';
 
 class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
   ProductUseCases productUseCases;
@@ -42,78 +41,90 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     InitProductFormEvent event,
     Emitter<ProductFormState> emit,
   ) async {
-    emit(state.copyWith(responseCategory: Loading(), formKey: formKey));
-    final Resource responseCategorias = await categoryUseCases.getCategories
-        .run();
-
-    List<Category> listaCategories = responseCategorias is Success
-        ? (responseCategorias as Success).data as List<Category>
-        : [];
-
-    emit(
-      state.copyWith(responseCategory: responseCategorias, formKey: formKey),
-    );
-
-    emit(state.copyWith(responseSubcategory: Loading(), formKey: formKey));
-
-    final Resource responseSubCategorias = await subCategoryUseCases
-        .getSubCategories
-        .run();
-
-    List<SubCategory> listaSubCategories = responseSubCategorias is Success
-        ? (responseSubCategorias as Success).data as List<SubCategory>
-        : [];
-
+    // 1) Arranca cargando (1 solo emit)
     emit(
       state.copyWith(
-        listaCategories: listaCategories,
-        listaSubCategories: listaSubCategories,
-        responseSubcategory: Success(<SubCategory>[]),
+        responseCategory: Loading(),
+        responseSubcategory: Loading(),
+        responseProduct: event.id.isNotEmpty
+            ? Loading()
+            : state.responseProduct,
         formKey: formKey,
       ),
     );
 
-    if (event.id.isNotEmpty) {
-      emit(state.copyWith(responseProduct: Loading(), formKey: formKey));
-      Resource responseProduct;
-      Product product;
-      responseProduct = await productUseCases.getBydId.run(event.id);
+    // 2) Pide categories + subcategories en paralelo
+    final results = await Future.wait<Resource>([
+      categoryUseCases.getCategories.run(),
+      subCategoryUseCases.getSubCategories.run(),
+    ]);
 
-      String descripcion = '',
-          codAlterno = '',
-          idCategory = '',
-          idSubcategory = '';
-      int stock = 0;
+    final responseCategorias = results[0];
+    final responseSubCategorias = results[1];
+
+    final List<Category> listaCategories = responseCategorias is Success
+        ? (responseCategorias.data as List<Category>)
+        : <Category>[];
+
+    final List<SubCategory> listaSubCategories =
+        responseSubCategorias is Success
+        ? (responseSubCategorias.data as List<SubCategory>)
+        : <SubCategory>[];
+
+    // 3) Si es edición, trae el producto
+    Resource? responseProduct;
+    Product? product;
+
+    if (event.id.isNotEmpty) {
+      responseProduct = await productUseCases.getBydId.run(event.id);
       if (responseProduct is Success) {
         product = responseProduct.data as Product;
-        descripcion = product.descripcion;
-        codAlterno = product.codAlterno ?? '';
-        stock = product.stock;
-        idCategory = product.idCategory;
-        idSubcategory = product.idSubcategory;
       }
-
-      emit(
-        state.copyWith(
-          responseProduct: responseProduct,
-          id: event.id,
-          descripcion: BlocFormItem(
-            value: descripcion,
-            error: descripcion.isNotEmpty ? null : 'Ingrese la descripcion',
-          ),
-          codAlterno: codAlterno,
-          stock: stock,
-          idCategory: idCategory,
-          idSubcategory: idSubcategory,
-          responseSubcategory: Success(
-            state.listaSubCategories
-                .where((x) => x.idCategory == idCategory)
-                .toList(),
-          ),
-          formKey: formKey,
-        ),
-      );
     }
+
+    // 4) Calcula valores finales
+    final String idCategory = product?.idCategory ?? '';
+    final String? idSubcategory = product?.idSubcategory; // String?
+    final String descripcionValue = product?.descripcion ?? '';
+    final String codAlterno = product?.codAlterno ?? '';
+    final int stock = product?.stock ?? 0;
+
+    // Lista filtrada para el dropdown (si decides seguir usando responseSubcategory filtrada)
+    final List<SubCategory> subsFiltradas = idCategory.isEmpty
+        ? <SubCategory>[]
+        : listaSubCategories.where((x) => x.idCategory == idCategory).toList();
+
+    // 5) Emit final (1 solo emit con todo listo)
+    emit(
+      state.copyWith(
+        // data base
+        listaCategories: listaCategories,
+        listaSubCategories: listaSubCategories,
+
+        // responses
+        responseCategory: responseCategorias,
+        responseSubcategory: product?.id != null
+            ? Success(subsFiltradas)
+            : Success(
+                listaSubCategories,
+              ), // o Success(listaSubCategories) si quieres todas
+        responseProduct: responseProduct,
+
+        // form
+        id: event.id,
+        idCategory: idCategory,
+        idSubcategory: idSubcategory,
+        descripcion: BlocFormItem(
+          value: descripcionValue,
+          error: descripcionValue.isNotEmpty ? null : 'Ingrese la descripcion',
+        ),
+        codAlterno: codAlterno,
+        stock: stock,
+        imagenUrl1: product?.imagen1,
+        imagenUrl2: product?.imagen2,
+        formKey: formKey,
+      ),
+    );
   }
 
   Future<void> _onDescripcionChanged(
@@ -151,16 +162,10 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     CategoryChangedProductFormEvent event,
     Emitter<ProductFormState> emit,
   ) async {
-    List<SubCategory> listaSubCategories = [];
-    listaSubCategories = state.listaSubCategories
-        .where((x) => x.idCategory == event.idCategory)
-        .toList();
-
     emit(
       state.copyWith(
         idCategory: event.idCategory,
         idSubcategory: null,
-        responseSubcategory: Success(listaSubCategories),
         formKey: formKey,
       ),
     );
@@ -209,6 +214,7 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
+      print('SELECIONO IMAGEN ${image.path}');
       emit(state.copyWith(file2: File(image.path), formKey: formKey));
     }
   }
@@ -220,7 +226,7 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
     if (image != null) {
-      emit(state.copyWith(file1: File(image.path), formKey: formKey));
+      emit(state.copyWith(file2: File(image.path), formKey: formKey));
     }
   }
 }
