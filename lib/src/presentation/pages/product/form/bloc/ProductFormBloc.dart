@@ -105,6 +105,11 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
           stock: stock,
           idCategory: idCategory,
           idSubcategory: idSubcategory,
+          responseSubcategory: Success(
+            state.listaSubCategories
+                .where((x) => x.idCategory == idCategory)
+                .toList(),
+          ),
           formKey: formKey,
         ),
       );
