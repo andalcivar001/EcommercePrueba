@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:ecommerce_prueba/src/domain/models/Category.dart';
+import 'package:ecommerce_prueba/src/domain/models/SubCategory.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:equatable/equatable.dart';
@@ -11,7 +13,7 @@ class ProductFormState extends Equatable {
   final String? codAlterno;
   final int stock;
   final String idCategory;
-  final String idSubcategory;
+  final String? idSubcategory;
   final Resource? response;
   final Resource? responseCategory;
   final Resource? responseSubcategory;
@@ -19,6 +21,9 @@ class ProductFormState extends Equatable {
   final File? file1;
   final File? file2;
   final GlobalKey<FormState>? formKey;
+  final bool isActive;
+  final List<Category> listaCategories;
+  final List<SubCategory> listaSubCategories;
 
   ProductFormState({
     this.id = '',
@@ -26,7 +31,7 @@ class ProductFormState extends Equatable {
     this.codAlterno,
     this.stock = 0,
     this.idCategory = '',
-    this.idSubcategory = '',
+    this.idSubcategory,
     this.response,
     this.responseCategory,
     this.responseSubcategory,
@@ -34,6 +39,9 @@ class ProductFormState extends Equatable {
     this.file1,
     this.file2,
     this.responseProduct,
+    this.isActive = true,
+    this.listaCategories = const [],
+    this.listaSubCategories = const [],
   });
 
   ProductFormState copyWith({
@@ -50,6 +58,9 @@ class ProductFormState extends Equatable {
     File? file1,
     File? file2,
     Resource? responseProduct,
+    bool? isActive,
+    List<Category>? listaCategories,
+    List<SubCategory>? listaSubCategories,
   }) {
     return ProductFormState(
       id: id ?? this.id,
@@ -59,12 +70,15 @@ class ProductFormState extends Equatable {
       idCategory: idCategory ?? this.idCategory,
       idSubcategory: idSubcategory ?? this.idSubcategory,
       response: response,
-      responseCategory: responseCategory,
-      responseSubcategory: responseSubcategory,
+      responseCategory: responseCategory ?? this.responseCategory,
+      responseSubcategory: responseSubcategory ?? this.responseSubcategory,
       formKey: formKey,
       file1: file1 ?? this.file1,
       file2: file2 ?? this.file2,
-      responseProduct: responseProduct,
+      responseProduct: responseProduct ?? this.responseProduct,
+      isActive: isActive ?? this.isActive,
+      listaCategories: listaCategories ?? this.listaCategories,
+      listaSubCategories: listaSubCategories ?? this.listaSubCategories,
     );
   }
 
@@ -83,5 +97,8 @@ class ProductFormState extends Equatable {
     responseCategory,
     responseSubcategory,
     responseProduct,
+    isActive,
+    listaCategories,
+    listaSubCategories,
   ];
 }

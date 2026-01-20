@@ -1,11 +1,13 @@
 import 'package:ecommerce_prueba/src/domain/models/Category.dart';
 import 'package:ecommerce_prueba/src/domain/models/Product.dart';
 import 'package:ecommerce_prueba/src/domain/models/SubCategory.dart';
+import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormState.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
-import 'package:ecommerce_prueba/src/presentation/widgets/DefaultIconBack.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/DefaultButton.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/DefaultTextField.dart';
 import 'package:flutter/material.dart';
 
@@ -58,7 +60,7 @@ class ProductFormContent extends StatelessWidget {
                   children: [
                     SizedBox(height: 16),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         GestureDetector(
                           onTap: () {
@@ -99,6 +101,14 @@ class ProductFormContent extends StatelessWidget {
                         Expanded(flex: 4, child: _textStock()),
                       ],
                     ),
+                    SizedBox(height: 16),
+                    _dropDownCategory(),
+                    SizedBox(height: 16),
+                    _dropDownSubcategory(),
+                    SizedBox(height: 16),
+                    _switchEstado(),
+                    SizedBox(height: 16),
+                    _buttonActualizar(),
                     // Aquí van los campos del formulario
                   ],
                 ),
@@ -192,7 +202,7 @@ class ProductFormContent extends StatelessWidget {
   Widget _textCodAlterno() {
     return DefaultTextField(
       label: 'Cod. Alterno',
-      icon: Icons.alt_route,
+      icon: Icons.qr_code,
       textInputAction: TextInputAction.next,
       initialValue: product?.codAlterno ?? '',
       onChanged: (text) {
@@ -216,6 +226,89 @@ class ProductFormContent extends StatelessWidget {
           return 'Ingrese el stock';
         }
         return null;
+      },
+    );
+  }
+
+  Widget _dropDownCategory() {
+    final idExists = product?.id ?? '';
+    return DropdownButtonFormField<String>(
+      initialValue: idExists.isNotEmpty ? state.idCategory : null,
+      decoration: const InputDecoration(
+        labelText: 'Categoría',
+        prefixIcon: Icon(Icons.category),
+        border: OutlineInputBorder(),
+      ),
+      items: listaCategories.map((Category x) {
+        return DropdownMenuItem<String>(value: x.id, child: Text(x.nombre));
+      }).toList(),
+      onChanged: (value) {
+        if (value == null) return;
+        bloc?.add(CategoryChangedProductFormEvent(idCategory: value));
+      },
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Seleccione una categoría';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _dropDownSubcategory() {
+    final exists = listaSubCategories.any((x) => x.id == state.idSubcategory);
+    return DropdownButtonFormField<String>(
+      initialValue: exists ? state.idSubcategory : null,
+      decoration: InputDecoration(
+        labelText: 'Subategoría',
+        prefixIcon: Icon(Icons.subdirectory_arrow_right),
+        border: OutlineInputBorder(),
+        hintText: state.idCategory.isEmpty
+            ? 'Primero elija una categoría'
+            : 'Seleccione una subcategoría',
+      ),
+      items: listaSubCategories.map((SubCategory x) {
+        return DropdownMenuItem<String>(value: x.id, child: Text(x.nombre));
+      }).toList(),
+      onChanged: state.idCategory.isEmpty
+          ? null
+          : (value) {
+              bloc?.add(
+                SubcategoryChangedProductFormEvent(idSubcategory: value ?? ''),
+              );
+            },
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Seleccione una subcategoría';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _switchEstado() {
+    return SwitchListTile(
+      title: Text('Estado:', style: TextStyle(fontSize: 14)),
+      value: state.isActive,
+      onChanged: (value) {
+        bloc?.add(EstadoChangedProductFormEvent(isActive: value));
+      },
+      activeThumbColor: Colors.white,
+      activeTrackColor: Colors.green,
+      inactiveThumbColor: Colors.grey,
+      inactiveTrackColor: Colors.grey.shade300,
+    );
+  }
+
+  Widget _buttonActualizar() {
+    return DefaultButton(
+      text: product == null ? 'Crear' : 'Actualizar',
+      onPressed: () {
+        if (state.formKey!.currentState!.validate()) {
+          // bloc?.add(SubmittedSubCategoryFormEvent());
+        } else {
+          AppToast.error('Formulario inválido');
+        }
       },
     );
   }

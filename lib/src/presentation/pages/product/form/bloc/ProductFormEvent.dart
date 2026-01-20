@@ -50,6 +50,13 @@ class SubcategoryChangedProductFormEvent extends ProductFormEvent {
   List<Object?> get props => [idSubcategory];
 }
 
+class EstadoChangedProductFormEvent extends ProductFormEvent {
+  final bool isActive;
+  const EstadoChangedProductFormEvent({required this.isActive});
+  @override
+  List<Object?> get props => [isActive];
+}
+
 class PickImageProductFormEvent1 extends ProductFormEvent {
   const PickImageProductFormEvent1();
 }

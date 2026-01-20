@@ -30,6 +30,7 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     on<StockChangedProductFormEvent>(_onStockChanged);
     on<CategoryChangedProductFormEvent>(_onCategoryChanged);
     on<SubcategoryChangedProductFormEvent>(_onSubcategoryChanged);
+    on<EstadoChangedProductFormEvent>(_onEstadoChanged);
     on<PickImageProductFormEvent1>(_onPickImage1);
     on<TakePhotoProductFormEvent1>(_onTakePhoto1);
     on<PickImageProductFormEvent2>(_onPickImage2);
@@ -45,6 +46,10 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     final Resource responseCategorias = await categoryUseCases.getCategories
         .run();
 
+    List<Category> listaCategories = responseCategorias is Success
+        ? (responseCategorias as Success).data as List<Category>
+        : [];
+
     emit(
       state.copyWith(responseCategory: responseCategorias, formKey: formKey),
     );
@@ -55,9 +60,15 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
         .getSubCategories
         .run();
 
+    List<SubCategory> listaSubCategories = responseSubCategorias is Success
+        ? (responseSubCategorias as Success).data as List<SubCategory>
+        : [];
+
     emit(
       state.copyWith(
-        responseSubcategory: responseSubCategorias,
+        listaCategories: listaCategories,
+        listaSubCategories: listaSubCategories,
+        responseSubcategory: Success(<SubCategory>[]),
         formKey: formKey,
       ),
     );
@@ -135,10 +146,16 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     CategoryChangedProductFormEvent event,
     Emitter<ProductFormState> emit,
   ) async {
+    List<SubCategory> listaSubCategories = [];
+    listaSubCategories = state.listaSubCategories
+        .where((x) => x.idCategory == event.idCategory)
+        .toList();
+
     emit(
       state.copyWith(
         idCategory: event.idCategory,
         idSubcategory: null,
+        responseSubcategory: Success(listaSubCategories),
         formKey: formKey,
       ),
     );
@@ -149,6 +166,13 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     Emitter<ProductFormState> emit,
   ) async {
     emit(state.copyWith(idSubcategory: event.idSubcategory, formKey: formKey));
+  }
+
+  Future<void> _onEstadoChanged(
+    EstadoChangedProductFormEvent event,
+    Emitter<ProductFormState> emit,
+  ) async {
+    emit(state.copyWith(isActive: event.isActive, formKey: formKey));
   }
 
   Future<void> _onPickImage1(
