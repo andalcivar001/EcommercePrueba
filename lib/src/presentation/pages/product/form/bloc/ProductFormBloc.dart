@@ -10,6 +10,7 @@ import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormState.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -34,6 +35,8 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     on<TakePhotoProductFormEvent1>(_onTakePhoto1);
     on<PickImageProductFormEvent2>(_onPickImage2);
     on<TakePhotoProductFormEvent2>(_onTakePhoto2);
+    on<SubmittedProductFormEvent>(_onSubmitted);
+    on<ResetProductFormEvent>(_onReset);
   }
   final formKey = GlobalKey<FormState>();
 
@@ -214,7 +217,6 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      print('SELECIONO IMAGEN ${image.path}');
       emit(state.copyWith(file2: File(image.path), formKey: formKey));
     }
   }
@@ -228,5 +230,63 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     if (image != null) {
       emit(state.copyWith(file2: File(image.path), formKey: formKey));
     }
+  }
+
+  Future<void> _onSubmitted(
+    SubmittedProductFormEvent event,
+    Emitter<ProductFormState> emit,
+  ) async {
+    if (state.idCategory.isEmpty) {
+      AppToast.warning('Debe seleccionar la categoria');
+      return;
+    }
+    final String idSubcategoria = state.idSubcategory ?? '';
+
+    if (idSubcategoria.isEmpty) {
+      AppToast.warning('Debe seleccionar la subcategoria');
+      return;
+    }
+
+    emit(state.copyWith(response: Loading(), formKey: formKey));
+    Resource response;
+
+    final Product product = Product(
+      id: state.id,
+      descripcion: state.descripcion.value,
+      codAlterno: state.codAlterno,
+      stock: state.stock,
+      idCategory: state.idCategory,
+      idSubcategory: idSubcategoria,
+      isActive: state.isActive,
+    );
+
+    if (state.id.isEmpty) {
+      response = await productUseCases.create.run(
+        product,
+        state.file1,
+        state.file2,
+      );
+    } else {
+      response = await productUseCases.update.run(
+        product,
+        state.id,
+        state.file1,
+        state.file2,
+      );
+    }
+
+    emit(state.copyWith(response: response, formKey: formKey));
+  }
+
+  Future<void> _onReset(
+    ResetProductFormEvent event,
+    Emitter<ProductFormState> emit,
+  ) async {
+    emit(
+      ProductFormState.initial().copyWith(
+        listaCategories: state.listaCategories,
+        listaSubCategories: state.listaSubCategories,
+      ),
+    );
   }
 }

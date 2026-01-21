@@ -72,3 +72,11 @@ class PickImageProductFormEvent2 extends ProductFormEvent {
 class TakePhotoProductFormEvent2 extends ProductFormEvent {
   const TakePhotoProductFormEvent2();
 }
+
+class SubmittedProductFormEvent extends ProductFormEvent {
+  const SubmittedProductFormEvent();
+}
+
+class ResetProductFormEvent extends ProductFormEvent {
+  const ResetProductFormEvent();
+}

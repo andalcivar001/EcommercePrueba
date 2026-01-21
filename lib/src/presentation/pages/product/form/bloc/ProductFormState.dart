@@ -90,6 +90,22 @@ class ProductFormState extends Equatable {
     );
   }
 
+  factory ProductFormState.initial() => ProductFormState(
+    formKey: GlobalKey<FormState>(),
+    descripcion: BlocFormItem(value: ''),
+    codAlterno: '',
+    stock: 0,
+    idCategory: '',
+    idSubcategory: '',
+    isActive: true,
+    listaCategories: [],
+    listaSubCategories: [],
+    file1: null,
+    file2: null,
+    imagenUrl1: null,
+    imagenUrl2: null,
+  );
+
   @override
   // TODO: implement props
   List<Object?> get props => [

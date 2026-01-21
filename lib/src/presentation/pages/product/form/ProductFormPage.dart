@@ -5,6 +5,8 @@ import 'package:ecommerce_prueba/src/presentation/pages/product/form/ProductForm
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormState.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +42,12 @@ class _ProductFormPageState extends State<ProductFormPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    bloc?.add(ResetProductFormEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     bloc = BlocProvider.of<ProductFormBloc>(context);
 
@@ -51,6 +59,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
           final responseSubcategory = state.responseSubcategory;
           if (responseState is Success) {
             AppToast.success('Producto guaradado correctamente');
+            //state.formKey!.currentState?.reset();
+            context.read<ProductListBloc>().add(InitProductListEvent());
           } else if (responseState is Error) {
             AppToast.error(
               'Error al guardar el producto ${responseState.message}',

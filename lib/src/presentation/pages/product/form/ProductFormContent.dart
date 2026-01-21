@@ -153,7 +153,7 @@ class ProductFormContent extends StatelessWidget {
                     ],
                   )
                 : state.file1 != null
-                ? Image.file(state.file1!, fit: BoxFit.cover)
+                ? Image.file(state.file1!, fit: BoxFit.fill)
                 : state.imagenUrl1 != null
                 ? FadeInImage.assetNetwork(
                     image: state.imagenUrl1!,
@@ -353,7 +353,7 @@ class ProductFormContent extends StatelessWidget {
       text: state.id.isEmpty ? 'Crear' : 'Actualizar',
       onPressed: () {
         if (state.formKey!.currentState!.validate()) {
-          // bloc?.add(SubmittedSubCategoryFormEvent());
+           bloc?.add(SubmittedProductFormEvent() );
         } else {
           AppToast.error('Formulario inválido');
         }
