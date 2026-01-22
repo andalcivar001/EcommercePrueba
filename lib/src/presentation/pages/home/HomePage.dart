@@ -90,6 +90,13 @@ class _HomePageState extends State<HomePage> {
                                   placeholder: 'assets/img/user_image.png',
                                   fit: BoxFit.cover,
                                   fadeInDuration: Duration(seconds: 1),
+                                  imageErrorBuilder:
+                                      (context, error, stackTrace) {
+                                        return Image.asset(
+                                          'assets/img/user_image.png',
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
                                 ),
                               ),
                             )

@@ -65,7 +65,7 @@ class ProductFormContent extends StatelessWidget {
                           },
                           child: Icon(
                             Icons.arrow_back_ios,
-                            size: 24,
+                            size: 28,
                             color: Colors.black,
                           ),
                         ),
@@ -83,9 +83,9 @@ class ProductFormContent extends StatelessWidget {
                     SizedBox(height: 16),
                     Row(
                       children: [
-                        _seleccionarImagen1(context),
+                        _imagen1(context, _seleccionarImagen()),
                         SizedBox(width: 10),
-                        _seleccionarImagen2(context),
+                        _imagen2(context, _seleccionarImagen()),
                       ],
                     ),
                     SizedBox(height: 16),
@@ -117,7 +117,29 @@ class ProductFormContent extends StatelessWidget {
     );
   }
 
-  Widget _seleccionarImagen1(BuildContext context) {
+  Widget _seleccionarImagen() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Color(0xFF1E3C72),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.black, width: 1.5),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(Icons.add_photo_alternate, size: 36, color: Colors.white),
+          SizedBox(height: 8),
+          Text(
+            'Seleccionar\nimagen',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _imagen1(BuildContext context, Widget seleccionar) {
     return Expanded(
       child: AspectRatio(
         aspectRatio: 1,
@@ -129,47 +151,31 @@ class ProductFormContent extends StatelessWidget {
               () => bloc?.add(TakePhotoProductFormEvent1()),
             );
           },
-          child: Container(
-            decoration: BoxDecoration(
-              color: Color(0xFF1E3C72),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.black, width: 1.5),
-            ),
-            child: state.file1 == null && state.imagenUrl1 == null
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        Icons.add_photo_alternate,
-                        size: 36,
-                        color: Colors.white,
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Seleccionar\nimagen',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  )
-                : state.file1 != null
-                ? Image.file(state.file1!, fit: BoxFit.fill)
-                : state.imagenUrl1 != null
-                ? FadeInImage.assetNetwork(
-                    image: state.imagenUrl1!,
-                    placeholder: 'assets/img/user_image.png',
-                    fit: BoxFit.fill,
+          child: state.file1 == null && state.imagenUrl1 == null
+              ? seleccionar
+              : state.file1 != null
+              ? Image.file(state.file1!, fit: BoxFit.fill)
+              : state.imagenUrl1 != null && state.imagenUrl1!.isNotEmpty
+              ? FadeInImage.assetNetwork(
+                  image: state.imagenUrl1!,
+                  placeholder: 'assets/img/no_image.jpg',
+                  fit: BoxFit.fill,
 
-                    fadeInDuration: Duration(seconds: 1),
-                  )
-                : Container(),
-          ),
+                  fadeInDuration: Duration(seconds: 1),
+                  imageErrorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/img/no_image.jpg',
+                      fit: BoxFit.cover,
+                    );
+                  },
+                )
+              : _seleccionarImagen(),
         ),
       ),
     );
   }
 
-  Widget _seleccionarImagen2(BuildContext context) {
+  Widget _imagen2(BuildContext context, Widget seleccionar) {
     return Expanded(
       child: AspectRatio(
         aspectRatio: 1,
@@ -181,41 +187,25 @@ class ProductFormContent extends StatelessWidget {
               () => bloc?.add(TakePhotoProductFormEvent2()),
             );
           },
-          child: Container(
-            decoration: BoxDecoration(
-              color: Color(0xFF1E3C72),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.black, width: 1.5),
-            ),
-            child: state.file2 == null && state.imagenUrl2 == null
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        Icons.add_photo_alternate,
-                        size: 36,
-                        color: Colors.white,
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Seleccionar\nimagen',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  )
-                : state.file2 != null
-                ? Image.file(state.file2!, fit: BoxFit.cover)
-                : state.imagenUrl2 != null
-                ? FadeInImage.assetNetwork(
-                    image: state.imagenUrl2!,
-                    placeholder: 'assets/img/user_image.png',
-                    fit: BoxFit.fill,
+          child: state.file2 == null && state.imagenUrl2 == null
+              ? seleccionar
+              : state.file2 != null
+              ? Image.file(state.file2!, fit: BoxFit.cover)
+              : state.imagenUrl2 != null && state.imagenUrl2!.isNotEmpty
+              ? FadeInImage.assetNetwork(
+                  image: state.imagenUrl2!,
+                  placeholder: 'assets/img/no_image.jpg',
+                  fit: BoxFit.fill,
 
-                    fadeInDuration: Duration(seconds: 1),
-                  )
-                : Container(),
-          ),
+                  fadeInDuration: Duration(seconds: 1),
+                  imageErrorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/img/no_image.jpg',
+                      fit: BoxFit.cover,
+                    );
+                  },
+                )
+              : _seleccionarImagen(),
         ),
       ),
     );
@@ -353,7 +343,7 @@ class ProductFormContent extends StatelessWidget {
       text: state.id.isEmpty ? 'Crear' : 'Actualizar',
       onPressed: () {
         if (state.formKey!.currentState!.validate()) {
-           bloc?.add(SubmittedProductFormEvent() );
+          bloc?.add(SubmittedProductFormEvent());
         } else {
           AppToast.error('Formulario inválido');
         }

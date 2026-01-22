@@ -258,6 +258,8 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
       idCategory: state.idCategory,
       idSubcategory: idSubcategoria,
       isActive: state.isActive,
+      imagen1: state.imagenUrl1,
+      imagen2: state.imagenUrl2,
     );
 
     if (state.id.isEmpty) {

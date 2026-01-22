@@ -1,5 +1,6 @@
 import 'package:ecommerce_prueba/src/domain/models/Product.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListEvent.dart';
 import 'package:flutter/material.dart';
 
 class Productlistitem extends StatelessWidget {
@@ -59,9 +60,15 @@ class Productlistitem extends StatelessWidget {
                   child: ClipOval(
                     child: FadeInImage.assetNetwork(
                       image: imagen1,
-                      placeholder: 'assets/img/user_image.png',
+                      placeholder: 'assets/img/no_image.jpg',
                       fit: BoxFit.cover,
                       fadeInDuration: Duration(seconds: 1),
+                      imageErrorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/img/no_image.jpg',
+                          fit: BoxFit.cover,
+                        );
+                      },
                     ),
                   ),
                 )
@@ -76,7 +83,7 @@ class Productlistitem extends StatelessWidget {
                   child: ClipOval(
                     child: FadeInImage.assetNetwork(
                       image: imagen2,
-                      placeholder: 'assets/img/user_image.png',
+                      placeholder: 'assets/img/no_image.jpg',
                       fit: BoxFit.cover,
                       fadeInDuration: Duration(seconds: 1),
                     ),
@@ -107,7 +114,9 @@ class Productlistitem extends StatelessWidget {
               ),
               SizedBox(height: 4),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  bloc?.add(DeleteProductListEvent(id: product.id));
+                },
                 child: Icon(Icons.delete, size: 20, color: Colors.red),
               ),
             ],

@@ -21,6 +21,7 @@ import 'package:ecommerce_prueba/src/domain/useCases/Category/DeleteCategoryUseC
 import 'package:ecommerce_prueba/src/domain/useCases/Category/GetCategoriesUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/UpdateCategoryUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/CreateProductUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Product/DeleteProductUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductByIdUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductsUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/ProductUseCases.dart';
@@ -127,7 +128,8 @@ abstract class Appmodule {
   ProductUseCases get productUseCases => ProductUseCases(
     getProducts: GetProductUseCase(productRepository),
     getBydId: GetProductByIdUaseCase(productRepository),
-    create:  CreateProductUseCase(productRepository),
-    update:  UpdateProductUseCase(productRepository)   
+    create: CreateProductUseCase(productRepository),
+    update: UpdateProductUseCase(productRepository),
+    delete: DeleteProductUseCase(productRepository),
   );
 }
