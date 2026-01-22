@@ -62,5 +62,10 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
   Future<void> _onDelete(
     DeleteProductListEvent event,
     Emitter<ProductListState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(response: Loading(), formKey: formKey));
+
+    final Resource response = await productUseCases.delete.run(event.id);
+    emit(state.copyWith(response: response, formKey: formKey));
+  }
 }

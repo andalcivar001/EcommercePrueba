@@ -1,5 +1,6 @@
 import 'package:ecommerce_prueba/src/domain/models/Product.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListEvent.dart';
 import 'package:flutter/material.dart';
 
 class Productlistitem extends StatelessWidget {
@@ -107,7 +108,9 @@ class Productlistitem extends StatelessWidget {
               ),
               SizedBox(height: 4),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  bloc?.add(DeleteProductListEvent(id: product.id));
+                },
                 child: Icon(Icons.delete, size: 20, color: Colors.red),
               ),
             ],

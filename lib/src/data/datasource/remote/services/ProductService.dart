@@ -89,15 +89,6 @@ class ProductService {
           ),
         );
       }
-
-      // request.fields['product'] = json.encode({
-      //   'descripcion': product.descripcion,
-      //   'codAlterno': product.codAlterno,
-      //   'stock': product.stock,
-      //   'idCategory': product.idCategory,
-      //   'idSubcategory': product.idSubcategory,
-      //   'isActive': product.isActive,
-      // });
       request.fields['descripcion'] = product.descripcion;
       request.fields['codAlterno'] = product.codAlterno ?? '';
       request.fields['stock'] = product.stock.toString();
@@ -157,12 +148,13 @@ class ProductService {
         );
       }
 
-      request.fields['product'] = json.encode({
-        'descripcion': product.descripcion,
-        'codAlterno': product.codAlterno,
-        'stock': product.stock,
-        'idCategory': product.idCategory,
-      });
+      request.fields['descripcion'] = product.descripcion;
+      request.fields['codAlterno'] = product.codAlterno ?? '';
+      request.fields['stock'] = product.stock.toString();
+      request.fields['idCategory'] = product.idCategory;
+      request.fields['idSubcategory'] = product.idSubcategory;
+      request.fields['isActive'] = product.isActive.toString();
+
       final response = await request.send();
       final data = json.decode(
         await response.stream.transform(utf8.decoder).first,

@@ -1,4 +1,5 @@
 import 'package:ecommerce_prueba/src/domain/useCases/Product/CreateProductUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Product/DeleteProductUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductByIdUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductsUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/UpdateProductUseCase.dart';
@@ -8,5 +9,12 @@ class ProductUseCases {
   GetProductByIdUaseCase getBydId;
   CreateProductUseCase create;
   UpdateProductUseCase update;
-  ProductUseCases({required this.getProducts, required this.getBydId , required this.create, required this.update  });
+  DeleteProductUseCase delete;
+  ProductUseCases({
+    required this.getProducts,
+    required this.getBydId,
+    required this.create,
+    required this.update,
+    required this.delete,
+  });
 }
