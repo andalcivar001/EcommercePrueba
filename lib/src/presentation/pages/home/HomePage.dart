@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                                 child: FadeInImage.assetNetwork(
                                   image: imagen,
                                   placeholder: 'assets/img/user_image.png',
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fill,
                                   fadeInDuration: Duration(seconds: 1),
                                   imageErrorBuilder:
                                       (context, error, stackTrace) {

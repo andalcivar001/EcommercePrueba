@@ -89,15 +89,6 @@ class ProductService {
           ),
         );
       }
-
-      // request.fields['product'] = json.encode({
-      //   'descripcion': product.descripcion,
-      //   'codAlterno': product.codAlterno,
-      //   'stock': product.stock,
-      //   'idCategory': product.idCategory,
-      //   'idSubcategory': product.idSubcategory,
-      //   'isActive': product.isActive,
-      // });
       request.fields['descripcion'] = product.descripcion;
       request.fields['codAlterno'] = product.codAlterno ?? '';
       request.fields['stock'] = product.stock.toString();
@@ -157,6 +148,7 @@ class ProductService {
         );
       }
 
+<<<<<<< HEAD
       // request.fields['product'] = json.encode({
       //   'descripcion': product.descripcion,
       //   'codAlterno': product.codAlterno,
@@ -165,6 +157,8 @@ class ProductService {
       //   'idSubcategory': product.idSubcategory,
       //   'isActive': product.isActive,
       // });
+=======
+>>>>>>> 44ffa99dee544c41236262ea09e62c6ed503240f
       request.fields['descripcion'] = product.descripcion;
       request.fields['codAlterno'] = product.codAlterno ?? '';
       request.fields['stock'] = product.stock.toString();
@@ -172,7 +166,10 @@ class ProductService {
       request.fields['idSubcategory'] = product.idSubcategory;
       request.fields['isActive'] = product.isActive.toString();
 
+<<<<<<< HEAD
       print('REQUEST CREAR PRODUCTO ${request.files} ');
+=======
+>>>>>>> 44ffa99dee544c41236262ea09e62c6ed503240f
       final response = await request.send();
       final data = json.decode(
         await response.stream.transform(utf8.decoder).first,

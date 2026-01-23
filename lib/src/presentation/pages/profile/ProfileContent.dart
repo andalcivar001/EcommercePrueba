@@ -126,12 +126,12 @@ class ProfileContent extends StatelessWidget {
             ),
             child: ClipOval(
               child: imagenState != null
-                  ? Image.file(imagenState, fit: BoxFit.cover)
+                  ? Image.file(imagenState, fit: BoxFit.fill)
                   : imagenUser != null && imagenUser.isNotEmpty
                   ? FadeInImage.assetNetwork(
                       image: imagenUser,
                       placeholder: 'assets/img/user_image.png',
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       fadeInDuration: Duration(seconds: 1),
                       imageErrorBuilder: (context, error, stackTrace) {
                         return Image.asset(
