@@ -117,16 +117,18 @@ class ProductFormContent extends StatelessWidget {
     );
   }
 
+  final BorderRadius _radius = BorderRadius.circular(20);
+
   Widget _seleccionarImagen() {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFF1E3C72),
-        borderRadius: BorderRadius.circular(20),
+        color: const Color(0xFF1E3C72),
+        borderRadius: _radius,
         border: Border.all(color: Colors.black, width: 1.5),
       ),
-      child: Column(
+      child: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Icon(Icons.add_photo_alternate, size: 36, color: Colors.white),
           SizedBox(height: 8),
           Text(
@@ -151,25 +153,13 @@ class ProductFormContent extends StatelessWidget {
               () => bloc?.add(TakePhotoProductFormEvent1()),
             );
           },
-          child: state.file1 == null && state.imagenUrl1 == null
-              ? seleccionar
-              : state.file1 != null
-              ? Image.file(state.file1!, fit: BoxFit.fill)
-              : state.imagenUrl1 != null && state.imagenUrl1!.isNotEmpty
-              ? FadeInImage.assetNetwork(
-                  image: state.imagenUrl1!,
-                  placeholder: 'assets/img/no_image.jpg',
-                  fit: BoxFit.fill,
-
-                  fadeInDuration: Duration(seconds: 1),
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      'assets/img/no_image.jpg',
-                      fit: BoxFit.cover,
-                    );
-                  },
-                )
-              : _seleccionarImagen(),
+          child: Container(
+            decoration: BoxDecoration(borderRadius: _radius),
+            child: ClipRRect(
+              borderRadius: _radius,
+              child: _contenidoImagen(seleccionar),
+            ),
+          ),
         ),
       ),
     );
@@ -209,6 +199,28 @@ class ProductFormContent extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _contenidoImagen(Widget seleccionar) {
+    if (state.file1 == null && state.imagenUrl1 == null) return seleccionar;
+
+    if (state.file1 != null) {
+      return Image.file(state.file1!, fit: BoxFit.cover);
+    }
+
+    if (state.imagenUrl1 != null && state.imagenUrl1!.isNotEmpty) {
+      return FadeInImage.assetNetwork(
+        image: state.imagenUrl1!,
+        placeholder: 'assets/img/no_image.jpg',
+        fit: BoxFit.cover,
+        fadeInDuration: const Duration(seconds: 1),
+        imageErrorBuilder: (context, error, stackTrace) {
+          return Image.asset('assets/img/no_image.jpg', fit: BoxFit.cover);
+        },
+      );
+    }
+
+    return _seleccionarImagen();
   }
 
   Widget _textDescripcion() {

@@ -1,6 +1,7 @@
 import 'package:ecommerce_prueba/src/domain/models/Category.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/utils/SelectConfirmDialog.dart';
 import 'package:flutter/material.dart';
 
 class CategoryListItem extends StatelessWidget {
@@ -33,7 +34,10 @@ class CategoryListItem extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                bloc?.add(DeleteCategoryListEvent(id: _category.id));
+                selectConfirmDialog(
+                  context,
+                  () => bloc?.add(DeleteCategoryListEvent(id: _category.id)),
+                );
               },
               icon: Icon(Icons.delete, color: Colors.red),
             ),

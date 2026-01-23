@@ -63,17 +63,10 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
     DeleteProductListEvent event,
     Emitter<ProductListState> emit,
   ) async {
-<<<<<<< HEAD
     emit(state.copyWith(responseDelete: Loading(), formKey: formKey));
 
     final Resource response = await productUseCases.delete.run(event.id);
 
     emit(state.copyWith(responseDelete: response, formKey: formKey));
-=======
-    emit(state.copyWith(response: Loading(), formKey: formKey));
-
-    final Resource response = await productUseCases.delete.run(event.id);
-    emit(state.copyWith(response: response, formKey: formKey));
->>>>>>> 44ffa99dee544c41236262ea09e62c6ed503240f
   }
 }

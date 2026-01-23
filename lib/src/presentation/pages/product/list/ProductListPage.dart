@@ -105,7 +105,7 @@ class _ProductListPageState extends State<ProductListPage> {
                     const SizedBox(height: 5),
                     Container(
                       margin: EdgeInsets.only(top: 5),
-                      child: products.length == 0
+                      child: products.isEmpty
                           ? Text(
                               'No hay productos creados',
                               style: TextStyle(
@@ -119,7 +119,7 @@ class _ProductListPageState extends State<ProductListPage> {
                       child: ListView.builder(
                         itemCount: products.length,
                         itemBuilder: (context, index) {
-                          return Productlistitem(bloc, products[index]);
+                          return ProductListItem(bloc, products[index]);
                         },
                       ),
                     ),
