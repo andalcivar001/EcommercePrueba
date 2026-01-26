@@ -1,5 +1,6 @@
 import 'package:ecommerce_prueba/main.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/list/CategoryListPage.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/client/list/ClientListPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeState.dart';
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> {
     CategoryListPage(),
     SubCategoryListPage(),
     ProductListPage(),
+    ClientListPage(),
   ];
 
   @override
@@ -149,6 +151,8 @@ class _HomePageState extends State<HomePage> {
                 ),
 
                 _drawerItem(icon: Icons.list_alt, text: 'Productos', index: 4),
+
+                _drawerItem(icon: Icons.people, text: 'Clientes', index: 5),
 
                 const Spacer(),
 

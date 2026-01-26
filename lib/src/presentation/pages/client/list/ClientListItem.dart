@@ -1,24 +1,21 @@
+import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListBloc.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_prueba/src/domain/models/Product.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListBloc.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListEvent.dart';
-import 'package:ecommerce_prueba/src/presentation/utils/SelectConfirmDialog.dart';
+import 'package:ecommerce_prueba/src/domain/models/Client.dart';
 
-class ProductListItem extends StatelessWidget {
-  final ProductListBloc? bloc;
-  final Product product;
+class ClientListItem extends StatelessWidget {
+  final ClientListBloc? bloc;
+  final Client client;
 
-  const ProductListItem(this.bloc, this.product, {super.key});
+  const ClientListItem(this.bloc, this.client, {super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final imageUrl = (product.imagen1?.isNotEmpty ?? false)
-        ? product.imagen1!
-        : (product.imagen2?.isNotEmpty ?? false)
-        ? product.imagen2!
-        : null;
-
+    final String tipoIdentificacion = client.tipoIdentificacion == 'C'
+        ? 'Cédula'
+        : client.tipoIdentificacion == 'R'
+        ? 'Ruc'
+        : 'Pasaporte';
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -27,7 +24,6 @@ class ProductListItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _AvatarImage(imageUrl: imageUrl),
             const SizedBox(width: 12),
 
             // Centro: texto con espacio real
@@ -36,7 +32,7 @@ class ProductListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.descripcion,
+                    client.nombre,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.titleMedium?.copyWith(
@@ -49,8 +45,11 @@ class ProductListItem extends StatelessWidget {
                     spacing: 10,
                     runSpacing: 6,
                     children: [
-                      _InfoChip(label: 'Cod', value: product.codAlterno ?? '-'),
-                      _InfoChip(label: 'Stock', value: '${product.stock}'),
+                      _InfoChip(label: 'Tipo', value: tipoIdentificacion),
+                      _InfoChip(
+                        label: '# Ident.',
+                        value: client.numeroIdentificacion,
+                      ),
                     ],
                   ),
                 ],
@@ -68,11 +67,11 @@ class ProductListItem extends StatelessWidget {
                   tooltip: 'Editar',
                   icon: Icon(Icons.edit, color: Colors.blue),
                   onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      'product/form',
-                      arguments: product.id,
-                    );
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   'client/form',
+                    //   arguments: client.id,
+                    // );
                   },
                 ),
                 IconButton(
@@ -81,52 +80,16 @@ class ProductListItem extends StatelessWidget {
                   icon: Icon(Icons.delete, color: Colors.red),
                   color: theme.colorScheme.error,
                   onPressed: () {
-                    selectConfirmDialog(
-                      context,
-                      () => bloc?.add(DeleteProductListEvent(id: product.id)),
-                    );
+                    // selectConfirmDialog(
+                    //   context,
+                    //   () => bloc?.add(DeleteClientListEvent(id: client.id)),
+                    // );
                   },
                 ),
               ],
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-Widget _noImage() {
-  return Image.asset('assets/img/no_image.jpg', fit: BoxFit.cover);
-}
-
-class _AvatarImage extends StatelessWidget {
-  final String? imageUrl;
-  const _AvatarImage({required this.imageUrl});
-
-  @override
-  Widget build(BuildContext context) {
-    const borderColor = Color(0xFF1E3C72);
-
-    return Container(
-      width: 64,
-      height: 64,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: borderColor, width: 2),
-      ),
-      child: ClipOval(
-        child: imageUrl == null
-            ? _noImage()
-            : FadeInImage.assetNetwork(
-                image: imageUrl!,
-                placeholder: 'assets/img/no_image.jpg',
-                fit: BoxFit.cover,
-                fadeInDuration: const Duration(milliseconds: 250),
-                imageErrorBuilder: (context, error, stackTrace) {
-                  return _noImage();
-                },
-              ),
       ),
     );
   }

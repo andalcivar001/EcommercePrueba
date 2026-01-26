@@ -1,65 +1,65 @@
-import 'package:ecommerce_prueba/src/domain/models/Product.dart';
+import 'package:ecommerce_prueba/src/domain/models/Client.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/product/list/ProductListItem.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListBloc.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListEvent.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListState.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/client/list/ClientListItem.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListState.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProductListPage extends StatefulWidget {
-  const ProductListPage({super.key});
+class ClientListPage extends StatefulWidget {
+  const ClientListPage({super.key});
 
   @override
-  State<ProductListPage> createState() => _ProductListPageState();
+  State<ClientListPage> createState() => _ClientListPageState();
 }
 
-class _ProductListPageState extends State<ProductListPage> {
-  ProductListBloc? bloc;
+class _ClientListPageState extends State<ClientListPage> {
+  ClientListBloc? bloc;
 
   @override
   Widget build(BuildContext context) {
-    bloc = BlocProvider.of<ProductListBloc>(context);
+    bloc = BlocProvider.of<ClientListBloc>(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, 'product/form');
+          //   Navigator.pushNamed(context, 'client/form');
         },
         backgroundColor: Colors.blue[700],
         child: Icon(Icons.add, color: Colors.white),
       ),
-      body: BlocListener<ProductListBloc, ProductListState>(
+      body: BlocListener<ClientListBloc, ClientListState>(
         listener: (context, state) {
           final responseState = state.response;
           if (responseState is Error) {
             AppToast.error(
-              'Error al cargar los productos ${responseState.message}',
+              'Error al cargar los clientes ${responseState.message}',
             );
           }
           final responseDeleteState = state.responseDelete;
           if (responseDeleteState is Success) {
-            AppToast.success('Producto eliminado correctamente');
-            bloc?.add(InitProductListEvent());
+            AppToast.success('Cliente eliminado correctamente');
+            bloc?.add(InitClientListEvent());
           } else if (responseDeleteState is Error) {
             AppToast.error(
-              'Error eliminando el producto ${responseDeleteState.message}',
+              'Error eliminando el cliente ${responseDeleteState.message}',
             );
           }
         },
-        child: BlocBuilder<ProductListBloc, ProductListState>(
+        child: BlocBuilder<ClientListBloc, ClientListState>(
           builder: (context, state) {
             final response = state.response;
             final responseDelete = state.responseDelete;
             if (response is Success) {
-              List<Product> products = response.data as List<Product>;
+              List<Client> clients = response.data as List<Client>;
               return Padding(
                 padding: EdgeInsetsGeometry.all(16),
                 child: Column(
                   children: [
                     Container(
                       child: Text(
-                        'Productos',
+                        'Clientes',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
@@ -80,13 +80,12 @@ class _ProductListPageState extends State<ProductListPage> {
                       ),
                     ),
                     Container(
-                      child:
-                          products.isNotEmpty || state.listaProduct!.isNotEmpty
+                      child: clients.isNotEmpty || state.listaClient!.isNotEmpty
                           ? TextField(
                               //  controller: SearchController(),
                               onChanged: (text) {
                                 bloc?.add(
-                                  BusquedaChangedProductListEvent(
+                                  BusquedaChangedClientListEvent(
                                     busqueda: text,
                                   ),
                                 );
@@ -101,13 +100,12 @@ class _ProductListPageState extends State<ProductListPage> {
                             )
                           : Container(),
                     ),
-
                     const SizedBox(height: 5),
                     Container(
                       margin: EdgeInsets.only(top: 5),
-                      child: products.isEmpty
+                      child: clients.isEmpty
                           ? Text(
-                              'No hay productos creados',
+                              'No hay clientes creados',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -117,14 +115,14 @@ class _ProductListPageState extends State<ProductListPage> {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: products.length,
+                        itemCount: clients.length,
                         itemBuilder: (context, index) {
-                          return ProductListItem(bloc, products[index]);
+                          return ClientListItem(bloc, clients[index]);
                         },
                       ),
                     ),
                     Text(
-                      'Cantidad de productos: ${products.length.toString()}',
+                      'Cantidad de clientes: ${clients.length.toString()}',
                       style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                     ),
                   ],

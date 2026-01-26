@@ -1,17 +1,20 @@
 import 'package:ecommerce_prueba/src/data/datasource/local/SharedPref.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/AuthService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/CategoryService.dart';
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/ClientService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ProductService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/SubCategoryService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/UserService.dart';
 import 'package:ecommerce_prueba/src/data/repository/AuthRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/CategoryRepositoryImpl.dart';
+import 'package:ecommerce_prueba/src/data/repository/ClienteRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/ProductRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/SubCategoryRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/UserRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/domain/models/AuthResponse.dart';
 import 'package:ecommerce_prueba/src/domain/repository/AuthRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/CategoryRepository.dart';
+import 'package:ecommerce_prueba/src/domain/repository/ClientRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/ProductRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/SubCategoryRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/UserRepository.dart';
@@ -20,6 +23,11 @@ import 'package:ecommerce_prueba/src/domain/useCases/Category/CreateCategoryUseC
 import 'package:ecommerce_prueba/src/domain/useCases/Category/DeleteCategoryUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/GetCategoriesUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/UpdateCategoryUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Client/ClientUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Client/GetCitiesByProvinceUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Client/GetClientByIdUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Client/GetClientsUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Client/GetProvincesUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/CreateProductUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/DeleteProductUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductByIdUseCase.dart';
@@ -75,6 +83,9 @@ abstract class Appmodule {
   @injectable
   ProductService get productService => ProductService(token);
 
+  @injectable
+  ClienteService get clientService => ClienteService(token);
+
   /******** REPOSITORIOS *********** */ ////
   @injectable
   AuthRepository get authRepository =>
@@ -92,6 +103,8 @@ abstract class Appmodule {
 
   ProductRepository get productRepository =>
       ProductRepositoryImpl(productService);
+
+  ClientRepository get clientRepository => ClientRepositoryImpl(clientService);
 
   /********* USECASE *******/
   ///
@@ -131,5 +144,13 @@ abstract class Appmodule {
     create: CreateProductUseCase(productRepository),
     update: UpdateProductUseCase(productRepository),
     delete: DeleteProductUseCase(productRepository),
+  );
+
+  @injectable
+  ClientUseCases get clientUseCases => ClientUseCases(
+    getClients: GetClientsUseCase(clientRepository),
+    getCitiesByProvince: GetCitiesByProvince(clientRepository),
+    getProvinces: GetProvincesUseCase(clientRepository),
+    getClientById: GetClientByIdUseCase(clientRepository),
   );
 }

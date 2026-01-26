@@ -39,7 +39,7 @@ class _SubCategoryListPageState extends State<SubCategoryListPage> {
 
           final responseDeleteState = state.responseDelete;
           if (responseDeleteState is Success) {
-            AppToast.success('Categoria eliminada correctamente');
+            AppToast.success('Subcategoria eliminada correctamente');
             bloc?.add(InitSubCategoryListEvent());
           } else if (responseDeleteState is Error) {
             AppToast.error(responseDeleteState.message);
