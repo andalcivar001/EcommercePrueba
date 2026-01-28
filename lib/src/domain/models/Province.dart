@@ -9,17 +9,20 @@ Province provinceFromJson(String str) => Province.fromJson(json.decode(str));
 String provinceToJson(Province data) => json.encode(data.toJson());
 
 class Province {
+  String id;
   String nombre;
   String codigoProvincia;
   bool? isActive;
 
   Province({
+    required this.id,
     required this.nombre,
     required this.codigoProvincia,
     this.isActive,
   });
 
   factory Province.fromJson(Map<String, dynamic> json) => Province(
+    id: json["_id"],
     nombre: json["nombre"],
     codigoProvincia: json["codigoProvincia"],
     isActive: json["isActive"] ?? true,
@@ -35,6 +38,7 @@ class Province {
   }
 
   Map<String, dynamic> toJson() => {
+    "_id": id,
     "nombre": nombre,
     "codigoProvincia": codigoProvincia,
     "isActive": isActive ?? true,

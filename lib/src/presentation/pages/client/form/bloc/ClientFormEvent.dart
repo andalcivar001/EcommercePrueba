@@ -8,7 +8,7 @@ abstract class ClientFormEvent extends Equatable {
 }
 
 class InitClientFormEvent extends ClientFormEvent {
-  final String? id;
+  final String id;
   const InitClientFormEvent({required this.id});
   @override
   List<Object?> get props => [id];

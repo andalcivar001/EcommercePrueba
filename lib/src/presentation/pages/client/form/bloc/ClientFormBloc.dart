@@ -1,9 +1,16 @@
+import 'package:ecommerce_prueba/src/domain/models/City.dart';
+import 'package:ecommerce_prueba/src/domain/models/Client.dart';
+import 'package:ecommerce_prueba/src/domain/models/Province.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Client/ClientUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/form/bloc/ClientFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/form/bloc/ClientFormState.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
-  ClientFormBloc() : super(ClientFormState()) {
+  ClientUseCases clientUseCases;
+  ClientFormBloc(this.clientUseCases) : super(ClientFormState()) {
     on<InitClientFormEvent>(_onInit);
     on<NombreChangedClientFormEvent>(_onNombreChanged);
     on<TipoIdentificacionChangedClientFormEvent>(_onTipoIdentificacionChanged);
@@ -22,10 +29,72 @@ class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
     on<EstadoChangedClientFormEvent>(_onEstadoChanged);
     on<ResetFormClientFormEvent>(_onResetForm);
   }
+  final formKey = GlobalKey<FormState>();
+
   Future<void> _onInit(
     InitClientFormEvent event,
     Emitter<ClientFormState> emit,
-  ) async {}
+  ) async {
+    emit(
+      state.copyWith(
+        responseProvinces: Loading(),
+        responseCities: Loading(),
+        responseCliente: event.id.isNotEmpty
+            ? Loading()
+            : state.responseCliente,
+        formKey: formKey,
+      ),
+    );
+
+    // 2) Pide provincias + ciudades en paralelo
+    final results = await Future.wait<Resource>([
+      clientUseCases.getProvinces.run(),
+      clientUseCases.getCities.run(),
+    ]);
+
+    final responseProvincias = results[0];
+    final responseCiuidades = results[1];
+
+    final List<Province> listaProvincia = responseProvincias is Success
+        ? (responseProvincias.data as List<Province>)
+        : <Province>[];
+
+    final List<City> listaCiudades = responseCiuidades is Success
+        ? (responseCiuidades.data as List<City>)
+        : <City>[];
+
+    // 3) Si es edición, trae el cliente
+    Resource? responseCliente;
+    Client? cliente;
+
+    if (event.id.isNotEmpty) {
+      responseCliente = await clientUseCases.getClientById.run(event.id);
+      if (responseCliente is Success) {
+        cliente = responseCliente as Client;
+      }
+    }
+
+    // 4) Calcula valores finales
+    final String nombre = cliente?.nombre ?? '';
+    final String tipoIdentificacion = cliente?.tipoIdentificacion ?? '';
+    final String numeroIdentificacion = cliente?.numeroIdentificacion ?? '';
+    final String email = cliente?.email ?? '';
+    final String? direccion = cliente?.direccion;
+    final String? telefono = cliente?.telefono;
+    final String idProvincia = cliente?.idProvincia ?? '';
+    final String? idCiudad = cliente?.idCiudad;
+
+    final Province? provincia = idProvincia.isNotEmpty
+        ? listaProvincia.firstWhere((x) => x.id == idProvincia)
+        : null;
+
+    final List<City> ciudadesFiltradas =
+        idProvincia.isNotEmpty && provincia != null
+        ? listaCiudades
+              .where((x) => x.codigoProvincia == provincia.codigoProvincia)
+              .toList()
+        : <City>[];
+  }
 
   Future<void> _onNombreChanged(
     NombreChangedClientFormEvent event,

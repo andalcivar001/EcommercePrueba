@@ -11,7 +11,7 @@ class ClientFormState extends Equatable {
   final BlocFormItem numeroIdentificacion;
   final BlocFormItem email;
   final String? direccion;
-  final int? telefono;
+  final String? telefono;
   final String idProvincia;
   final String? idCiudad;
   final double? latitud;
@@ -22,6 +22,7 @@ class ClientFormState extends Equatable {
   final GlobalKey<FormState>? formKey;
   final Resource? responseProvinces;
   final Resource? responseCities;
+  final Resource? responseCliente;
   final bool isActive;
 
   ClientFormState({
@@ -45,6 +46,7 @@ class ClientFormState extends Equatable {
     this.responseProvinces,
     this.responseCities,
     this.isActive = true,
+    this.responseCliente,
   });
 
   ClientFormState copyWith({
@@ -54,7 +56,7 @@ class ClientFormState extends Equatable {
     BlocFormItem? numeroIdentificacion,
     BlocFormItem? email,
     String? direccion,
-    int? telefono,
+    String? telefono,
     String? idProvincia,
     String? idCiudad,
     double? latitud,
@@ -66,6 +68,7 @@ class ClientFormState extends Equatable {
     Resource? responseProvinces,
     Resource? responseCities,
     bool? isActive,
+    Resource? responseCliente,
   }) {
     return ClientFormState(
       id: id ?? this.id,
@@ -86,6 +89,7 @@ class ClientFormState extends Equatable {
       responseProvinces: responseProvinces ?? this.responseProvinces,
       responseCities: responseCities ?? this.responseCities,
       isActive: isActive ?? this.isActive,
+      responseCliente: responseCliente ?? this.responseCliente,
     );
   }
 
@@ -124,5 +128,6 @@ class ClientFormState extends Equatable {
     responseProvinces,
     responseCities,
     isActive,
+    responseCliente,
   ];
 }

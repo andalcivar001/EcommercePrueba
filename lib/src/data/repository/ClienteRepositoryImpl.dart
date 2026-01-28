@@ -1,4 +1,6 @@
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/CityService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ClientService.dart';
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/ProvinceService.dart';
 import 'package:ecommerce_prueba/src/domain/models/City.dart';
 import 'package:ecommerce_prueba/src/domain/models/Client.dart';
 import 'package:ecommerce_prueba/src/domain/models/Province.dart';
@@ -6,12 +8,18 @@ import 'package:ecommerce_prueba/src/domain/repository/ClientRepository.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 
 class ClientRepositoryImpl extends ClientRepository {
-  ClienteService clienteService;
-  ClientRepositoryImpl(this.clienteService);
+  ClientService clienteService;
+  ProvinceService provinceService;
+  CityService cityService;
+  ClientRepositoryImpl(
+    this.clienteService,
+    this.provinceService,
+    this.cityService,
+  );
 
   @override
   Future<Resource<List<City>>> getCitiesByProvince(String idProvince) async {
-    return await clienteService.getCitiesByProvince(idProvince);
+    return await cityService.getCitiesByProvince(idProvince);
   }
 
   @override
@@ -26,6 +34,11 @@ class ClientRepositoryImpl extends ClientRepository {
 
   @override
   Future<Resource<List<Province>>> getProvinces() async {
-    return await clienteService.getProvinces();
+    return await provinceService.getProvinces();
+  }
+
+  @override
+  Future<Resource<List<City>>> getCities() async {
+    return await cityService.getCities();
   }
 }

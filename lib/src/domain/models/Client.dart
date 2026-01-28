@@ -15,7 +15,7 @@ class Client {
   String numeroIdentificacion;
   String email;
   String? direccion;
-  int? telefono;
+  String? telefono;
   String idProvincia;
   String idCiudad;
   double? latitud;
@@ -44,7 +44,7 @@ class Client {
     numeroIdentificacion: json["numeroIdentificacion"],
     email: json["email"],
     direccion: json["direccion"] ?? '',
-    telefono: json["telefono"] ?? 0,
+    telefono: json["telefono"] ?? '',
     idProvincia: json["idProvincia"],
     idCiudad: json["idCiudad"],
     latitud: json["latitud"]?.toDouble(),
@@ -68,7 +68,7 @@ class Client {
     "numeroIdentificacion": numeroIdentificacion,
     "email": email,
     "direccion": direccion ?? '',
-    "telefono": telefono ?? 0,
+    "telefono": telefono ?? '',
     "idProvincia": idProvincia,
     "idCiudad": idCiudad,
     "latitud": latitud,
