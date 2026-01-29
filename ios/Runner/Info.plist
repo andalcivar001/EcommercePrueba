@@ -48,7 +48,10 @@
 	<string>Requiere permisos para acceder a la galeria de fotos</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Requiere permisos para acceder a la camara</string>
-	
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Requiere permisos para accerder a la ubicacion</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Requiere permisos para accerder a la ubicacion</string>
 	<true/>
 </dict>
 </plist>

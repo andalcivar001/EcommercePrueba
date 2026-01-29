@@ -5,6 +5,7 @@ import 'package:ecommerce_prueba/src/domain/useCases/Client/ClientUseCases.dart'
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/form/bloc/ClientFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/form/bloc/ClientFormState.dart';
+import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -94,47 +95,124 @@ class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
               .where((x) => x.codigoProvincia == provincia.codigoProvincia)
               .toList()
         : <City>[];
+
+    emit(
+      state.copyWith(
+        listaProvincias: listaProvincia,
+        listaCiudades: listaCiudades,
+        responseProvinces: responseProvincias,
+        responseCities: cliente?.id != null
+            ? Success(ciudadesFiltradas)
+            : Success(listaCiudades),
+        responseCliente: responseCliente,
+        id: event.id,
+        nombre: BlocFormItem(value: nombre, error: 'Ingrese el nombre'),
+        tipoIdentificacion: tipoIdentificacion,
+        numeroIdentificacion: BlocFormItem(
+          value: numeroIdentificacion,
+          error: 'Ingrese numero de identificacion',
+        ),
+        email: BlocFormItem(value: email, error: 'Ingrese el email'),
+        direccion: direccion,
+        telefono: telefono,
+        idProvincia: idProvincia,
+        idCiudad: idCiudad,
+        latitud: cliente?.latitud,
+        longitud: cliente?.longitud,
+        formKey: formKey,
+      ),
+    );
   }
 
   Future<void> _onNombreChanged(
     NombreChangedClientFormEvent event,
     Emitter<ClientFormState> emit,
-  ) async {}
+  ) async {
+    emit(
+      state.copyWith(
+        nombre: BlocFormItem(
+          value: event.nombre.value,
+          error: 'Ingrese la descripcion',
+        ),
+      ),
+    );
+  }
 
   Future<void> _onTipoIdentificacionChanged(
     TipoIdentificacionChangedClientFormEvent event,
     Emitter<ClientFormState> emit,
-  ) async {}
+  ) async {
+    emit(
+      state.copyWith(
+        tipoIdentificacion: event.tipoIdentificacion,
+        formKey: formKey,
+      ),
+    );
+  }
 
   Future<void> _onNumeroIdentificacionChanged(
     NumeroIdentificacionChangedClientFormEvent event,
     Emitter<ClientFormState> emit,
-  ) async {}
+  ) async {
+    emit(
+      state.copyWith(
+        numeroIdentificacion: BlocFormItem(
+          value: event.numeroIdentificacion.value,
+          error: 'Ingrese el # de identificación',
+        ),
+        formKey: formKey,
+      ),
+    );
+  }
 
   Future<void> _onEmailChanged(
     EmailChangedClientFormEvent event,
     Emitter<ClientFormState> emit,
-  ) async {}
+  ) async {
+    emit(
+      state.copyWith(
+        email: BlocFormItem(
+          value: event.email.value,
+          error: 'Ingrese el email',
+        ),
+        formKey: formKey,
+      ),
+    );
+  }
 
   Future<void> _onDireccionChanged(
     DireccionChangedClientFormEvent event,
     Emitter<ClientFormState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(direccion: event.direccion, formKey: formKey));
+  }
 
   Future<void> _onTelefonoChanged(
     TelefonoChangedClientFormEvent event,
     Emitter<ClientFormState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(telefono: event.telefono, formKey: formKey));
+  }
 
   Future<void> _onProvinciaChanged(
     ProvinciaChangedClientFormEvent event,
     Emitter<ClientFormState> emit,
-  ) async {}
+  ) async {
+    emit(
+      state.copyWith(
+        idProvincia: event.idProvincia,
+        idCiudad: null,
+        formKey: formKey,
+      ),
+    );
+  }
 
   Future<void> _onCiudadChanged(
     CiudadChangedClientFormEvent event,
     Emitter<ClientFormState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(idCiudad: event.idCiudad, formKey: formKey));
+  }
 
   Future<void> _onLatitudChanged(
     LatitudChangedClientFormEvent event,
@@ -158,10 +236,19 @@ class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
   Future<void> _onEstadoChanged(
     EstadoChangedClientFormEvent event,
     Emitter<ClientFormState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(isActive: event.isActive));
+  }
 
   Future<void> _onResetForm(
     ResetFormClientFormEvent event,
     Emitter<ClientFormState> emit,
-  ) async {}
+  ) async {
+    emit(
+      ClientFormState.initial().copyWith(
+        listaProvincias: state.listaProvincias,
+        listaCiudades: state.listaCiudades,
+      ),
+    );
+  }
 }

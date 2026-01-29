@@ -1,3 +1,4 @@
+import 'package:ecommerce_prueba/src/domain/models/City.dart';
 import 'package:ecommerce_prueba/src/domain/models/Province.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
@@ -17,7 +18,7 @@ class ClientFormState extends Equatable {
   final double? latitud;
   final double? longitud;
   final List<Province> listaProvincias;
-  final List<Province> listaCiudades;
+  final List<City> listaCiudades;
   final Resource? response;
   final GlobalKey<FormState>? formKey;
   final Resource? responseProvinces;
@@ -62,7 +63,7 @@ class ClientFormState extends Equatable {
     double? latitud,
     double? longitud,
     List<Province>? listaProvincias,
-    List<Province>? listaCiudades,
+    List<City>? listaCiudades,
     Resource? response,
     GlobalKey<FormState>? formKey,
     Resource? responseProvinces,
