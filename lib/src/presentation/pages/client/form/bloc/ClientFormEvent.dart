@@ -54,7 +54,7 @@ class DireccionChangedClientFormEvent extends ClientFormEvent {
 }
 
 class TelefonoChangedClientFormEvent extends ClientFormEvent {
-  final int telefono;
+  final String telefono;
   const TelefonoChangedClientFormEvent({required this.telefono});
   @override
   List<Object?> get props => [telefono];

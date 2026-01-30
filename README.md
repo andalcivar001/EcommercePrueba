@@ -36,3 +36,4 @@ el dispose se ejecuta cuando se cierra de pantalla actual
 
 flutter packages pub run build_runner watch .. ejecutar ese comando para crear el archivo de inyeccion
 de dependencia
+geolocator: ^14.0.2... para obtener ubicacion
