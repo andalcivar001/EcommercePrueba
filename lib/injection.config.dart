@@ -15,10 +15,14 @@ import 'package:ecommerce_prueba/src/data/datasource/remote/services/AuthService
     as _i1032;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/CategoryService.dart'
     as _i858;
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/CityService.dart'
+    as _i164;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ClientService.dart'
     as _i218;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ProductService.dart'
     as _i511;
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/ProvinceService.dart'
+    as _i773;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/SubCategoryService.dart'
     as _i879;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/UserService.dart'
@@ -66,7 +70,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i858.CategoryService>(() => appmodule.categoryService);
     gh.factory<_i879.SubCategoryService>(() => appmodule.subCategoryService);
     gh.factory<_i511.ProductService>(() => appmodule.productService);
-    gh.factory<_i218.ClienteService>(() => appmodule.clientService);
+    gh.factory<_i218.ClientService>(() => appmodule.clientService);
+    gh.factory<_i773.ProvinceService>(() => appmodule.provinceService);
+    gh.factory<_i164.CityService>(() => appmodule.cityService);
     gh.factory<_i732.AuthRepository>(() => appmodule.authRepository);
     gh.factory<_i584.UserRepository>(() => appmodule.userRepository);
     gh.factory<_i596.CategoryRepository>(() => appmodule.categoryRepository);

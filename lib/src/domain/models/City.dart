@@ -9,12 +9,14 @@ City cityFromJson(String str) => City.fromJson(json.decode(str));
 String cityToJson(City data) => json.encode(data.toJson());
 
 class City {
+  String id;
   String nombre;
   String codigoProvincia;
   String codigo;
   bool isActive;
 
   City({
+    required this.id,
     required this.nombre,
     required this.codigoProvincia,
     required this.codigo,
@@ -22,6 +24,7 @@ class City {
   });
 
   factory City.fromJson(Map<String, dynamic> json) => City(
+    id: json['_id'],
     nombre: json["nombre"],
     codigoProvincia: json["codigoProvincia"],
     codigo: json["codigo"],
@@ -38,6 +41,7 @@ class City {
   }
 
   Map<String, dynamic> toJson() => {
+    "_id": id,
     "nombre": nombre,
     "codigoProvincia": codigoProvincia,
     "codigo": codigo,

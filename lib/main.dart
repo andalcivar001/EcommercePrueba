@@ -3,6 +3,7 @@ import 'package:ecommerce_prueba/src/presentation/BlocProviders.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/login/LoginPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/auth/register/RegisterPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/CategoryFormPage.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/client/form/ClientFormPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/HomePage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/ProductFormPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/ProfilePage.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
           'category/form': (BuildContext context) => CategoryFormPage(),
           'subcategory/form': (BuildContext context) => SubCategoryFormPage(),
           'product/form': (BuildContext context) => ProductFormPage(),
+          'client/form': (BuildContext context) => ClientFormPage(),
         },
       ),
     );

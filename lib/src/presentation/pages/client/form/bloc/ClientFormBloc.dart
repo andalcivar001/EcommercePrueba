@@ -198,9 +198,13 @@ class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
     ProvinciaChangedClientFormEvent event,
     Emitter<ClientFormState> emit,
   ) async {
+    final provincia = state.listaProvincias.firstWhere(
+      (x) => x.id == event.idProvincia,
+    );
     emit(
       state.copyWith(
         idProvincia: event.idProvincia,
+        codigoProvincia: provincia.codigoProvincia,
         idCiudad: null,
         formKey: formKey,
       ),

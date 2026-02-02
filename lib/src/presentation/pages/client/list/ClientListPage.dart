@@ -24,7 +24,7 @@ class _ClientListPageState extends State<ClientListPage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //   Navigator.pushNamed(context, 'client/form');
+          Navigator.pushNamed(context, 'client/form');
         },
         backgroundColor: Colors.blue[700],
         child: Icon(Icons.add, color: Colors.white),

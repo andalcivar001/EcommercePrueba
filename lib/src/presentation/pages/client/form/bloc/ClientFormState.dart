@@ -25,6 +25,7 @@ class ClientFormState extends Equatable {
   final Resource? responseCities;
   final Resource? responseCliente;
   final bool isActive;
+  final String codigoProvincia;
 
   ClientFormState({
     this.id = '',
@@ -48,6 +49,7 @@ class ClientFormState extends Equatable {
     this.responseCities,
     this.isActive = true,
     this.responseCliente,
+    this.codigoProvincia = '',
   });
 
   ClientFormState copyWith({
@@ -70,6 +72,7 @@ class ClientFormState extends Equatable {
     Resource? responseCities,
     bool? isActive,
     Resource? responseCliente,
+    String? codigoProvincia,
   }) {
     return ClientFormState(
       id: id ?? this.id,
@@ -91,6 +94,7 @@ class ClientFormState extends Equatable {
       responseCities: responseCities ?? this.responseCities,
       isActive: isActive ?? this.isActive,
       responseCliente: responseCliente ?? this.responseCliente,
+      codigoProvincia: codigoProvincia ?? this.codigoProvincia,
     );
   }
 
@@ -130,5 +134,6 @@ class ClientFormState extends Equatable {
     responseCities,
     isActive,
     responseCliente,
+    codigoProvincia,
   ];
 }

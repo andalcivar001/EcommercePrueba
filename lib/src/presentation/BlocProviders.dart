@@ -12,6 +12,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/auth/register/bloc/Regis
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/bloc/CategoryFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/category/list/bloc/CategoryListEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/client/form/bloc/ClientFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
@@ -87,5 +88,9 @@ List<BlocProvider> blocProviders = [
   BlocProvider<ClientListBloc>(
     create: (context) =>
         ClientListBloc(locator<ClientUseCases>())..add(InitClientListEvent()),
+  ),
+
+  BlocProvider<ClientFormBloc>(
+    create: (context) => ClientFormBloc(locator<ClientUseCases>()),
   ),
 ];

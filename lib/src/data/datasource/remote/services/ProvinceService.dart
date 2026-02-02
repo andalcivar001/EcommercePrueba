@@ -27,6 +27,7 @@ class ProvinceService {
         return Error(listToString(data['message']));
       }
     } catch (e) {
+      print('ERROR SERVICE PROVINCE ${e.toString()}');
       return Error(e.toString());
     }
   }
