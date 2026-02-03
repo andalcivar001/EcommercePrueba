@@ -17,6 +17,8 @@ class ClientFormContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dropDownKey = GlobalKey<DropdownSearchState>();
+
     return Container(
       color: Colors.white,
       height: double.infinity,
@@ -79,9 +81,9 @@ class ClientFormContent extends StatelessWidget {
                     SizedBox(height: 16),
                     _textNumeroIndentificacion(),
                     SizedBox(height: 16),
-                    _dropDownProvincias(),
+                    _dropDownProvinciaSearch(),
                     SizedBox(height: 16),
-                    _dropDownCiudad(),
+                    _dropDownCiudadSearch(),
                     SizedBox(height: 16),
                     _switchEstado(),
                     SizedBox(height: 16),
@@ -139,55 +141,6 @@ class ClientFormContent extends StatelessWidget {
     );
   }
 
-  Widget _dropdownNumeroIdentificacion() {
-    return DropdownSearch<String>(
-      key: ValueKey('numeroIdentificacion-${state.id}'),
-
-      // Configuración de items
-      items: (filter, infiniteScrollProps) => [
-        "1234567890",
-        "0987654321",
-        "1122334455",
-        // Agrega tus números de identificación aquí
-      ],
-
-      // Valor seleccionado
-      selectedItem: state.nombre.value.isNotEmpty ? state.nombre.value : null,
-
-      // Cuando cambia la selección
-      onChanged: (String? newValue) {
-        if (newValue != null) {
-          bloc?.add(
-            NumeroIdentificacionChangedClientFormEvent(
-              numeroIdentificacion: BlocFormItem(value: newValue),
-            ),
-          );
-        }
-      },
-
-      // Configuración de búsqueda
-      popupProps: PopupProps.menu(
-        showSearchBox: true,
-        searchFieldProps: TextFieldProps(
-          decoration: InputDecoration(
-            hintText: "Buscar...",
-            prefixIcon: Icon(Icons.search),
-          ),
-        ),
-      ),
-
-      // Decoración del dropdown (versión actualizada)
-      decoratorProps: DropDownDecoratorProps(
-        decoration: InputDecoration(
-          labelText: "# de Identificación",
-          prefixIcon: Icon(Icons.numbers),
-          errorText: state.nombre.error,
-          border: OutlineInputBorder(),
-        ),
-      ),
-    );
-  }
-
   Widget _textNumeroIndentificacion() {
     return DefaultTextField(
       key: ValueKey('numeroIdentificacion-${state.id}'),
@@ -209,24 +162,61 @@ class ClientFormContent extends StatelessWidget {
     );
   }
 
-  Widget _dropDownProvincias() {
-    final idExists = state.id;
-    return DropdownButtonFormField<String>(
-      initialValue: idExists.isNotEmpty ? state.idProvincia : null,
-      decoration: const InputDecoration(
-        labelText: 'Provincia',
-        prefixIcon: Icon(Icons.map),
-        border: OutlineInputBorder(),
-      ),
-      items: state.listaProvincias.map((Province x) {
-        return DropdownMenuItem<String>(value: x.id, child: Text(x.nombre));
-      }).toList(),
-      onChanged: (value) {
-        if (value == null) return;
-        bloc?.add(ProvinciaChangedClientFormEvent(idProvincia: value));
+  Widget _dropDownProvinciaSearch() {
+    return DropdownSearch<Province>(
+      key: ValueKey('provincia-${state.id}'),
+
+      // Items como función
+      items: (filter, infiniteScrollProps) {
+        return state.listaProvincias;
       },
-      validator: (value) {
-        if (value == null || value.isEmpty) {
+
+      // Valor seleccionado
+      selectedItem: state.idProvincia.isEmpty
+          ? null
+          : state.listaProvincias.firstWhere((x) => x.id == state.idProvincia),
+
+      // Cómo mostrar cada item
+      itemAsString: (Province x) => x.nombre,
+
+      compareFn: (Province item1, Province item2) => item1.id == item2.id,
+
+      // Cuando cambia la selección
+      onChanged: (Province? province) {
+        bloc?.add(ProvinciaChangedClientFormEvent(idProvincia: province!.id));
+      },
+      // Configuración del popup de búsqueda
+      popupProps: PopupProps.menu(
+        showSearchBox: true,
+        searchFieldProps: TextFieldProps(
+          decoration: InputDecoration(
+            hintText: "Buscar provincia...",
+            prefixIcon: Icon(Icons.search),
+          ),
+        ),
+        emptyBuilder: (context, searchEntry) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('No se encontraron provincias'),
+          ),
+        ),
+      ),
+
+      // Decoración del dropdown
+      decoratorProps: DropDownDecoratorProps(
+        decoration: InputDecoration(
+          labelText: 'Provincia',
+          prefixIcon: Icon(Icons.map),
+          border: OutlineInputBorder(),
+          errorText: state.idProvincia.isEmpty
+              ? 'Primero seleccione una provincia'
+              : null,
+        ),
+      ),
+
+      // Validación
+      validator: (Province? city) {
+        if (city == null) {
           return 'Seleccione una provincia';
         }
         return null;
@@ -234,7 +224,7 @@ class ClientFormContent extends StatelessWidget {
     );
   }
 
-  Widget _dropDownCiudad() {
+  Widget _dropDownCiudadSearch() {
     final subs = state.listaCiudades
         .where((x) => x.codigoProvincia == state.codigoProvincia)
         .toList();
