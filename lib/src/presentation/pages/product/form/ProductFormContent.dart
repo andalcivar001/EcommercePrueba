@@ -306,6 +306,10 @@ class ProductFormContent extends StatelessWidget {
     final subs = listaSubCategories
         .where((x) => x.idCategory == state.idCategory)
         .toList();
+
+    if (subs.isEmpty && state.idCategory.isNotEmpty) {
+      AppToast.warning('No hay datos con la categoria seleccionada');
+    }
     final exists = subs.any((x) => x.id == state.idSubcategory);
     return DropdownButtonFormField<String>(
       initialValue: exists ? state.idSubcategory : null,

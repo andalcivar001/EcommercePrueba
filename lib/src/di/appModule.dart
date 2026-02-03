@@ -9,7 +9,7 @@ import 'package:ecommerce_prueba/src/data/datasource/remote/services/SubCategory
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/UserService.dart';
 import 'package:ecommerce_prueba/src/data/repository/AuthRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/CategoryRepositoryImpl.dart';
-import 'package:ecommerce_prueba/src/data/repository/ClienteRepositoryImpl.dart';
+import 'package:ecommerce_prueba/src/data/repository/ClientRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/ProductRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/SubCategoryRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/UserRepositoryImpl.dart';
@@ -26,11 +26,14 @@ import 'package:ecommerce_prueba/src/domain/useCases/Category/DeleteCategoryUseC
 import 'package:ecommerce_prueba/src/domain/useCases/Category/GetCategoriesUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/UpdateCategoryUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Client/ClientUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Client/CreateClientUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Client/DeleteClientUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Client/GetCitiesByProvinceUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Client/GetCitiesUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Client/GetClientByIdUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Client/GetClientsUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Client/GetProvincesUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Client/UpdateClientUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/CreateProductUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/DeleteProductUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductByIdUseCase.dart';
@@ -163,5 +166,8 @@ abstract class Appmodule {
     getProvinces: GetProvincesUseCase(clientRepository),
     getClientById: GetClientByIdUseCase(clientRepository),
     getCities: GetCitiesUseCase(clientRepository),
+    create: CreateClientUseCase(clientRepository),
+    update: UpdateClientUseCase(clientRepository),
+    delete: DeleteClientUseCase(clientRepository),
   );
 }

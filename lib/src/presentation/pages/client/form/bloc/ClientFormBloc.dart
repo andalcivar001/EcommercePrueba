@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:ecommerce_prueba/src/domain/models/City.dart';
 import 'package:ecommerce_prueba/src/domain/models/Client.dart';
 import 'package:ecommerce_prueba/src/domain/models/Province.dart';
@@ -6,8 +7,11 @@ import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/form/bloc/ClientFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/form/bloc/ClientFormState.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/BlocFormItem.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
   ClientUseCases clientUseCases;
@@ -23,8 +27,6 @@ class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
     on<TelefonoChangedClientFormEvent>(_onTelefonoChanged);
     on<ProvinciaChangedClientFormEvent>(_onProvinciaChanged);
     on<CiudadChangedClientFormEvent>(_onCiudadChanged);
-    on<LatitudChangedClientFormEvent>(_onLatitudChanged);
-    on<LongitudChangedClientFormEvent>(_onLongitudChanged);
     on<SubmittedClientFormEvent>(_onSubmitted);
     on<PickLocationClientFormEvent>(_onPickLocation);
     on<EstadoChangedClientFormEvent>(_onEstadoChanged);
@@ -71,7 +73,7 @@ class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
     if (event.id.isNotEmpty) {
       responseCliente = await clientUseCases.getClientById.run(event.id);
       if (responseCliente is Success) {
-        cliente = responseCliente as Client;
+        cliente = responseCliente.data as Client;
       }
     }
 
@@ -96,6 +98,8 @@ class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
               .toList()
         : <City>[];
 
+    final String codigoProvincia = provincia?.codigoProvincia ?? '';
+
     emit(
       state.copyWith(
         listaProvincias: listaProvincia,
@@ -106,19 +110,28 @@ class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
             : Success(listaCiudades),
         responseCliente: responseCliente,
         id: event.id,
-        nombre: BlocFormItem(value: nombre, error: 'Ingrese el nombre'),
+        nombre: BlocFormItem(
+          value: nombre,
+          error: nombre.isNotEmpty ? null : 'Ingrese el nombre',
+        ),
         tipoIdentificacion: tipoIdentificacion,
         numeroIdentificacion: BlocFormItem(
           value: numeroIdentificacion,
-          error: 'Ingrese numero de identificacion',
+          error: numeroIdentificacion.isNotEmpty
+              ? null
+              : 'Ingrese numero de identificacion',
         ),
-        email: BlocFormItem(value: email, error: 'Ingrese el email'),
+        email: BlocFormItem(
+          value: email,
+          error: email.isNotEmpty ? null : 'Ingrese el email',
+        ),
         direccion: direccion,
         telefono: telefono,
         idProvincia: idProvincia,
         idCiudad: idCiudad,
         latitud: cliente?.latitud,
         longitud: cliente?.longitud,
+        codigoProvincia: codigoProvincia,
         formKey: formKey,
       ),
     );
@@ -132,8 +145,9 @@ class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
       state.copyWith(
         nombre: BlocFormItem(
           value: event.nombre.value,
-          error: 'Ingrese la descripcion',
+          error: event.nombre.value.isNotEmpty ? null : 'Ingrese el nombre',
         ),
+        formKey: formKey,
       ),
     );
   }
@@ -158,7 +172,9 @@ class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
       state.copyWith(
         numeroIdentificacion: BlocFormItem(
           value: event.numeroIdentificacion.value,
-          error: 'Ingrese el # de identificación',
+          error: event.numeroIdentificacion.value.isNotEmpty
+              ? null
+              : 'Ingrese el # de identificación',
         ),
         formKey: formKey,
       ),
@@ -173,7 +189,7 @@ class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
       state.copyWith(
         email: BlocFormItem(
           value: event.email.value,
-          error: 'Ingrese el email',
+          error: event.email.value.isNotEmpty ? null : 'Ingrese el email',
         ),
         formKey: formKey,
       ),
@@ -218,30 +234,105 @@ class ClientFormBloc extends Bloc<ClientFormEvent, ClientFormState> {
     emit(state.copyWith(idCiudad: event.idCiudad, formKey: formKey));
   }
 
-  Future<void> _onLatitudChanged(
-    LatitudChangedClientFormEvent event,
-    Emitter<ClientFormState> emit,
-  ) async {}
-  Future<void> _onLongitudChanged(
-    LongitudChangedClientFormEvent event,
-    Emitter<ClientFormState> emit,
-  ) async {}
-
-  Future<void> _onSubmitted(
-    SubmittedClientFormEvent event,
-    Emitter<ClientFormState> emit,
-  ) async {}
-
   Future<void> _onPickLocation(
     PickLocationClientFormEvent event,
     Emitter<ClientFormState> emit,
-  ) async {}
+  ) async {
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      AppToast.error('Servicio de localización no esta habilitado');
+      return;
+    }
+
+    // verifico permisos
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        AppToast.error('Permiso de ubicación denegado');
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      AppToast.error(
+        'Permiso denegado permanentemente, Por favor habilitarlo desde ajustes',
+      );
+      return;
+    }
+
+    emit(state.copyWith(loading: true));
+
+    final position = await Geolocator.getCurrentPosition();
+
+    final placemarks = await placemarkFromCoordinates(
+      position.latitude,
+      position.longitude,
+    );
+
+    Province? provincia;
+    City? ciudad;
+    String? direccion;
+    if (placemarks.isNotEmpty) {
+      final Placemark placemark = placemarks[0];
+      provincia = state.listaProvincias.firstWhereOrNull(
+        (x) => x.nombre == placemark.administrativeArea,
+      );
+
+      ciudad = state.listaCiudades.firstWhereOrNull(
+        (x) => x.nombre == placemark.subAdministrativeArea,
+      );
+
+      direccion = placemark.street;
+    }
+    emit(
+      state.copyWith(
+        idProvincia: provincia?.id ?? state.idProvincia,
+        idCiudad: ciudad?.id ?? state.idCiudad,
+        codigoProvincia: provincia?.codigoProvincia ?? state.codigoProvincia,
+        direccion: direccion ?? state.direccion,
+        latitud: position.latitude,
+        longitud: position.longitude,
+        loading: false,
+        formKey: formKey,
+      ),
+    );
+  }
 
   Future<void> _onEstadoChanged(
     EstadoChangedClientFormEvent event,
     Emitter<ClientFormState> emit,
   ) async {
-    emit(state.copyWith(isActive: event.isActive));
+    emit(state.copyWith(isActive: event.isActive, formKey: formKey));
+  }
+
+  Future<void> _onSubmitted(
+    SubmittedClientFormEvent event,
+    Emitter<ClientFormState> emit,
+  ) async {
+    emit(state.copyWith(response: Loading(), formKey: formKey));
+
+    final Client client = Client(
+      id: state.id,
+      nombre: state.nombre.value,
+      tipoIdentificacion: state.tipoIdentificacion,
+      numeroIdentificacion: state.numeroIdentificacion.value,
+      email: state.email.value,
+      idProvincia: state.idProvincia,
+      idCiudad: state.idCiudad ?? '',
+      direccion: state.direccion,
+      telefono: state.telefono,
+      latitud: state.latitud,
+      longitud: state.longitud,
+    );
+
+    if (state.id.isEmpty) {
+      final response = await clientUseCases.create.run(client);
+      emit(state.copyWith(response: response, formKey: formKey));
+    } else {
+      final response = await clientUseCases.update.run(client, state.id);
+      emit(state.copyWith(response: response, formKey: formKey));
+    }
   }
 
   Future<void> _onResetForm(

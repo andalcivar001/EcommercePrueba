@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:ecommerce_prueba/src/domain/models/City.dart';
 import 'package:ecommerce_prueba/src/domain/models/Province.dart';
@@ -25,7 +26,7 @@ class ClientFormContent extends StatelessWidget {
       child: Stack(
         children: [
           SingleChildScrollView(
-            padding: EdgeInsets.only(top: 80, left: 24, right: 24),
+            padding: EdgeInsets.only(top: 40, left: 10, right: 10, bottom: 20),
 
             child: Form(
               key: state.formKey,
@@ -81,9 +82,17 @@ class ClientFormContent extends StatelessWidget {
                     SizedBox(height: 16),
                     _textNumeroIndentificacion(),
                     SizedBox(height: 16),
+                    _textEmail(),
+                    SizedBox(height: 16),
+                    _cardUbicacion(),
+                    SizedBox(height: 16),
                     _dropDownProvinciaSearch(),
                     SizedBox(height: 16),
                     _dropDownCiudadSearch(),
+                    SizedBox(height: 16),
+                    _textDireccion(),
+                    SizedBox(height: 16),
+                    _textTelefono(),
                     SizedBox(height: 16),
                     _switchEstado(),
                     SizedBox(height: 16),
@@ -106,6 +115,8 @@ class ClientFormContent extends StatelessWidget {
       label: 'Nombre',
       icon: Icons.edit,
       textInputAction: TextInputAction.next,
+      textInputType: TextInputType.name,
+      autofillHints: const [AutofillHints.name],
       initialValue: state.nombre.value,
       onChanged: (text) {
         bloc?.add(
@@ -119,8 +130,10 @@ class ClientFormContent extends StatelessWidget {
   }
 
   Widget _dropdownTipoIdentificacion() {
+    final idExists = state.id;
     return DropdownButtonFormField<String>(
       key: ValueKey('tipoIdentificacion-${state.id}'),
+      initialValue: idExists.isNotEmpty ? state.tipoIdentificacion : null,
       decoration: const InputDecoration(
         labelText: 'Tipo de identificación',
         prefixIcon: Icon(Icons.badge),
@@ -148,7 +161,7 @@ class ClientFormContent extends StatelessWidget {
       label: '# de Identificación',
       icon: Icons.numbers,
       textInputAction: TextInputAction.next,
-      initialValue: state.nombre.value,
+      initialValue: state.numeroIdentificacion.value,
       onChanged: (text) {
         bloc?.add(
           NumeroIdentificacionChangedClientFormEvent(
@@ -157,7 +170,66 @@ class ClientFormContent extends StatelessWidget {
         );
       },
       validator: (value) {
-        return state.nombre.error;
+        return state.numeroIdentificacion.error;
+      },
+    );
+  }
+
+  Widget _textEmail() {
+    return DefaultTextField(
+      key: ValueKey('email-${state.id}'),
+
+      label: 'Email',
+      icon: Icons.email,
+      textInputAction: TextInputAction.next,
+      textInputType: TextInputType.emailAddress,
+      initialValue: state.email.value,
+      autofillHints: const [AutofillHints.email],
+      onChanged: (text) {
+        bloc?.add(
+          EmailChangedClientFormEvent(email: BlocFormItem(value: text)),
+        );
+      },
+      validator: (value) {
+        return state.email.error;
+      },
+    );
+  }
+
+  Widget _textDireccion() {
+    return DefaultTextField(
+      key: ValueKey('direccion-${state.id}'),
+
+      label: 'Direccion',
+      icon: Icons.location_on,
+      textInputAction: TextInputAction.next,
+      textInputType: TextInputType.streetAddress,
+      initialValue: state.direccion,
+      autofillHints: const [AutofillHints.addressState],
+      onChanged: (text) {
+        bloc?.add(DireccionChangedClientFormEvent(direccion: text));
+      },
+      validator: (value) {
+        if (value == null || value == '') {
+          return 'La direccion es obligatorio';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _textTelefono() {
+    return DefaultTextField(
+      key: ValueKey('telefono-${state.id}'),
+
+      label: 'Teléfono',
+      icon: Icons.phone,
+      textInputAction: TextInputAction.done,
+      textInputType: TextInputType.phone,
+      autofillHints: const [AutofillHints.telephoneNumber],
+      initialValue: state.telefono,
+      onChanged: (text) {
+        bloc?.add(TelefonoChangedClientFormEvent(telefono: text));
       },
     );
   }
@@ -174,7 +246,9 @@ class ClientFormContent extends StatelessWidget {
       // Valor seleccionado
       selectedItem: state.idProvincia.isEmpty
           ? null
-          : state.listaProvincias.firstWhere((x) => x.id == state.idProvincia),
+          : state.listaProvincias.firstWhereOrNull(
+              (x) => x.id == state.idProvincia,
+            ),
 
       // Cómo mostrar cada item
       itemAsString: (Province x) => x.nombre,
@@ -248,7 +322,7 @@ class ClientFormContent extends StatelessWidget {
 
       // Valor seleccionado
       selectedItem: exists
-          ? subs.firstWhere((x) => x.id == state.idCiudad)
+          ? subs.firstWhereOrNull((x) => x.id == state.idCiudad)
           : null,
 
       // Cómo mostrar cada item
@@ -286,7 +360,7 @@ class ClientFormContent extends StatelessWidget {
       decoratorProps: DropDownDecoratorProps(
         decoration: InputDecoration(
           labelText: 'Ciudad',
-          prefixIcon: Icon(Icons.maps_home_work_rounded),
+          prefixIcon: Icon(Icons.location_city),
           border: OutlineInputBorder(),
           errorText: state.idProvincia.isEmpty
               ? 'Primero seleccione una provincia'
@@ -318,6 +392,34 @@ class ClientFormContent extends StatelessWidget {
       activeTrackColor: Colors.green,
       inactiveThumbColor: Colors.grey,
       inactiveTrackColor: Colors.grey.shade300,
+    );
+  }
+
+  Widget _cardUbicacion() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.blue.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.blue.shade100),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.location_on, color: Colors.blue),
+          SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              'Podemos detectar tu ubicación para completar provincia, ciudad y dirección automaticamente',
+              style: TextStyle(fontSize: 13),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              bloc?.add(PickLocationClientFormEvent());
+            },
+            child: Text('Usar'),
+          ),
+        ],
+      ),
     );
   }
 

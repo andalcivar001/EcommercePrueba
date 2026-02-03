@@ -84,7 +84,8 @@ class _ClientFormPageState extends State<ClientFormPage> {
                 ClientFormContent(bloc, state),
                 if (response is Loading ||
                     responseProvinces is Loading ||
-                    responseCities is Loading)
+                    responseCities is Loading ||
+                    state.loading == true)
                   const Positioned.fill(
                     child: ColoredBox(
                       color: Color(0x66000000),

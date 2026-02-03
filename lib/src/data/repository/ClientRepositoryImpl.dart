@@ -41,4 +41,19 @@ class ClientRepositoryImpl extends ClientRepository {
   Future<Resource<List<City>>> getCities() async {
     return await cityService.getCities();
   }
+
+  @override
+  Future<Resource<Client>> create(Client client) async {
+    return await clienteService.create(client);
+  }
+
+  @override
+  Future<Resource<Client>> update(Client client, String id) async {
+    return await clienteService.update(client, id);
+  }
+
+  @override
+  Future<Resource<bool>> delete(String id) async {
+    return await clienteService.delete(id);
+  }
 }

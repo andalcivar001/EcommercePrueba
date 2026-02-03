@@ -1,4 +1,6 @@
 import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/utils/SelectConfirmDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_prueba/src/domain/models/Client.dart';
 
@@ -16,6 +18,8 @@ class ClientListItem extends StatelessWidget {
         : client.tipoIdentificacion == 'R'
         ? 'Ruc'
         : 'Pasaporte';
+    final identificacion =
+        tipoIdentificacion + ' ' + client.numeroIdentificacion;
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -45,10 +49,10 @@ class ClientListItem extends StatelessWidget {
                     spacing: 10,
                     runSpacing: 6,
                     children: [
-                      _InfoChip(label: 'Tipo', value: tipoIdentificacion),
+                      _InfoChip(label: 'Email', value: client.email),
                       _InfoChip(
-                        label: '# Ident.',
-                        value: client.numeroIdentificacion,
+                        label: 'Identificacion:',
+                        value: identificacion,
                       ),
                     ],
                   ),
@@ -67,11 +71,11 @@ class ClientListItem extends StatelessWidget {
                   tooltip: 'Editar',
                   icon: Icon(Icons.edit, color: Colors.blue),
                   onPressed: () {
-                    // Navigator.pushNamed(
-                    //   context,
-                    //   'client/form',
-                    //   arguments: client.id,
-                    // );
+                    Navigator.pushNamed(
+                      context,
+                      'client/form',
+                      arguments: client.id,
+                    );
                   },
                 ),
                 IconButton(
@@ -80,10 +84,10 @@ class ClientListItem extends StatelessWidget {
                   icon: Icon(Icons.delete, color: Colors.red),
                   color: theme.colorScheme.error,
                   onPressed: () {
-                    // selectConfirmDialog(
-                    //   context,
-                    //   () => bloc?.add(DeleteClientListEvent(id: client.id)),
-                    // );
+                    selectConfirmDialog(
+                      context,
+                      () => bloc?.add(DeleteClientListEvent(id: client.id)),
+                    );
                   },
                 ),
               ],

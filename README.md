@@ -34,6 +34,8 @@ image picker .. para seleccionar imagen de galeria o foto
 
 el dispose se ejecuta cuando se cierra de pantalla actual
 
-flutter packages pub run build_runner watch .. ejecutar ese comando para crear el archivo de inyeccion
-de dependencia
-geolocator: ^14.0.2... para obtener ubicacion
+- flutter packages pub run build_runner watch .. ejecutar ese comando para crear el archivo de inyeccion
+  de dependencia
+- geolocator: ^14.0.2... para obtener ubicacion
+- geocoding: ^4.0.0..geocodificación inversa.. para obtener el nombre de la provincia o lugar a partir de la longitud y longitud
+- collection: ^1.19.1 ... con esta libreria si no encuentra, devuelve null ( caso contrario se cae la aplicacion por excepcion), ejem: list.firstWhereOrNull((x) => x.id == id);

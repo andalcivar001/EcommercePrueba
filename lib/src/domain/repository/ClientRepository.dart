@@ -9,4 +9,7 @@ abstract class ClientRepository {
   Future<Resource<List<City>>> getCitiesByProvince(String idProvince);
   Future<Resource<List<Client>>> getClients();
   Future<Resource<Client>> getClientById(String id);
+  Future<Resource<Client>> create(Client client);
+  Future<Resource<Client>> update(Client client, String id);
+  Future<Resource<bool>> delete(String id);
 }

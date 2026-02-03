@@ -74,20 +74,6 @@ class CiudadChangedClientFormEvent extends ClientFormEvent {
   List<Object?> get props => [idCiudad];
 }
 
-class LatitudChangedClientFormEvent extends ClientFormEvent {
-  final double latitud;
-  const LatitudChangedClientFormEvent({required this.latitud});
-  @override
-  List<Object?> get props => [latitud];
-}
-
-class LongitudChangedClientFormEvent extends ClientFormEvent {
-  final double longitud;
-  const LongitudChangedClientFormEvent({required this.longitud});
-  @override
-  List<Object?> get props => [longitud];
-}
-
 class SubmittedClientFormEvent extends ClientFormEvent {
   const SubmittedClientFormEvent();
 }

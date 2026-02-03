@@ -65,10 +65,10 @@ class ClientListBloc extends Bloc<ClientListEvent, ClientListState> {
     DeleteClientListEvent event,
     Emitter<ClientListState> emit,
   ) async {
-    // emit(state.copyWith(responseDelete: Loading(), formKey: formKey));
+    emit(state.copyWith(responseDelete: Loading(), formKey: formKey));
 
-    // final Resource response = await clientUseCases.delete.run(event.id);
+    final Resource response = await clientUseCases.delete.run(event.id);
 
-    // emit(state.copyWith(responseDelete: response, formKey: formKey));
+    emit(state.copyWith(responseDelete: response, formKey: formKey));
   }
 }
