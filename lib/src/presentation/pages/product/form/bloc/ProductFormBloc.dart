@@ -37,6 +37,7 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     on<TakePhotoProductFormEvent2>(_onTakePhoto2);
     on<SubmittedProductFormEvent>(_onSubmitted);
     on<ResetProductFormEvent>(_onReset);
+    on<PrecioChangedProductFormEvent>(_onPrecioChanged);
   }
   final formKey = GlobalKey<FormState>();
 
@@ -125,6 +126,7 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
         stock: stock,
         imagenUrl1: product?.imagen1,
         imagenUrl2: product?.imagen2,
+        precio: product?.precio,
         formKey: formKey,
       ),
     );
@@ -232,6 +234,13 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
     }
   }
 
+  Future<void> _onPrecioChanged(
+    PrecioChangedProductFormEvent event,
+    Emitter<ProductFormState> emit,
+  ) async {
+    emit(state.copyWith(precio: event.precio, formKey: formKey));
+  }
+
   Future<void> _onSubmitted(
     SubmittedProductFormEvent event,
     Emitter<ProductFormState> emit,
@@ -260,6 +269,7 @@ class ProductFormBloc extends Bloc<ProductFormEvent, ProductFormState> {
       isActive: state.isActive,
       imagen1: state.imagenUrl1,
       imagen2: state.imagenUrl2,
+      precio: state.precio,
     );
 
     if (state.id.isEmpty) {

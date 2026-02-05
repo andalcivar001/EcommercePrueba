@@ -18,7 +18,7 @@ class ProductListItem extends StatelessWidget {
         : (product.imagen2?.isNotEmpty ?? false)
         ? product.imagen2!
         : null;
-
+    final precio = product.precio ?? 0;
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -46,10 +46,10 @@ class ProductListItem extends StatelessWidget {
                   const SizedBox(height: 6),
 
                   Wrap(
-                    spacing: 10,
+                    spacing: 8,
                     runSpacing: 6,
                     children: [
-                      _InfoChip(label: 'Cod', value: product.codAlterno ?? '-'),
+                      _InfoChip(label: 'Precio', value: precio.toString()),
                       _InfoChip(label: 'Stock', value: '${product.stock}'),
                     ],
                   ),
@@ -144,6 +144,7 @@ class _InfoChip extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      width: 100,
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(999),

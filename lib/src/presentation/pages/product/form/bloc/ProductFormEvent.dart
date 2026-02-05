@@ -80,3 +80,10 @@ class SubmittedProductFormEvent extends ProductFormEvent {
 class ResetProductFormEvent extends ProductFormEvent {
   const ResetProductFormEvent();
 }
+
+class PrecioChangedProductFormEvent extends ProductFormEvent {
+  final double precio;
+  const PrecioChangedProductFormEvent({required this.precio});
+  @override
+  List<Object?> get props => [precio];
+}

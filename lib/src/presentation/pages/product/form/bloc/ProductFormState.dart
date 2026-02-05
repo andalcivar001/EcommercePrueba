@@ -26,6 +26,7 @@ class ProductFormState extends Equatable {
   final List<SubCategory> listaSubCategories;
   final String? imagenUrl1;
   final String? imagenUrl2;
+  final double? precio;
 
   ProductFormState({
     this.id = '',
@@ -46,6 +47,7 @@ class ProductFormState extends Equatable {
     this.listaSubCategories = const [],
     this.imagenUrl1,
     this.imagenUrl2,
+    this.precio = 0,
   });
 
   ProductFormState copyWith({
@@ -67,6 +69,7 @@ class ProductFormState extends Equatable {
     List<SubCategory>? listaSubCategories,
     String? imagenUrl1,
     String? imagenUrl2,
+    double? precio,
   }) {
     return ProductFormState(
       id: id ?? this.id,
@@ -87,6 +90,7 @@ class ProductFormState extends Equatable {
       listaSubCategories: listaSubCategories ?? this.listaSubCategories,
       imagenUrl1: imagenUrl1 ?? this.imagenUrl1,
       imagenUrl2: imagenUrl2 ?? this.imagenUrl2,
+      precio: precio ?? this.precio,
     );
   }
 
@@ -104,6 +108,7 @@ class ProductFormState extends Equatable {
     file2: null,
     imagenUrl1: null,
     imagenUrl2: null,
+    precio: 0,
   );
 
   @override
@@ -126,5 +131,6 @@ class ProductFormState extends Equatable {
     listaSubCategories,
     imagenUrl1,
     imagenUrl2,
+    precio,
   ];
 }

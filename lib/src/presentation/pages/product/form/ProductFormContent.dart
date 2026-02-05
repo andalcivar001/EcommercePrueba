@@ -28,91 +28,95 @@ class ProductFormContent extends StatelessWidget {
     return Container(
       color: Colors.white,
       height: double.infinity,
-      child: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: EdgeInsets.only(top: 80, left: 24, right: 24),
+      child: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: EdgeInsets.only(top: 40, left: 10, right: 10),
 
-            child: Form(
-              key: state.formKey,
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: const Color(0xFF1E3C72), // azul corporativo
-                    width: 1.5,
+              child: Form(
+                key: state.formKey,
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: const Color(0xFF1E3C72), // azul corporativo
+                      width: 1.5,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.08),
+                        blurRadius: 18,
+                        offset: Offset(0, 10),
+                      ),
+                    ],
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.08),
-                      blurRadius: 18,
-                      offset: Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            size: 28,
-                            color: Colors.black,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios,
+                              size: 28,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                        Text(
-                          'Mantenimiento de Productos',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                          Text(
+                            'Mantenimiento de Productos',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
-                    SizedBox(height: 16),
-                    Row(
-                      children: [
-                        _imagen1(context, _seleccionarImagen()),
-                        SizedBox(width: 10),
-                        _imagen2(context, _seleccionarImagen()),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    _textDescripcion(),
-                    SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(flex: 6, child: _textCodAlterno()),
-                        SizedBox(width: 10),
-                        Expanded(flex: 4, child: _textStock()),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    _dropDownCategory(),
-                    SizedBox(height: 16),
-                    _dropDownSubcategory(),
-                    SizedBox(height: 16),
-                    _switchEstado(),
-                    SizedBox(height: 16),
-                    _buttonActualizar(),
-                    // Aquí van los campos del formulario
-                  ],
+                      SizedBox(height: 16),
+                      Row(
+                        children: [
+                          _imagen1(context, _seleccionarImagen()),
+                          SizedBox(width: 10),
+                          _imagen2(context, _seleccionarImagen()),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      _textDescripcion(),
+                      SizedBox(height: 16),
+                      _textCodAlterno(),
+                      SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(flex: 5, child: _textPrecio()),
+                          SizedBox(width: 10),
+                          Expanded(flex: 5, child: _textStock()),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      _dropDownCategory(),
+                      SizedBox(height: 16),
+                      _dropDownSubcategory(),
+                      SizedBox(height: 16),
+                      _switchEstado(),
+                      SizedBox(height: 16),
+                      _buttonActualizar(),
+                      // Aquí van los campos del formulario
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -271,6 +275,28 @@ class ProductFormContent extends StatelessWidget {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Ingrese el stock';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _textPrecio() {
+    return DefaultTextField(
+      key: ValueKey('precio-${state.id}'),
+      label: 'Precio',
+      icon: Icons.money,
+      textInputType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      initialValue: state.precio.toString(),
+      onChanged: (text) {
+        bloc?.add(
+          PrecioChangedProductFormEvent(precio: double.tryParse(text) ?? 0),
+        );
+      },
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Ingrese el precio';
         }
         return null;
       },

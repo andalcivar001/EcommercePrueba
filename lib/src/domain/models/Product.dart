@@ -14,6 +14,7 @@ class Product {
   String? codAlterno;
   String? imagen1;
   int stock;
+  double? precio;
   String? imagen2;
   String idCategory;
   String idSubcategory;
@@ -25,6 +26,7 @@ class Product {
     this.codAlterno,
     this.imagen1,
     required this.stock,
+    this.precio,
     this.imagen2,
     required this.idCategory,
     required this.idSubcategory,
@@ -37,6 +39,11 @@ class Product {
     codAlterno: json["codAlterno"] ?? '',
     imagen1: json["imagen1"] ?? '',
     stock: json["stock"],
+    precio: json["precio"] is String
+        ? double.parse(json["precio"])
+        : json["precio"] is int
+        ? (json["precio"]).toDouble()
+        : json["precio"],
     imagen2: json["imagen2"] ?? '',
     idCategory: json["idCategory"],
     idSubcategory: json["idSubcategory"],
@@ -58,6 +65,7 @@ class Product {
     "codAlterno": codAlterno ?? '',
     "imagen1": imagen1 ?? '',
     "stock": stock,
+    "precio": precio ?? 0,
     "imagen2": imagen2 ?? '',
     "idCategory": idCategory,
     "idSubcategory": idSubcategory,

@@ -23,87 +23,94 @@ class ClientFormContent extends StatelessWidget {
     return Container(
       color: Colors.white,
       height: double.infinity,
-      child: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: EdgeInsets.only(top: 40, left: 10, right: 10, bottom: 20),
+      child: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: EdgeInsets.only(
+                top: 40,
+                left: 10,
+                right: 10,
+                bottom: 20,
+              ),
 
-            child: Form(
-              key: state.formKey,
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: const Color(0xFF1E3C72), // azul corporativo
-                    width: 1.5,
+              child: Form(
+                key: state.formKey,
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: const Color(0xFF1E3C72), // azul corporativo
+                      width: 1.5,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.08),
+                        blurRadius: 18,
+                        offset: Offset(0, 10),
+                      ),
+                    ],
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.08),
-                      blurRadius: 18,
-                      offset: Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            size: 28,
-                            color: Colors.black,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(
+                              Icons.arrow_back_ios,
+                              size: 28,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                        Text(
-                          'Mantenimiento de Clientes',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                          Text(
+                            'Mantenimiento de Clientes',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
-                    SizedBox(height: 16),
-                    _textNombre(),
-                    SizedBox(height: 16),
-                    _dropdownTipoIdentificacion(),
-                    SizedBox(height: 16),
-                    _textNumeroIndentificacion(),
-                    SizedBox(height: 16),
-                    _textEmail(),
-                    SizedBox(height: 16),
-                    _cardUbicacion(),
-                    SizedBox(height: 16),
-                    _dropDownProvinciaSearch(),
-                    SizedBox(height: 16),
-                    _dropDownCiudadSearch(),
-                    SizedBox(height: 16),
-                    _textDireccion(),
-                    SizedBox(height: 16),
-                    _textTelefono(),
-                    SizedBox(height: 16),
-                    _switchEstado(),
-                    SizedBox(height: 16),
-                    _buttonActualizar(),
-                    // Aquí van los campos del formulario
-                  ],
+                      SizedBox(height: 16),
+                      _textNombre(),
+                      SizedBox(height: 16),
+                      _dropdownTipoIdentificacion(),
+                      SizedBox(height: 16),
+                      _textNumeroIndentificacion(),
+                      SizedBox(height: 16),
+                      _textEmail(),
+                      SizedBox(height: 16),
+                      _cardUbicacion(),
+                      SizedBox(height: 16),
+                      _dropDownProvinciaSearch(),
+                      SizedBox(height: 16),
+                      _dropDownCiudadSearch(),
+                      SizedBox(height: 16),
+                      _textDireccion(),
+                      SizedBox(height: 16),
+                      _textTelefono(),
+                      SizedBox(height: 16),
+                      _switchEstado(),
+                      SizedBox(height: 16),
+                      _buttonActualizar(),
+                      // Aquí van los campos del formulario
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -95,6 +95,7 @@ class ProductService {
       request.fields['idCategory'] = product.idCategory;
       request.fields['idSubcategory'] = product.idSubcategory;
       request.fields['isActive'] = product.isActive.toString();
+      request.fields['precio'] = product.precio.toString();
 
       print('REQUEST CREAR PRODUCTO ${request.files} ');
       final response = await request.send();
@@ -162,6 +163,7 @@ class ProductService {
       request.fields['idCategory'] = product.idCategory;
       request.fields['idSubcategory'] = product.idSubcategory;
       request.fields['isActive'] = product.isActive.toString();
+      request.fields['precio'] = product.precio.toString();
 
       final response = await request.send();
       final data = json.decode(
