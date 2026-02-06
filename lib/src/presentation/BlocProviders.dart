@@ -1,6 +1,7 @@
 import 'package:ecommerce_prueba/injection.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Client/ClientUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Order/OrderUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/ProductUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/SubCategory/SubCategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart';
@@ -16,6 +17,8 @@ import 'package:ecommerce_prueba/src/presentation/pages/client/form/bloc/ClientF
 import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/list/bloc/ProductListEvent.dart';
@@ -92,5 +95,11 @@ List<BlocProvider> blocProviders = [
 
   BlocProvider<ClientFormBloc>(
     create: (context) => ClientFormBloc(locator<ClientUseCases>()),
+  ),
+
+  BlocProvider<OrderListBloc>(
+    create: (context) =>
+        OrderListBloc(locator<OrderUseCases>(), locator<ClientUseCases>())
+          ..add(InitOrderListEvent()),
   ),
 ];

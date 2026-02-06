@@ -14,6 +14,7 @@ class DefaultTextField extends StatelessWidget {
   TextInputAction? textInputAction;
   Iterable<String>? autofillHints;
   int maxLines;
+  String hinText;
 
   DefaultTextField({
     Key? key,
@@ -30,6 +31,7 @@ class DefaultTextField extends StatelessWidget {
     this.textInputAction,
     this.autofillHints,
     this.maxLines = 1,
+    this.hinText = '',
   }) : super(key: key);
 
   @override
@@ -44,7 +46,7 @@ class DefaultTextField extends StatelessWidget {
       onTap: onTap,
       keyboardType: textInputType,
       validator: validator,
-      decoration: _inputDecoration(label: label, icon: icon),
+      decoration: _inputDecoration(label: label, icon: icon, hinText: hinText),
       controller: controller,
       readOnly: readOnly,
       textInputAction: textInputAction,
@@ -55,6 +57,7 @@ class DefaultTextField extends StatelessWidget {
   static InputDecoration _inputDecoration({
     required String label,
     required IconData icon,
+    required String hinText,
   }) {
     return InputDecoration(
       labelText: label,
@@ -69,6 +72,7 @@ class DefaultTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         borderSide: const BorderSide(color: Color(0xFF1E3C72), width: 1.5),
       ),
+      hintText: hinText,
     );
   }
 }

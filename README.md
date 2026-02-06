@@ -39,3 +39,8 @@ el dispose se ejecuta cuando se cierra de pantalla actual
 - geolocator: ^14.0.2... para obtener ubicacion
 - geocoding: ^4.0.0..geocodificación inversa.. para obtener el nombre de la provincia o lugar a partir de la longitud y longitud
 - collection: ^1.19.1 ... con esta libreria si no encuentra, devuelve null ( caso contrario se cae la aplicacion por excepcion), ejem: list.firstWhereOrNull((x) => x.id == id);
+
+al ejecutar el apk-release hay que darle permisos a para peteciones http y https, agregar estas dos lineas:
+
+- <uses-permission android:name="android.permission.INTERNET" />
+- android:usesCleartextTraffic="true"

@@ -1,10 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Permiso de Internet faltante para -http y Https
+        <uses-permission android:name="android.permission.INTERNET" />  
+         android:usesCleartextTraffic="true"
+     -->
+    <uses-permission android:name="android.permission.INTERNET" />    
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:label="ecommerce_prueba"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -45,3 +51,4 @@
         </intent>
     </queries>
 </manifest>
+

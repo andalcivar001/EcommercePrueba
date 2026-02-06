@@ -14,11 +14,6 @@ class OrderRepositoryImpl extends OrderRepository {
   }
 
   @override
-  Future<Resource<List<Order>>> getOrders() async {
-    return await orderService.getOrders();
-  }
-
-  @override
   Future<Resource<Order>> create(Order order) async {
     return await orderService.create(order);
   }
@@ -31,5 +26,14 @@ class OrderRepositoryImpl extends OrderRepository {
   @override
   Future<Resource<bool>> delete(String id) async {
     return await orderService.delete(id);
+  }
+
+  @override
+  Future<Resource<List<Order>>> consultar(
+    String idCliente,
+    DateTime fechaDesde,
+    DateTime fechaHasta,
+  ) async {
+    return await orderService.consultar(idCliente, fechaDesde, fechaHasta);
   }
 }
