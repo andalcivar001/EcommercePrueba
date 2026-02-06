@@ -46,4 +46,13 @@ class Order {
     "longitud": longitud,
     "detalles": detalles.map((x) => x.toJson()).toList(),
   };
+
+  static List<Order> fromJsonList(List<dynamic> jsonList) {
+    List<Order> toList = [];
+    jsonList.forEach((item) {
+      Order client = Order.fromJson(item);
+      toList.add(client);
+    });
+    return toList;
+  }
 }

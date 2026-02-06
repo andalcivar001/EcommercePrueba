@@ -3,6 +3,7 @@ import 'package:ecommerce_prueba/src/data/datasource/remote/services/AuthService
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/CategoryService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/CityService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ClientService.dart';
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/OrderService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ProductService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ProvinceService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/SubCategoryService.dart';
@@ -10,6 +11,7 @@ import 'package:ecommerce_prueba/src/data/datasource/remote/services/UserService
 import 'package:ecommerce_prueba/src/data/repository/AuthRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/CategoryRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/ClientRepositoryImpl.dart';
+import 'package:ecommerce_prueba/src/data/repository/OrderRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/ProductRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/SubCategoryRepositoryImpl.dart';
 import 'package:ecommerce_prueba/src/data/repository/UserRepositoryImpl.dart';
@@ -17,6 +19,7 @@ import 'package:ecommerce_prueba/src/domain/models/AuthResponse.dart';
 import 'package:ecommerce_prueba/src/domain/repository/AuthRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/CategoryRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/ClientRepository.dart';
+import 'package:ecommerce_prueba/src/domain/repository/OrderRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/ProductRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/SubCategoryRepository.dart';
 import 'package:ecommerce_prueba/src/domain/repository/UserRepository.dart';
@@ -34,6 +37,12 @@ import 'package:ecommerce_prueba/src/domain/useCases/Client/GetClientByIdUseCase
 import 'package:ecommerce_prueba/src/domain/useCases/Client/GetClientsUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Client/GetProvincesUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Client/UpdateClientUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Order/CreateOrderUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Order/DeleteOrderUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Order/GetOrderByIdUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Order/GetOrdersUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Order/OrderUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Order/UpdateOrderUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/CreateProductUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/DeleteProductUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductByIdUseCase.dart';
@@ -98,6 +107,9 @@ abstract class Appmodule {
   @injectable
   CityService get cityService => CityService(token);
 
+  @injectable
+  OrderService get orderService => OrderService(token);
+
   /******** REPOSITORIOS *********** */ ////
   @injectable
   AuthRepository get authRepository =>
@@ -118,6 +130,8 @@ abstract class Appmodule {
 
   ClientRepository get clientRepository =>
       ClientRepositoryImpl(clientService, provinceService, cityService);
+
+  OrderRepository get orderRepository => OrderRepositoryImpl(orderService);
 
   /********* USECASE *******/
   ///
@@ -169,5 +183,14 @@ abstract class Appmodule {
     create: CreateClientUseCase(clientRepository),
     update: UpdateClientUseCase(clientRepository),
     delete: DeleteClientUseCase(clientRepository),
+  );
+
+  @injectable
+  OrderUseCases get orderUseCases => OrderUseCases(
+    getOrders: GetOrdersUseCase(orderRepository),
+    getOrderById: GetOrderByIdUseCase(orderRepository),
+    create: CreateOrderUseCase(orderRepository),
+    update: UpdateOrderUseCase(orderRepository),
+    delete: DeleteOrderUseCase(orderRepository),
   );
 }

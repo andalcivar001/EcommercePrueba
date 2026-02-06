@@ -19,6 +19,8 @@ import 'package:ecommerce_prueba/src/data/datasource/remote/services/CityService
     as _i164;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ClientService.dart'
     as _i218;
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/OrderService.dart'
+    as _i716;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ProductService.dart'
     as _i511;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ProvinceService.dart'
@@ -34,6 +36,8 @@ import 'package:ecommerce_prueba/src/domain/repository/CategoryRepository.dart'
     as _i596;
 import 'package:ecommerce_prueba/src/domain/repository/ClientRepository.dart'
     as _i473;
+import 'package:ecommerce_prueba/src/domain/repository/OrderRepository.dart'
+    as _i519;
 import 'package:ecommerce_prueba/src/domain/repository/ProductRepository.dart'
     as _i199;
 import 'package:ecommerce_prueba/src/domain/repository/SubCategoryRepository.dart'
@@ -46,6 +50,8 @@ import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.d
     as _i138;
 import 'package:ecommerce_prueba/src/domain/useCases/Client/ClientUseCases.dart'
     as _i738;
+import 'package:ecommerce_prueba/src/domain/useCases/Order/OrderUseCases.dart'
+    as _i730;
 import 'package:ecommerce_prueba/src/domain/useCases/Product/ProductUseCases.dart'
     as _i92;
 import 'package:ecommerce_prueba/src/domain/useCases/SubCategory/SubCategoryUseCases.dart'
@@ -73,6 +79,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i218.ClientService>(() => appmodule.clientService);
     gh.factory<_i773.ProvinceService>(() => appmodule.provinceService);
     gh.factory<_i164.CityService>(() => appmodule.cityService);
+    gh.factory<_i716.OrderService>(() => appmodule.orderService);
     gh.factory<_i732.AuthRepository>(() => appmodule.authRepository);
     gh.factory<_i584.UserRepository>(() => appmodule.userRepository);
     gh.factory<_i596.CategoryRepository>(() => appmodule.categoryRepository);
@@ -81,12 +88,14 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i199.ProductRepository>(() => appmodule.productRepository);
     gh.factory<_i473.ClientRepository>(() => appmodule.clientRepository);
+    gh.factory<_i519.OrderRepository>(() => appmodule.orderRepository);
     gh.factory<_i203.AuthUseCases>(() => appmodule.authUseCases);
     gh.factory<_i713.UsersUseCases>(() => appmodule.userUseCase);
     gh.factory<_i138.CategoryUseCases>(() => appmodule.categoryUseCases);
     gh.factory<_i807.SubCategoryUseCases>(() => appmodule.subCategoryUseCases);
     gh.factory<_i92.ProductUseCases>(() => appmodule.productUseCases);
     gh.factory<_i738.ClientUseCases>(() => appmodule.clientUseCases);
+    gh.factory<_i730.OrderUseCases>(() => appmodule.orderUseCases);
     return this;
   }
 }
