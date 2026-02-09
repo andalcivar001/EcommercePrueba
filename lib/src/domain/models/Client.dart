@@ -61,6 +61,24 @@ class Client {
     return toList;
   }
 
+  @override
+  String toString() {
+    return 'Client{'
+        'id: $id, '
+        'nombre: $nombre, '
+        'tipoIdentificacion: $tipoIdentificacion, '
+        'numeroIdentificacion: $numeroIdentificacion, '
+        'email: $email, '
+        'telefono: $telefono, '
+        'direccion: $direccion, '
+        'provincia: $idProvincia, '
+        'ciudad: $idCiudad, '
+        'latitud: $latitud, '
+        'longitud: $longitud, '
+        'activo: $isActive'
+        '}';
+  }
+
   Map<String, dynamic> toJson() => {
     "_id": id,
     "nombre": nombre,

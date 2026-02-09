@@ -82,7 +82,7 @@ class _OrderListPageState extends State<OrderListPage> {
                       child: ListView.builder(
                         itemCount: listaOrder.length,
                         itemBuilder: (context, index) {
-                          return OrderListItem(bloc, state);
+                          return OrderListItem(bloc, listaOrder[index]);
                         },
                       ),
                     ),

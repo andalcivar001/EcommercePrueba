@@ -4,7 +4,9 @@
 
 import 'dart:convert';
 
+import 'package:ecommerce_prueba/src/domain/models/Client.dart';
 import 'package:ecommerce_prueba/src/domain/models/OrderDetail.dart';
+import 'package:ecommerce_prueba/src/domain/models/User.dart';
 
 Order orderFromJson(String str) => Order.fromJson(json.decode(str));
 
@@ -14,17 +16,25 @@ class Order {
   String? id;
   DateTime fecha;
   String idCliente;
-  double latitud;
-  double longitud;
+  double? latitud;
+  double? longitud;
   List<OrderDetail> detalles;
+  Client? cliente;
+  User? usuario;
+  String? estado;
+  double? total;
 
   Order({
     this.id,
     required this.fecha,
     required this.idCliente,
-    required this.latitud,
-    required this.longitud,
+    this.latitud,
+    this.longitud,
     required this.detalles,
+    this.cliente,
+    this.usuario,
+    this.estado,
+    this.total,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
@@ -36,6 +46,10 @@ class Order {
     detalles: (json["detalles"] as List)
         .map((x) => OrderDetail.fromJson(x))
         .toList(),
+    cliente: json["cliente"] != null ? Client.fromJson(json["cliente"]) : null,
+    usuario: json["usuario"] != null ? User.fromJson(json["usuario"]) : null,
+    estado: json["estado"] ?? '',
+    total: json["total"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -45,6 +59,10 @@ class Order {
     "latitud": latitud,
     "longitud": longitud,
     "detalles": detalles.map((x) => x.toJson()).toList(),
+    "cliente": cliente,
+    "usuario": usuario,
+    "estado": estado,
+    "total": total,
   };
 
   static List<Order> fromJsonList(List<dynamic> jsonList) {
