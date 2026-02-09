@@ -11,6 +11,27 @@ class OrderService {
 
   OrderService(this.token);
 
+  Future<Resource<List<Order>>> getOrderByUser(String idUsuario) async {
+    try {
+      Uri url = Uri.parse('${Apiconfig.API_ECOMMERCE}/order/$idUsuario');
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "Authorization": await token,
+      };
+
+      final response = await http.get(url, headers: headers);
+      final data = json.decode(response.body);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        List<Order> orderResponse = Order.fromJsonList(data);
+        return Success(orderResponse);
+      } else {
+        return Error(listToString(data['message']));
+      }
+    } catch (e) {
+      return Error(e.toString());
+    }
+  }
+
   Future<Resource<Order>> getOrderById(String id) async {
     try {
       Uri url = Uri.parse('${Apiconfig.API_ECOMMERCE}/order/$id');
@@ -95,37 +116,6 @@ class OrderService {
         return Success(deletedResponse);
       } else {
         return Error(listToString(data));
-      }
-    } catch (e) {
-      return Error(e.toString());
-    }
-  }
-
-  Future<Resource<List<Order>>> consultar(
-    String idCliente,
-    DateTime fechaDesde,
-    DateTime fechaHasta,
-  ) async {
-    try {
-      Uri url = Uri.parse('${Apiconfig.API_ECOMMERCE}/order/consultar');
-
-      Map<String, String> headers = {
-        "Content-Type": "application/json",
-        "Authorization": await token,
-      };
-      String body = json.encode({
-        'idCliente': idCliente.isEmpty ? null : idCliente,
-        'fechaDesde': fechaDesde,
-        'fechaHasta': fechaHasta,
-      });
-
-      final response = await http.post(url, headers: headers, body: body);
-      final data = json.decode(response.body);
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        List<Order> orderResponse = Order.fromJsonList(data);
-        return Success(orderResponse);
-      } else {
-        return Error(listToString(data['message']));
       }
     } catch (e) {
       return Error(e.toString());

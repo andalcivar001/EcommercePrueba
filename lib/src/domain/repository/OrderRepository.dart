@@ -6,9 +6,5 @@ abstract class OrderRepository {
   Future<Resource<Order>> create(Order order);
   Future<Resource<Order>> update(Order order, String id);
   Future<Resource<bool>> delete(String id);
-  Future<Resource<List<Order>>> consultar(
-    String idCliente,
-    DateTime fechaDesde,
-    DateTime fechaHasta,
-  );
+  Future<Resource<List<Order>>> getOrderByUser(String idUsuario);
 }

@@ -99,7 +99,7 @@ List<BlocProvider> blocProviders = [
 
   BlocProvider<OrderListBloc>(
     create: (context) =>
-        OrderListBloc(locator<OrderUseCases>(), locator<ClientUseCases>())
+        OrderListBloc(locator<OrderUseCases>(), locator<AuthUseCases>())
           ..add(InitOrderListEvent()),
   ),
 ];

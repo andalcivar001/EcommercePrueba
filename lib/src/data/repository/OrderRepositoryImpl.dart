@@ -29,11 +29,7 @@ class OrderRepositoryImpl extends OrderRepository {
   }
 
   @override
-  Future<Resource<List<Order>>> consultar(
-    String idCliente,
-    DateTime fechaDesde,
-    DateTime fechaHasta,
-  ) async {
-    return await orderService.consultar(idCliente, fechaDesde, fechaHasta);
+  Future<Resource<List<Order>>> getOrderByUser(String idUsuario) async {
+    return await orderService.getOrderByUser(idUsuario);
   }
 }

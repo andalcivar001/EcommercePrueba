@@ -1,3 +1,4 @@
+import 'package:ecommerce_prueba/src/domain/models/Order.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class OrderListEvent extends Equatable {
@@ -10,27 +11,13 @@ class InitOrderListEvent extends OrderListEvent {
   const InitOrderListEvent();
 }
 
-class ClienteChangedOrderListEvent extends OrderListEvent {
-  final String cliente;
-  const ClienteChangedOrderListEvent({required this.cliente});
+class BusquedaOrderListEvent extends OrderListEvent {
+  final String busqueda;
+  const BusquedaOrderListEvent({required this.busqueda});
   @override
-  List<Object?> get props => [cliente];
+  List<Object?> get props => [busqueda];
 }
 
-class FechaDesdeChangedOrderListEvent extends OrderListEvent {
-  final DateTime fechaDesde;
-  const FechaDesdeChangedOrderListEvent({required this.fechaDesde});
-  @override
-  List<Object?> get props => [fechaDesde];
-}
-
-class FechaHastaChangedOrderListEvent extends OrderListEvent {
-  final DateTime fechaHasta;
-  const FechaHastaChangedOrderListEvent({required this.fechaHasta});
-  @override
-  List<Object?> get props => [fechaHasta];
-}
-
-class ConsultarOrderListEvent extends OrderListEvent {
-  const ConsultarOrderListEvent();
+class DeleteOrderListEvent extends OrderListEvent {
+  const DeleteOrderListEvent();
 }

@@ -40,7 +40,7 @@ import 'package:ecommerce_prueba/src/domain/useCases/Client/UpdateClientUseCase.
 import 'package:ecommerce_prueba/src/domain/useCases/Order/CreateOrderUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Order/DeleteOrderUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Order/GetOrderByIdUseCase.dart';
-import 'package:ecommerce_prueba/src/domain/useCases/Order/ConsultarOrdersUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Order/GetOrdersByUserUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Order/OrderUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Order/UpdateOrderUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/CreateProductUseCase.dart';
@@ -187,7 +187,7 @@ abstract class Appmodule {
 
   @injectable
   OrderUseCases get orderUseCases => OrderUseCases(
-    consultar: ConsultarOrdersUseCase(orderRepository),
+    getOrderByUser: GetOrdersByUserUseCase(orderRepository),
     getOrderById: GetOrderByIdUseCase(orderRepository),
     create: CreateOrderUseCase(orderRepository),
     update: UpdateOrderUseCase(orderRepository),

@@ -4,6 +4,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/client/list/ClientListPa
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeState.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/list/OrderListPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/list/ProductListPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/ProfilePage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/SubCategoryListPage.dart';
@@ -29,6 +30,7 @@ class _HomePageState extends State<HomePage> {
     SubCategoryListPage(),
     ProductListPage(),
     ClientListPage(),
+    OrderListPage(),
   ];
 
   @override
@@ -153,6 +155,7 @@ class _HomePageState extends State<HomePage> {
                 _drawerItem(icon: Icons.list_alt, text: 'Productos', index: 4),
 
                 _drawerItem(icon: Icons.people, text: 'Clientes', index: 5),
+                _drawerItem(icon: Icons.money, text: 'Venta', index: 6),
 
                 const Spacer(),
 

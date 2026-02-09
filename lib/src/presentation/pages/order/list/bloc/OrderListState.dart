@@ -1,54 +1,39 @@
-import 'package:ecommerce_prueba/src/domain/models/Client.dart';
+import 'package:ecommerce_prueba/src/domain/models/Order.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 class OrderListState extends Equatable {
-  final String? cliente;
-  final DateTime? fechaDesde;
-  final DateTime? fechaHasta;
-  final GlobalKey<FormState>? formKey;
+  final String busqueda;
   final Resource? response;
-  final Resource? responseCliente;
-  final Client? clienteSeleccionado;
+  final Resource? responseDelete;
+  final List<Order>? listaOrder;
+  final GlobalKey<FormState>? formKey;
 
   OrderListState({
     this.response,
+    this.responseDelete,
     this.formKey,
-    this.cliente,
-    this.fechaDesde,
-    this.fechaHasta,
-    this.responseCliente,
-    this.clienteSeleccionado,
+    this.busqueda = '',
+    this.listaOrder,
   });
 
   OrderListState copyWith({
-    String? cliente,
-    DateTime? fechaDesde,
-    DateTime? fechaHasta,
     GlobalKey<FormState>? formKey,
     Resource? response,
-    Resource? responseCliente,
-    Client? clienteSeleccionado,
+    Resource? responseDelete,
+    String? busqueda,
+    List<Order>? listaOrder,
   }) {
     return OrderListState(
-      cliente: cliente ?? this.cliente,
-      fechaDesde: fechaDesde ?? this.fechaDesde,
-      fechaHasta: fechaHasta ?? this.fechaHasta,
+      busqueda: busqueda ?? this.busqueda,
       response: response,
+      responseDelete: response ?? this.responseDelete,
       formKey: formKey,
-      responseCliente: response ?? this.responseCliente,
-      clienteSeleccionado: clienteSeleccionado ?? this.clienteSeleccionado,
+      listaOrder: listaOrder ?? this.listaOrder,
     );
   }
 
   @override
-  List<Object?> get props => [
-    cliente,
-    fechaDesde,
-    fechaHasta,
-    response,
-    responseCliente,
-    clienteSeleccionado,
-  ];
+  List<Object?> get props => [response, responseDelete, busqueda, listaOrder];
 }
