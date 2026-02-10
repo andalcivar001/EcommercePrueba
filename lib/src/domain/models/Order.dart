@@ -14,6 +14,7 @@ String orderToJson(Order data) => json.encode(data.toJson());
 
 class Order {
   String? id;
+  int? secuencia;
   DateTime fecha;
   String idCliente;
   double? latitud;
@@ -26,6 +27,7 @@ class Order {
 
   Order({
     this.id,
+    this.secuencia,
     required this.fecha,
     required this.idCliente,
     this.latitud,
@@ -39,6 +41,7 @@ class Order {
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
     id: json["_id"],
+    secuencia: json["secuencia"],
     fecha: DateTime.parse(json["fecha"]),
     idCliente: json["idCliente"],
     latitud: json["latitud"]?.toDouble(),
@@ -54,6 +57,7 @@ class Order {
 
   Map<String, dynamic> toJson() => {
     "_id": id,
+    "secuencia": secuencia,
     "fecha": fecha.toIso8601String(),
     "idCliente": idCliente,
     "latitud": latitud,

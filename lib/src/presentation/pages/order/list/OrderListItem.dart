@@ -28,33 +28,58 @@ class OrderListItem extends StatelessWidget {
       margin: EdgeInsets.only(top: 10, left: 5, right: 5),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              ListTile(
-                leading: Text(
-                  order.cliente?.nombre ?? '',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+            dense: true,
+            leading: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Venta #', style: TextStyle(fontSize: 15)),
+                Text(
+                  order.secuencia.toString(),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
-                trailing: _chipId(),
-              ),
-            ],
+              ],
+            ),
+            trailing: _chipId(estado),
           ),
-          SizedBox(height: 3),
           _divider(),
-          SizedBox(height: 4),
-          Text(
-            order.fecha.toString(),
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            child: Row(
+              children: [
+                Text('Cliente:', style: TextStyle(fontSize: 13)),
+                SizedBox(width: 2),
+
+                Text(
+                  order.cliente?.nombre ?? '',
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
           ),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text('Total:', style: TextStyle(fontSize: 14)),
+              SizedBox(width: 10),
+              Text('Total', style: TextStyle(fontSize: 13)),
+              SizedBox(width: 2),
               _textTotal(),
-              Text('Estado', style: TextStyle(fontSize: 14)),
-              _textEstado(estado!),
+              SizedBox(width: 20),
+              Text('Estado', style: TextStyle(fontSize: 13)),
+              SizedBox(width: 2),
+              _textEstado(estado),
+              SizedBox(width: 20),
+              Text('Fecha', style: TextStyle(fontSize: 13)),
+              SizedBox(width: 2),
+
+              Text(
+                '2026-02-10',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+              ),
             ],
           ),
         ],
@@ -62,33 +87,55 @@ class OrderListItem extends StatelessWidget {
     );
   }
 
-  Widget _chipId() {
+  Widget _chipId(String estado) {
     Color color = Colors.blue;
+    IconData icon = Icons.add;
     switch (order.estado) {
       case 'N':
-        color = Colors.blue;
+        color = Colors.yellow.shade700;
+        icon = Icons.new_label;
         break;
       case 'X':
         color = Colors.red;
+        icon = Icons.close;
         break;
       case 'P':
-        color = Colors.greenAccent;
+        color = Colors.green;
+        icon = Icons.check_circle;
+
         break;
     }
-    return Container(
-      padding: EdgeInsets.only(right: 5, left: 5),
-      width: 100,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(99),
+    return SizedBox(
+      width: 130,
+      height: 28,
+
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(99),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: Colors.white),
+            Text(
+              estado.toUpperCase(),
+              style: TextStyle(
+                color: order.estado == 'N' ? Colors.black : Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
-      child: Text(order.id!, style: TextStyle(color: Colors.white)),
     );
   }
 
   Widget _divider() {
     return Divider(
-      height: 20, // espacio total que ocupa
+      height: 1, // espacio total que ocupa
       thickness: 1, // ancho de la linea
       color: Colors.grey,
       indent: 10, // margen izquierdo
@@ -97,16 +144,17 @@ class OrderListItem extends StatelessWidget {
   }
 
   Widget _textTotal() {
+    final double total = order.total ?? 0;
     return Text(
-      '\$${order.total.toString()}',
-      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+      '\$${total.toString()}',
+      style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
     );
   }
 
   Widget _textEstado(String estado) {
     return Text(
       estado,
-      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+      style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
     );
   }
 }
