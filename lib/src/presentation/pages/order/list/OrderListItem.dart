@@ -1,6 +1,7 @@
 import 'package:ecommerce_prueba/src/domain/models/Order.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListBloc.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class OrderListItem extends StatelessWidget {
   OrderListBloc? bloc;
@@ -23,7 +24,9 @@ class OrderListItem extends StatelessWidget {
       default:
         estado = 'Otro';
     }
-    // order.estado =='N' ? 'Ingresado' :
+    String cliente = order.cliente?.nombre ?? '';
+    int productos = order.detalles.length;
+
     return Card(
       margin: EdgeInsets.only(top: 10, left: 5, right: 5),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -54,33 +57,41 @@ class OrderListItem extends StatelessWidget {
                 SizedBox(width: 2),
 
                 Text(
-                  order.cliente?.nombre ?? '',
+                  cliente.toUpperCase(),
                   style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
           ),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(width: 10),
-              Text('Total', style: TextStyle(fontSize: 13)),
-              SizedBox(width: 2),
-              _textTotal(),
-              SizedBox(width: 20),
-              Text('Estado', style: TextStyle(fontSize: 13)),
-              SizedBox(width: 2),
-              _textEstado(estado),
-              SizedBox(width: 20),
-              Text('Fecha', style: TextStyle(fontSize: 13)),
-              SizedBox(width: 2),
+          Container(
+            margin: EdgeInsets.only(left: 10, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text('Total: ', style: TextStyle(fontSize: 13)),
+                _textTotal(),
+                Spacer(flex: 1),
+                Text('Fecha: ', style: TextStyle(fontSize: 13)),
 
-              Text(
-                '2026-02-10',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-              ),
-            ],
+                Text(
+                  DateFormat('yyyy-MM-dd').format(order.fecha),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          _divider(),
+          Container(
+            padding: EdgeInsets.only(top: 3, bottom: 3),
+            margin: EdgeInsets.only(left: 10, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(order.cliente?.email ?? 'N/A'),
+                Text('${productos.toString()} productos'),
+              ],
+            ),
           ),
         ],
       ),
@@ -147,13 +158,6 @@ class OrderListItem extends StatelessWidget {
     final double total = order.total ?? 0;
     return Text(
       '\$${total.toString()}',
-      style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-    );
-  }
-
-  Widget _textEstado(String estado) {
-    return Text(
-      estado,
       style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
     );
   }

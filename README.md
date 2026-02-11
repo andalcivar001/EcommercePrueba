@@ -42,5 +42,7 @@ el dispose se ejecuta cuando se cierra de pantalla actual
 
 al ejecutar el apk-release hay que darle permisos a para peteciones http y https, agregar estas dos lineas:
 
+intl: ^0.20.2.. se instala para formatear fechas ...Proporciona funciones de internacionalización y localización, incluida traducción de mensajes, plurales y géneros, formato y análisis de fechas y números, y texto bidireccional.
+
 - <uses-permission android:name="android.permission.INTERNET" />
 - android:usesCleartextTraffic="true"

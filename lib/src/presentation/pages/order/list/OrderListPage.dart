@@ -22,7 +22,9 @@ class _OrderListPageState extends State<OrderListPage> {
     bloc = BlocProvider.of<OrderListBloc>(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, 'order/form');
+        },
         backgroundColor: Colors.blue[700],
         child: Icon(Icons.add, color: Colors.white),
       ),
@@ -43,15 +45,13 @@ class _OrderListPageState extends State<OrderListPage> {
                 padding: EdgeInsetsGeometry.all(16),
                 child: Column(
                   children: [
-                    Container(
-                      child: Text(
-                        'Ventas',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1.5,
-                          color: Colors.black,
-                        ),
+                    Text(
+                      'Ventas',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.5,
+                        color: Colors.black,
                       ),
                     ),
                     SizedBox(height: 6),

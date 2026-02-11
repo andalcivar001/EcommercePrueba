@@ -5,6 +5,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/auth/register/RegisterPa
 import 'package:ecommerce_prueba/src/presentation/pages/category/form/CategoryFormPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/form/ClientFormPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/HomePage.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/form/OrderFormPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/ProductFormPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/ProfilePage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/form/SubCategoryFormPage.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
           'subcategory/form': (BuildContext context) => SubCategoryFormPage(),
           'product/form': (BuildContext context) => ProductFormPage(),
           'client/form': (BuildContext context) => ClientFormPage(),
+          'order/form': (BuildContext context) => OrderFormPage(),
         },
       ),
     );
