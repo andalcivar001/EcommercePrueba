@@ -18,8 +18,6 @@ class ClientFormContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dropDownKey = GlobalKey<DropdownSearchState>();
-
     return Container(
       color: Colors.white,
       height: double.infinity,

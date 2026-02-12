@@ -1,3 +1,5 @@
+import 'package:ecommerce_prueba/src/domain/models/OrderDetail.dart';
+import 'package:ecommerce_prueba/src/domain/models/Product.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class OrderFormEvent extends Equatable {
@@ -19,4 +21,32 @@ class ClienteChagnedOrderFormEvent extends OrderFormEvent {
 
 class SubmittedOrderFormEvent extends OrderFormEvent {
   const SubmittedOrderFormEvent();
+}
+
+class InsertarProductoOrderFormEvent extends OrderFormEvent {
+  final Product product;
+  const InsertarProductoOrderFormEvent({required this.product});
+}
+
+class EliminarProdoctoOrderFormEvent extends OrderFormEvent {
+  final OrderDetail orderDetail;
+  const EliminarProdoctoOrderFormEvent({required this.orderDetail});
+}
+
+class AumentarCanitdadOrderFormEvent extends OrderFormEvent {
+  final OrderDetail orderDetail;
+  const AumentarCanitdadOrderFormEvent({required this.orderDetail});
+}
+
+class RestarCantidadOrderFormEvent extends OrderFormEvent {
+  final OrderDetail orderDetail;
+  const RestarCantidadOrderFormEvent({required this.orderDetail});
+}
+
+class BuscarProductOrderFormEvent extends OrderFormEvent {
+  const BuscarProductOrderFormEvent();
+}
+
+class BuscarQrProductFormEvent extends OrderFormEvent {
+  const BuscarQrProductFormEvent();
 }
