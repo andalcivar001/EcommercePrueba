@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 class OrderFormState extends Equatable {
-  final String? idCliente;
+  final String idCliente;
   final List<OrderDetail> orderDetail;
   final double subtotal;
   final double impuestos;
@@ -21,7 +21,7 @@ class OrderFormState extends Equatable {
   final List<Product> listaProductos;
 
   OrderFormState({
-    this.idCliente,
+    this.idCliente = '',
     this.orderDetail = const [],
     this.subtotal = 0,
     this.impuestos = 0,

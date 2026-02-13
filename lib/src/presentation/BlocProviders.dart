@@ -17,6 +17,8 @@ import 'package:ecommerce_prueba/src/presentation/pages/client/form/bloc/ClientF
 import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormBloc.dart';
@@ -28,6 +30,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/subcategory/form/bloc/Su
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/bloc/SubCategoryListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/bloc/SubCategoryListEvent.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path/path.dart';
 
 List<BlocProvider> blocProviders = [
   BlocProvider<LoginBloc>(
@@ -101,5 +104,12 @@ List<BlocProvider> blocProviders = [
     create: (context) =>
         OrderListBloc(locator<OrderUseCases>(), locator<AuthUseCases>())
           ..add(InitOrderListEvent()),
+  ),
+  BlocProvider<OrderFormBloc>(
+    create: (context) => OrderFormBloc(
+      locator<OrderUseCases>(),
+      locator<ClientUseCases>(),
+      locator<ProductUseCases>(),
+    )..add(InitOrderFormEvent()),
   ),
 ];
