@@ -13,6 +13,7 @@ class OrderFormContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = Color(0xFF1E3C72);
     return Container(
       color: Colors.white,
       height: double.infinity,
@@ -20,8 +21,8 @@ class OrderFormContent extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              color: Colors.blue,
-              padding: EdgeInsets.only(top: 10, bottom: 10, left: 15),
+              color: color,
+              padding: EdgeInsets.only(top: 15, bottom: 10, left: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -29,7 +30,11 @@ class OrderFormContent extends StatelessWidget {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Icon(Icons.arrow_back_ios, color: Colors.white),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      size: 25,
+                      color: Colors.white,
+                    ),
                   ),
                   SizedBox(width: 10),
                   Text(
@@ -79,44 +84,33 @@ class OrderFormContent extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Text(
-                          'Agregar Producto',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                    _separador('Agregar Producto'),
+
+                    SizedBox(height: 10),
+                    SizedBox(
+                      height: 65,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: Colors.grey.shade200,
+                            width: 1.5,
                           ),
                         ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: Container(
-                            margin: EdgeInsets.only(left: 1, right: 3),
-                            height: 1,
-                            color: Colors.grey,
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(flex: 5, child: _botonBuscarPorCodigo()),
+                            SizedBox(width: 5),
+                            Expanded(flex: 5, child: _botonBuscarPorQr()),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.start,
-                    //   children: [
-                    //     Expanded(
-                    //       flex: 5,
-                    //       child: Container(
-                    //         color: Colors.blue,
-                    //         child: Text('Buscar Producto'),
-                    //       ),
-                    //     ),
-                    //     Expanded(
-                    //       flex: 5,
-                    //       child: Container(
-                    //         color: Colors.white,
-                    //         child: Text('Buscar QR'),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+                    SizedBox(height: 10),
+                    _separador('Productos Agregados'),
                   ],
                 ),
               ),
@@ -186,6 +180,87 @@ class OrderFormContent extends StatelessWidget {
         }
         return null;
       },
+    );
+  }
+
+  Widget _botonBuscarPorCodigo() {
+    return GestureDetector(
+      onTap: () {},
+      child: SizedBox(
+        height: 45,
+        child: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Color(0xFF1E3C72),
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(color: Colors.white, width: 1.5),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.search, color: Colors.white),
+              Text(
+                'Buscar Producto',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _botonBuscarPorQr() {
+    return GestureDetector(
+      onTap: () {},
+      child: SizedBox(
+        height: 45,
+        child: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(color: Colors.black45, width: 1.5),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.qr_code, color: Colors.black54),
+              Text(
+                'Buscar por QR',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _separador(String texto) {
+    return Row(
+      children: [
+        Text(
+          texto,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        SizedBox(width: 8),
+        Expanded(
+          child: Container(
+            margin: EdgeInsets.only(left: 1, right: 3),
+            height: 1,
+            color: Colors.grey,
+          ),
+        ),
+      ],
     );
   }
 }
