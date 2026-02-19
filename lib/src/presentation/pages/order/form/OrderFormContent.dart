@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:ecommerce_prueba/src/domain/models/Client.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/form/OrderFormItem.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormState.dart';
@@ -48,76 +49,80 @@ class OrderFormContent extends StatelessWidget {
                 ],
               ),
             ),
-            SingleChildScrollView(
-              padding: EdgeInsets.only(
-                top: 10,
-                left: 10,
-                right: 10,
-                bottom: 10,
-              ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 10,
+                  left: 10,
+                  right: 10,
+                  bottom: 10,
+                ),
 
-              child: Form(
-                key: state.formKey,
+                child: Form(
+                  key: state.formKey,
 
-                child: Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-
-                      padding: EdgeInsets.only(
-                        top: 20,
-                        bottom: 20,
-                        left: 10,
-                        right: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.grey.shade200,
-                          width: 1.5,
+                  child: Column(
+                    children: [
+                      _container(
+                        child: Container(
+                          color: Colors.white,
+                          child: _dropDownProvinciaSearch(),
                         ),
                       ),
-                      child: Container(
-                        color: Colors.white,
-                        child: _dropDownProvinciaSearch(),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    _separador('Agregar Producto'),
 
-                    SizedBox(height: 10),
-                    SizedBox(
-                      height: 65,
-                      child: Container(
-                        padding: EdgeInsets.only(left: 10, right: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: Colors.grey.shade200,
-                            width: 1.5,
+                      SizedBox(height: 10),
+                      _separador('Agregar Producto'),
+
+                      SizedBox(height: 10),
+                      SizedBox(
+                        height: 65,
+                        child: _container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(flex: 5, child: _botonBuscarPorCodigo()),
+                              SizedBox(width: 5),
+                              Expanded(flex: 5, child: _botonBuscarPorQr()),
+                            ],
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(flex: 5, child: _botonBuscarPorCodigo()),
-                            SizedBox(width: 5),
-                            Expanded(flex: 5, child: _botonBuscarPorQr()),
-                          ],
-                        ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    _separador('Productos Agregados'),
-                  ],
+                      SizedBox(height: 10),
+                      _separador('Productos Agregados'),
+                      state.orderDetail.isNotEmpty
+                          ? Expanded(
+                              child: ListView.builder(
+                                itemCount: state.orderDetail.length,
+                                itemBuilder: (context, index) {
+                                  return OrderFormItem(
+                                    state.orderDetail[index],
+                                  );
+                                },
+                              ),
+                            )
+                          : Text('No hay productos agregados'),
+                    ],
+                  ),
                 ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _container({required Widget child}) {
+    return Container(
+      width: double.infinity,
+
+      padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey.shade200, width: 1.5),
+      ),
+      child: child,
     );
   }
 

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:ecommerce_prueba/src/domain/models/Product.dart';
+
 OrderDetail orderDetailFromJson(String str) =>
     OrderDetail.fromJson(json.decode(str));
 
@@ -14,12 +16,14 @@ class OrderDetail {
   String idProducto;
   double precio;
   int cantidad;
+  Product? producto;
 
   OrderDetail({
     this.id,
     required this.idProducto,
     required this.precio,
     required this.cantidad,
+    this.producto,
   });
 
   factory OrderDetail.fromJson(Map<String, dynamic> json) => OrderDetail(
@@ -27,6 +31,9 @@ class OrderDetail {
     idProducto: json["idProducto"],
     precio: json["precio"]?.toDouble(),
     cantidad: json["cantidad"],
+    producto: json["producto"] != null
+        ? Product.fromJson(json["producto"])
+        : null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -34,5 +41,6 @@ class OrderDetail {
     "idProducto": idProducto,
     "precio": precio,
     "cantidad": cantidad,
+    "producto": producto,
   };
 }
