@@ -44,5 +44,7 @@ al ejecutar el apk-release hay que darle permisos a para peteciones http y https
 
 intl: ^0.20.2.. se instala para formatear fechas ...Proporciona funciones de internacionalización y localización, incluida traducción de mensajes, plurales y géneros, formato y análisis de fechas y números, y texto bidireccional.
 
+mobile_scanner: ^3.5.5 ... detecta codigos de barra, qr, otros formatos y lee el codigo en tiempo real sin tomar foto, controla flash y camara frontal/trasera
+
 - <uses-permission android:name="android.permission.INTERNET" />
 - android:usesCleartextTraffic="true"

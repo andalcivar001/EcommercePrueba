@@ -1,9 +1,12 @@
 import 'package:ecommerce_prueba/src/domain/models/OrderDetail.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormEvent.dart';
 import 'package:flutter/material.dart';
 
 class OrderFormItem extends StatelessWidget {
+  OrderFormBloc? bloc;
   OrderDetail detalle;
-  OrderFormItem(this.detalle);
+  OrderFormItem(this.bloc, this.detalle);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +14,7 @@ class OrderFormItem extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.all(12),
-      margin: EdgeInsets.only(bottom: 8),
+      margin: EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -53,13 +56,19 @@ class OrderFormItem extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: 4,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _boton('-', () {}),
+                _boton('-', () {
+                  bloc?.add(RestarCantidadOrderFormEvent(orderDetail: detalle));
+                }),
                 _textoCantidad(),
-                _boton('+', () {}),
+                _boton('+', () {
+                  bloc?.add(
+                    AumentarCantidadOrderFormEvent(orderDetail: detalle),
+                  );
+                }),
               ],
             ),
           ),
@@ -72,11 +81,12 @@ class OrderFormItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 30,
-        width: 30,
+        height: 35,
+        width: 35,
         decoration: BoxDecoration(
           color: Colors.grey.shade200,
           borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: Colors.grey.shade400, width: 1),
         ),
         child: Center(
           child: Text(

@@ -5,6 +5,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/order/form/OrderFormItem
 import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormState.dart';
+import 'package:ecommerce_prueba/src/presentation/utils/QrScannerPage.dart';
 import 'package:flutter/material.dart';
 
 class OrderFormContent extends StatelessWidget {
@@ -82,7 +83,10 @@ class OrderFormContent extends StatelessWidget {
                             children: [
                               Expanded(flex: 5, child: _botonBuscarPorCodigo()),
                               SizedBox(width: 5),
-                              Expanded(flex: 5, child: _botonBuscarPorQr()),
+                              Expanded(
+                                flex: 5,
+                                child: _botonBuscarPorQr(context),
+                              ),
                             ],
                           ),
                         ),
@@ -95,6 +99,7 @@ class OrderFormContent extends StatelessWidget {
                                 itemCount: state.orderDetail.length,
                                 itemBuilder: (context, index) {
                                   return OrderFormItem(
+                                    bloc,
                                     state.orderDetail[index],
                                   );
                                 },
@@ -134,7 +139,7 @@ class OrderFormContent extends StatelessWidget {
       },
 
       // Valor seleccionado
-      selectedItem: state.idCliente!.isEmpty
+      selectedItem: state.idCliente.isEmpty
           ? null
           : state.listaClientes.firstWhereOrNull(
               (x) => x.id == state.idCliente,
@@ -219,9 +224,18 @@ class OrderFormContent extends StatelessWidget {
     );
   }
 
-  Widget _botonBuscarPorQr() {
+  Widget _botonBuscarPorQr(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () async {
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const QrScannerPage()),
+        );
+
+        if (result != null) {
+          bloc?.add(BuscarQrProductFormEvent(code: result));
+        }
+      },
       child: SizedBox(
         height: 45,
         child: Container(

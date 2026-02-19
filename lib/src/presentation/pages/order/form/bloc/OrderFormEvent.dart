@@ -33,9 +33,9 @@ class EliminarProdoctoOrderFormEvent extends OrderFormEvent {
   const EliminarProdoctoOrderFormEvent({required this.orderDetail});
 }
 
-class AumentarCanitdadOrderFormEvent extends OrderFormEvent {
+class AumentarCantidadOrderFormEvent extends OrderFormEvent {
   final OrderDetail orderDetail;
-  const AumentarCanitdadOrderFormEvent({required this.orderDetail});
+  const AumentarCantidadOrderFormEvent({required this.orderDetail});
 }
 
 class RestarCantidadOrderFormEvent extends OrderFormEvent {
@@ -48,5 +48,8 @@ class BuscarProductOrderFormEvent extends OrderFormEvent {
 }
 
 class BuscarQrProductFormEvent extends OrderFormEvent {
-  const BuscarQrProductFormEvent();
+  final String code;
+  const BuscarQrProductFormEvent({required this.code});
+  @override
+  List<Object?> get props => [code];
 }
