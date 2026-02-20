@@ -18,7 +18,6 @@ class OrderFormState extends Equatable {
   final Resource? response;
   final bool loading;
   final List<Client> listaClientes;
-  final List<Product> listaProductos;
 
   OrderFormState({
     this.idCliente = '',
@@ -33,7 +32,6 @@ class OrderFormState extends Equatable {
     this.response,
     this.loading = false,
     this.listaClientes = const [],
-    this.listaProductos = const [],
   });
 
   OrderFormState copyWith({
@@ -49,7 +47,6 @@ class OrderFormState extends Equatable {
     Resource? response,
     bool? loading,
     List<Client>? listaClientes,
-    List<Product>? listaProductos,
   }) {
     return OrderFormState(
       idCliente: idCliente ?? this.idCliente,
@@ -64,7 +61,6 @@ class OrderFormState extends Equatable {
       response: response,
       loading: loading ?? this.loading,
       listaClientes: listaClientes ?? this.listaClientes,
-      listaProductos: listaProductos ?? this.listaProductos,
     );
   }
 
@@ -81,6 +77,5 @@ class OrderFormState extends Equatable {
     response,
     loading,
     listaClientes,
-    listaProductos,
   ];
 }

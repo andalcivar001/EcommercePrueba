@@ -45,6 +45,7 @@ import 'package:ecommerce_prueba/src/domain/useCases/Order/OrderUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Order/UpdateOrderUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/CreateProductUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/DeleteProductUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductByCodAlternoUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductByIdUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductsUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/ProductUseCases.dart';
@@ -171,6 +172,7 @@ abstract class Appmodule {
     create: CreateProductUseCase(productRepository),
     update: UpdateProductUseCase(productRepository),
     delete: DeleteProductUseCase(productRepository),
+    getByCodAlterno: GetProductByCodalternoUseCase(productRepository),
   );
 
   @injectable

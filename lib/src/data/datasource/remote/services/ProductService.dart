@@ -54,6 +54,27 @@ class ProductService {
       return Error(e.toString());
     }
   }
+  
+  Future<Resource<Product>> getProductByCodAlterno(String codAlterno) async {
+    try {
+      Uri url = Uri.parse('${Apiconfig.API_ECOMMERCE}/products/code/$codAlterno');
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "Authorization": await token,
+      };
+
+      final response = await http.get(url, headers: headers);
+      final data = json.decode(response.body);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        Product productResponse = Product.fromJson(data);
+        return Success(productResponse);
+      } else {
+        return Error(listToString(data['message']));
+      }
+    } catch (e) {
+      return Error(e.toString());
+    }
+  }
 
   Future<Resource<Product>> create(
     Product product,
@@ -149,14 +170,6 @@ class ProductService {
         );
       }
 
-      // request.fields['product'] = json.encode({
-      //   'descripcion': product.descripcion,
-      //   'codAlterno': product.codAlterno,
-      //   'stock': product.stock,
-      //   'idCategory': product.idCategory,
-      //   'idSubcategory': product.idSubcategory,
-      //   'isActive': product.isActive,
-      // });
       request.fields['descripcion'] = product.descripcion;
       request.fields['codAlterno'] = product.codAlterno ?? '';
       request.fields['stock'] = product.stock.toString();

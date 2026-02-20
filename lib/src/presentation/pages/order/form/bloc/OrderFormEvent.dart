@@ -48,8 +48,8 @@ class BuscarProductOrderFormEvent extends OrderFormEvent {
 }
 
 class BuscarQrProductFormEvent extends OrderFormEvent {
-  final String code;
-  const BuscarQrProductFormEvent({required this.code});
+  final String codAlterno;
+  const BuscarQrProductFormEvent({required this.codAlterno});
   @override
-  List<Object?> get props => [code];
+  List<Object?> get props => [codAlterno];
 }

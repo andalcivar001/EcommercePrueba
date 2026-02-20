@@ -233,7 +233,7 @@ class OrderFormContent extends StatelessWidget {
         );
 
         if (result != null) {
-          bloc?.add(BuscarQrProductFormEvent(code: result));
+          bloc?.add(BuscarQrProductFormEvent(codAlterno: result));
         }
       },
       child: SizedBox(

@@ -8,7 +8,14 @@ abstract class ProductRepository {
 
   Future<Resource<Product>> create(Product product, File? file1, File? file2);
 
-  Future<Resource<Product>> update(Product product, String id, File? file1, File? file2);
+  Future<Resource<Product>> update(
+    Product product,
+    String id,
+    File? file1,
+    File? file2,
+  );
 
   Future<Resource<bool>> delete(String id);
+
+  Future<Resource<Product>> getProductByCodAlterno(String codAlterno);
 }

@@ -11,8 +11,12 @@ class ProductRepositoryImpl extends ProductRepository {
   ProductRepositoryImpl(this.productService);
 
   @override
-  Future<Resource<Product>> create(Product product,File? file1 , File? file2) async  {
-   return  await productService.create(product, file1, file2);
+  Future<Resource<Product>> create(
+    Product product,
+    File? file1,
+    File? file2,
+  ) async {
+    return await productService.create(product, file1, file2);
   }
 
   @override
@@ -31,8 +35,17 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<Resource<Product>> update(Product product, String id, File? file1, File? file2) async {
+  Future<Resource<Product>> update(
+    Product product,
+    String id,
+    File? file1,
+    File? file2,
+  ) async {
     return await productService.update(product, id, file1, file2);
-  
+  }
+
+  @override
+  Future<Resource<Product>> getProductByCodAlterno(String codAlterno) async {
+    return await productService.getProductByCodAlterno(codAlterno);
   }
 }

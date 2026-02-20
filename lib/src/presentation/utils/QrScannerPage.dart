@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:vibration/vibration.dart';
 
-class QrScannerPage extends StatelessWidget {
+class QrScannerPage extends StatefulWidget {
   const QrScannerPage({super.key});
 
+  @override
+  State<QrScannerPage> createState() => _QrScannerPageState();
+}
+
+class _QrScannerPageState extends State<QrScannerPage> {
+  bool _isScanned = false;
+  final MobileScannerController controller = MobileScannerController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,11 +20,29 @@ class QrScannerPage extends StatelessWidget {
         children: [
           /// 📷 CAMARA
           MobileScanner(
-            onDetect: (barcodeCapture) {
+            controller: controller,
+            onDetect: (barcodeCapture) async {
+              if (_isScanned) return; // 🔥 BLOQUEA DOBLE LECTURA
+
               final barcode = barcodeCapture.barcodes.first;
               final String? code = barcode.rawValue;
 
               if (code != null) {
+                _isScanned = true;
+                try {
+                  final hasVibrator = await Vibration.hasVibrator();
+                  if (hasVibrator == true) {
+                    Vibration.vibrate(
+                      duration: 200,
+                    ); // sin await, y duración razonable
+                  }
+                } catch (ex) {
+                  print('HUBO PROBLEMA CON LA VIBRACION $ex');
+                }
+
+                await controller.stop();
+
+                await Future.delayed(const Duration(milliseconds: 150));
                 Navigator.pop(context, code);
               }
             },
