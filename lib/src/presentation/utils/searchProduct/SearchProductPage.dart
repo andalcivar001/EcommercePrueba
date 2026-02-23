@@ -1,5 +1,7 @@
 import 'package:ecommerce_prueba/src/domain/models/Product.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/searchProduct/bloc/SearchProductBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/searchProduct/bloc/SearchProductEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/searchProduct/bloc/SearchProductState.dart';
@@ -8,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchProductPage extends StatefulWidget {
-  const SearchProductPage({super.key});
+  final String tipo;
+  SearchProductPage({required this.tipo});
 
   @override
   State<SearchProductPage> createState() => _SearchProductPageState();
@@ -17,6 +20,13 @@ class SearchProductPage extends StatefulWidget {
 // class SearchProductContent extends StatelessWidget {
 class _SearchProductPageState extends State<SearchProductPage> {
   SearchProductBloc? bloc;
+
+  @override
+  void dispose() {
+    bloc?.add(ResetSearchProductEvent());
+    controller.clear();
+    super.dispose();
+  }
 
   final TextEditingController controller = TextEditingController();
   @override
@@ -147,9 +157,16 @@ class _SearchProductPageState extends State<SearchProductPage> {
 
                           return GestureDetector(
                             onTap: () {
-                              bloc?.add(ResetSearchProductEvent());
-                              controller.clear();
-                              Navigator.pop(context, product);
+                              // bloc?.add(ResetSearchProductEvent());
+                              //controller.clear();
+                              //Navigator.pop(context, product);
+
+                              AppToast.success(
+                                '${product.descripcion} agregado correctamente',
+                              );
+                              context.read<OrderFormBloc>().add(
+                                BuscarProductOrderFormEvent(product: product),
+                              );
                             },
                             child: Container(
                               padding: EdgeInsets.all(15),

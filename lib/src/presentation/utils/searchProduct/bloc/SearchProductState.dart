@@ -16,7 +16,7 @@ class SearchProductState extends Equatable {
   }) {
     return SearchProductState(
       query: query ?? this.query,
-      response: response,
+      response: response ?? this.response,
       formKey: formKey,
     );
   }

@@ -134,7 +134,9 @@ class OrderFormBloc extends Bloc<OrderFormEvent, OrderFormState> {
     BuscarProductOrderFormEvent event,
     Emitter<OrderFormState> emit,
   ) async {
+    emit(state.copyWith(loading: true, formKey: formKey));
     _agregarProducto(event.product, emit);
+    emit(state.copyWith(loading: false, formKey: formKey));
   }
 
   Future<void> _onBuscarQr(
@@ -147,8 +149,6 @@ class OrderFormBloc extends Bloc<OrderFormEvent, OrderFormState> {
       event.codAlterno,
     );
 
-    emit(state.copyWith(loading: false, formKey: formKey));
-
     final Product? producto = response is Success
         ? response.data as Product
         : null;
@@ -158,6 +158,7 @@ class OrderFormBloc extends Bloc<OrderFormEvent, OrderFormState> {
       return;
     }
     _agregarProducto(producto, emit);
+    emit(state.copyWith(loading: false, formKey: formKey));
   }
 
   void _agregarProducto(Product producto, Emitter<OrderFormState> emit) {

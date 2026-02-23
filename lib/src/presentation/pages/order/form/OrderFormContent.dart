@@ -6,7 +6,9 @@ import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFor
 import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormState.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/searchProduct/SearchProductPage.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/DefaultButton.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:vibration/vibration.dart';
 
 class OrderFormContent extends StatelessWidget {
@@ -96,7 +98,9 @@ class OrderFormContent extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10),
-                      _separador('Productos Agregados'),
+                      _separador(
+                        '${state.orderDetail.length} Productos Agregados',
+                      ),
                       state.orderDetail.isNotEmpty
                           ? Expanded(
                               child: ListView.builder(
@@ -114,6 +118,84 @@ class OrderFormContent extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      border: Border.all(color: Colors.grey.shade300, width: 1),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Subtotal:', style: TextStyle(fontSize: 16)),
+                            Text('Impuestos:', style: TextStyle(fontSize: 16)),
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              '\$${state.subtotal.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                            Text(
+                              '\$${state.impuestos.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      border: Border.all(color: Colors.grey.shade300, width: 1),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('TOTAL:', style: TextStyle(fontSize: 16)),
+                        Text(
+                          '\$${state.total.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.all(15),
+              child: DefaultButton(text: 'GUARDAR VENTA', onPressed: () {}),
             ),
           ],
         ),
@@ -208,7 +290,7 @@ class OrderFormContent extends StatelessWidget {
           backgroundColor: Colors.transparent,
 
           builder: (context) {
-            return SearchProductPage();
+            return SearchProductPage(tipo: 'OV');
           },
         );
 
@@ -231,6 +313,7 @@ class OrderFormContent extends StatelessWidget {
               Icon(Icons.search, color: Colors.white),
               Text(
                 'Buscar Producto',
+
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 14,
