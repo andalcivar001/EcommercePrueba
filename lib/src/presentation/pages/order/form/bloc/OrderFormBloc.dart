@@ -25,6 +25,7 @@ class OrderFormBloc extends Bloc<OrderFormEvent, OrderFormState> {
     on<AumentarCantidadOrderFormEvent>(_onAumentarCantidad);
     on<RestarCantidadOrderFormEvent>(_onRestarCantidad);
     on<BuscarQrProductFormEvent>(_onBuscarQr);
+    on<BuscarProductOrderFormEvent>(_onBuscarProduct);
   }
 
   final formKey = GlobalKey<FormState>();
@@ -127,6 +128,13 @@ class OrderFormBloc extends Bloc<OrderFormEvent, OrderFormState> {
         formKey: formKey,
       ),
     );
+  }
+
+  Future<void> _onBuscarProduct(
+    BuscarProductOrderFormEvent event,
+    Emitter<OrderFormState> emit,
+  ) async {
+    _agregarProducto(event.product, emit);
   }
 
   Future<void> _onBuscarQr(

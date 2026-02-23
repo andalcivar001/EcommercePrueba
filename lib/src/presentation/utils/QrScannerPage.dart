@@ -29,16 +29,6 @@ class _QrScannerPageState extends State<QrScannerPage> {
 
               if (code != null) {
                 _isScanned = true;
-                try {
-                  final hasVibrator = await Vibration.hasVibrator();
-                  if (hasVibrator == true) {
-                    Vibration.vibrate(
-                      duration: 200,
-                    ); // sin await, y duración razonable
-                  }
-                } catch (ex) {
-                  print('HUBO PROBLEMA CON LA VIBRACION $ex');
-                }
 
                 await controller.stop();
 

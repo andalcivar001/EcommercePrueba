@@ -18,4 +18,6 @@ abstract class ProductRepository {
   Future<Resource<bool>> delete(String id);
 
   Future<Resource<Product>> getProductByCodAlterno(String codAlterno);
+
+  Future<Resource<List<Product>>> getProductsSearch(String query);
 }

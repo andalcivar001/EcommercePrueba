@@ -5,8 +5,9 @@ import 'package:ecommerce_prueba/src/presentation/pages/order/form/OrderFormItem
 import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormState.dart';
-import 'package:ecommerce_prueba/src/presentation/utils/QrScannerPage.dart';
+import 'package:ecommerce_prueba/src/presentation/utils/searchProduct/SearchProductPage.dart';
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 
 class OrderFormContent extends StatelessWidget {
   OrderFormBloc? bloc;
@@ -81,7 +82,10 @@ class OrderFormContent extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Expanded(flex: 5, child: _botonBuscarPorCodigo()),
+                              Expanded(
+                                flex: 5,
+                                child: _botonBuscarPorCodigo(context),
+                              ),
                               SizedBox(width: 5),
                               Expanded(
                                 flex: 5,
@@ -193,9 +197,25 @@ class OrderFormContent extends StatelessWidget {
     );
   }
 
-  Widget _botonBuscarPorCodigo() {
+  Widget _botonBuscarPorCodigo(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () async {
+        //final result = await Navigator.pushNamed(context, 'searchProduct');
+        //print('RESULT $result');
+        final result = await showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+
+          builder: (context) {
+            return SearchProductPage();
+          },
+        );
+
+        if (result != null) {
+          bloc?.add(BuscarProductOrderFormEvent(product: result));
+        }
+      },
       child: SizedBox(
         height: 45,
         child: Container(
@@ -227,13 +247,15 @@ class OrderFormContent extends StatelessWidget {
   Widget _botonBuscarPorQr(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        final result = await Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const QrScannerPage()),
-        );
+        final result = await Navigator.pushNamed(context, 'qrScanner');
+
+        final hasVibrator = await Vibration.hasVibrator();
+        if (hasVibrator == true) {
+          Vibration.vibrate(duration: 200); // sin await, y duración razonable
+        }
 
         if (result != null) {
-          bloc?.add(BuscarQrProductFormEvent(codAlterno: result));
+          bloc?.add(BuscarQrProductFormEvent(codAlterno: result.toString()));
         }
       },
       child: SizedBox(

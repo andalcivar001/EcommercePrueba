@@ -23,28 +23,27 @@ class SubmittedOrderFormEvent extends OrderFormEvent {
   const SubmittedOrderFormEvent();
 }
 
-class InsertarProductoOrderFormEvent extends OrderFormEvent {
-  final Product product;
-  const InsertarProductoOrderFormEvent({required this.product});
-}
-
-class EliminarProdoctoOrderFormEvent extends OrderFormEvent {
-  final OrderDetail orderDetail;
-  const EliminarProdoctoOrderFormEvent({required this.orderDetail});
-}
-
 class AumentarCantidadOrderFormEvent extends OrderFormEvent {
   final OrderDetail orderDetail;
   const AumentarCantidadOrderFormEvent({required this.orderDetail});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [orderDetail];
 }
 
 class RestarCantidadOrderFormEvent extends OrderFormEvent {
   final OrderDetail orderDetail;
   const RestarCantidadOrderFormEvent({required this.orderDetail});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [orderDetail];
 }
 
 class BuscarProductOrderFormEvent extends OrderFormEvent {
-  const BuscarProductOrderFormEvent();
+  final Product product;
+  const BuscarProductOrderFormEvent({required this.product});
+  @override
+  List<Object?> get props => [product];
 }
 
 class BuscarQrProductFormEvent extends OrderFormEvent {

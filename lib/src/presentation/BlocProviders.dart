@@ -29,8 +29,9 @@ import 'package:ecommerce_prueba/src/presentation/pages/profile/bloc/ProfileEven
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/form/bloc/SubCategoryFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/bloc/SubCategoryListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/list/bloc/SubCategoryListEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/utils/searchProduct/bloc/SearchProductBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/utils/searchProduct/bloc/SearchProductEvent.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
 
 List<BlocProvider> blocProviders = [
   BlocProvider<LoginBloc>(
@@ -111,5 +112,11 @@ List<BlocProvider> blocProviders = [
       locator<ClientUseCases>(),
       locator<ProductUseCases>(),
     )..add(InitOrderFormEvent()),
+  ),
+
+  BlocProvider<SearchProductBloc>(
+    create: (context) =>
+        SearchProductBloc(locator<ProductUseCases>())
+          ..add(InitSearchProductEvent()),
   ),
 ];

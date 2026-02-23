@@ -3,6 +3,7 @@ import 'package:ecommerce_prueba/src/domain/useCases/Product/DeleteProductUseCas
 import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductByCodAlternoUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductByIdUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductsUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/Product/GetProductsSearchUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/UpdateProductUseCase.dart';
 
 class ProductUseCases {
@@ -12,6 +13,7 @@ class ProductUseCases {
   UpdateProductUseCase update;
   DeleteProductUseCase delete;
   GetProductByCodalternoUseCase getByCodAlterno;
+  GetProductsSearchUseCase getProductsSearch;
   ProductUseCases({
     required this.getProducts,
     required this.getBydId,
@@ -19,5 +21,6 @@ class ProductUseCases {
     required this.update,
     required this.delete,
     required this.getByCodAlterno,
+    required this.getProductsSearch,
   });
 }

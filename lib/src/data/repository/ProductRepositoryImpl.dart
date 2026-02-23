@@ -48,4 +48,9 @@ class ProductRepositoryImpl extends ProductRepository {
   Future<Resource<Product>> getProductByCodAlterno(String codAlterno) async {
     return await productService.getProductByCodAlterno(codAlterno);
   }
+
+  @override
+  Future<Resource<List<Product>>> getProductsSearch(String query) async {
+    return await productService.getProductsSearch(query);
+  }
 }

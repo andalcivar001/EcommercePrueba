@@ -9,6 +9,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/order/form/OrderFormPage
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/ProductFormPage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/profile/ProfilePage.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/subcategory/form/SubCategoryFormPage.dart';
+import 'package:ecommerce_prueba/src/presentation/utils/QrScannerPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           'product/form': (BuildContext context) => ProductFormPage(),
           'client/form': (BuildContext context) => ClientFormPage(),
           'order/form': (BuildContext context) => OrderFormPage(),
+          'qrScanner': (BuildContext context) => QrScannerPage(),
         },
       ),
     );
