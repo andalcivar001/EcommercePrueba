@@ -21,3 +21,10 @@ class BusquedaOrderListEvent extends OrderListEvent {
 class DeleteOrderListEvent extends OrderListEvent {
   const DeleteOrderListEvent();
 }
+
+class GenerarPdfOrderListEvent extends OrderListEvent {
+  final Order orden;
+  const GenerarPdfOrderListEvent({required this.orden});
+  @override
+  List<Object?> get props => [orden];
+}

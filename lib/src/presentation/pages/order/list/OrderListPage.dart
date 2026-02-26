@@ -6,6 +6,7 @@ import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderLis
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:printing/printing.dart';
 
 class OrderListPage extends StatefulWidget {
   const OrderListPage({super.key});
@@ -29,10 +30,14 @@ class _OrderListPageState extends State<OrderListPage> {
         child: Icon(Icons.add, color: Colors.white),
       ),
       body: BlocListener<OrderListBloc, OrderListState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           final response = state.response;
           if (response is Error) {
             AppToast.error(response.message);
+          }
+
+          if (state.pdfBytes != null) {
+            await Printing.layoutPdf(onLayout: (_) async => state.pdfBytes!);
           }
         },
         child: BlocBuilder<OrderListBloc, OrderListState>(
@@ -82,7 +87,7 @@ class _OrderListPageState extends State<OrderListPage> {
                       child: ListView.builder(
                         itemCount: listaOrder.length,
                         itemBuilder: (context, index) {
-                          return OrderListItem(bloc, listaOrder[index]);
+                          return OrderListItem(bloc, state, listaOrder[index]);
                         },
                       ),
                     ),

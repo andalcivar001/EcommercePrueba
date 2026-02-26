@@ -1,12 +1,16 @@
 import 'package:ecommerce_prueba/src/domain/models/Order.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListState.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class OrderListItem extends StatelessWidget {
   OrderListBloc? bloc;
+  OrderListState state;
   Order order;
-  OrderListItem(this.bloc, this.order);
+
+  OrderListItem(this.bloc, this.state, this.order);
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +108,9 @@ class OrderListItem extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () async {
+                      bloc?.add(GenerarPdfOrderListEvent(orden: order));
+                    },
                     label: Text('Consultar'),
                     icon: Icon(Icons.search),
                     style: ElevatedButton.styleFrom(

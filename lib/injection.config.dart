@@ -29,6 +29,8 @@ import 'package:ecommerce_prueba/src/data/datasource/remote/services/SubCategory
     as _i879;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/UserService.dart'
     as _i1052;
+import 'package:ecommerce_prueba/src/data/services/OrderPdfService.dart'
+    as _i513;
 import 'package:ecommerce_prueba/src/di/appModule.dart' as _i319;
 import 'package:ecommerce_prueba/src/domain/repository/AuthRepository.dart'
     as _i732;
@@ -69,6 +71,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final appmodule = _$Appmodule();
+    gh.factory<_i513.OrderPdfService>(() => _i513.OrderPdfService());
     gh.factory<_i195.SharedPref>(() => appmodule.sharedPref);
     gh.factoryAsync<String>(() => appmodule.token);
     gh.factory<_i1032.AuthService>(() => appmodule.authService);

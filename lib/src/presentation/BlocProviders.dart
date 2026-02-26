@@ -1,4 +1,5 @@
 import 'package:ecommerce_prueba/injection.dart';
+import 'package:ecommerce_prueba/src/data/services/OrderPdfService.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Client/ClientUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Order/OrderUseCases.dart';
@@ -18,7 +19,6 @@ import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientL
 import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/home/bloc/HomeBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormBloc.dart';
-import 'package:ecommerce_prueba/src/presentation/pages/order/form/bloc/OrderFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/product/form/bloc/ProductFormBloc.dart';
@@ -102,9 +102,11 @@ List<BlocProvider> blocProviders = [
   ),
 
   BlocProvider<OrderListBloc>(
-    create: (context) =>
-        OrderListBloc(locator<OrderUseCases>(), locator<AuthUseCases>())
-          ..add(InitOrderListEvent()),
+    create: (context) => OrderListBloc(
+      locator<OrderUseCases>(),
+      locator<AuthUseCases>(),
+      locator<OrderPdfService>(),
+    )..add(InitOrderListEvent()),
   ),
   BlocProvider<OrderFormBloc>(
     create: (context) => OrderFormBloc(
