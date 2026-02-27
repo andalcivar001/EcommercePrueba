@@ -13,6 +13,8 @@ class OrderListState extends Equatable {
   final GlobalKey<FormState>? formKey;
   final Uint8List? pdfBytes;
   final bool loading;
+  final String accion;
+  final String pdfNombre;
 
   OrderListState({
     this.response,
@@ -22,6 +24,8 @@ class OrderListState extends Equatable {
     this.listaOrder,
     this.pdfBytes,
     this.loading = false,
+    this.accion = '',
+    this.pdfNombre = '',
   });
 
   OrderListState copyWith({
@@ -32,15 +36,19 @@ class OrderListState extends Equatable {
     List<Order>? listaOrder,
     bool? loading,
     Uint8List? pdfBytes,
+    String? accion,
+    String? pdfNombre,
   }) {
     return OrderListState(
       busqueda: busqueda ?? this.busqueda,
-      response: response,
+      response: response ?? this.response,
       responseDelete: response ?? this.responseDelete,
       formKey: formKey,
       listaOrder: listaOrder ?? this.listaOrder,
       loading: loading ?? this.loading,
       pdfBytes: pdfBytes ?? this.pdfBytes,
+      accion: accion ?? this.accion,
+      pdfNombre: pdfNombre ?? this.pdfNombre,
     );
   }
 
@@ -52,5 +60,7 @@ class OrderListState extends Equatable {
     listaOrder,
     loading,
     pdfBytes,
+    accion,
+    pdfNombre,
   ];
 }

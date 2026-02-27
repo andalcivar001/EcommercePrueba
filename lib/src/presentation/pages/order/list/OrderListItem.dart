@@ -10,7 +10,7 @@ class OrderListItem extends StatelessWidget {
   OrderListState state;
   Order order;
 
-  OrderListItem(this.bloc, this.state, this.order);
+  OrderListItem(this.bloc, this.state, this.order, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -105,32 +105,30 @@ class OrderListItem extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  flex: 3,
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      bloc?.add(GenerarPdfOrderListEvent(orden: order));
-                    },
-                    label: Text('Consultar'),
-                    icon: Icon(Icons.search),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade300,
-                      foregroundColor: Colors.white,
-                    ),
+                ElevatedButton(
+                  onPressed: () {
+                    bloc?.add(GenerarPdfOrderListEvent(orden: order));
+                  },
+
+                  child: Icon(Icons.print, color: Colors.black, size: 30),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    bloc?.add(CompartirPdfOrderListEvent(orden: order));
+                  },
+
+                  child: Icon(
+                    Icons.share,
+                    color: Colors.blue.shade800,
+                    size: 30,
                   ),
                 ),
                 SizedBox(width: 10),
-                Expanded(
-                  flex: 3,
-                  child: ElevatedButton.icon(
-                    onPressed: () {},
-                    label: Text('Eliminar'),
-                    icon: Icon(Icons.cancel),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red.shade300,
-                      foregroundColor: Colors.white,
-                    ),
-                  ),
+                ElevatedButton(
+                  onPressed: () {},
+
+                  child: Icon(Icons.close, color: Colors.red, size: 30),
                 ),
               ],
             ),

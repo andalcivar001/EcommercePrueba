@@ -1,5 +1,5 @@
 import 'package:ecommerce_prueba/injection.dart';
-import 'package:ecommerce_prueba/src/data/services/OrderPdfService.dart';
+import 'package:ecommerce_prueba/src/data/services/PdfOrderService.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Client/ClientUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Order/OrderUseCases.dart';
@@ -105,7 +105,7 @@ List<BlocProvider> blocProviders = [
     create: (context) => OrderListBloc(
       locator<OrderUseCases>(),
       locator<AuthUseCases>(),
-      locator<OrderPdfService>(),
+      locator<PdfOrderService>(),
     )..add(InitOrderListEvent()),
   ),
   BlocProvider<OrderFormBloc>(

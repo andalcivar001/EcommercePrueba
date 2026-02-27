@@ -2,6 +2,7 @@ import 'package:ecommerce_prueba/src/domain/models/Order.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/list/OrderListItem.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListState.dart';
 import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
@@ -32,12 +33,23 @@ class _OrderListPageState extends State<OrderListPage> {
       body: BlocListener<OrderListBloc, OrderListState>(
         listener: (context, state) async {
           final response = state.response;
+
           if (response is Error) {
             AppToast.error(response.message);
           }
 
-          if (state.pdfBytes != null) {
+          if (state.pdfBytes != null && state.accion == 'COMPARTIR') {
+            await Printing.sharePdf(
+              bytes: state.pdfBytes!,
+              filename: state.pdfNombre,
+            );
+
+            bloc?.add(ClearPdfOrderListEvent());
+          }
+
+          if (state.pdfBytes != null && state.accion == 'IMPRIMIR') {
             await Printing.layoutPdf(onLayout: (_) async => state.pdfBytes!);
+            bloc?.add(ClearPdfOrderListEvent());
           }
         },
         child: BlocBuilder<OrderListBloc, OrderListState>(
@@ -96,7 +108,7 @@ class _OrderListPageState extends State<OrderListPage> {
               );
             }
 
-            if (response is Loading) {
+            if (response is Loading || state.loading) {
               return Center(child: CircularProgressIndicator());
             }
             return Container();

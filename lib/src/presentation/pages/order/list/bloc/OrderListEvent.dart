@@ -28,3 +28,14 @@ class GenerarPdfOrderListEvent extends OrderListEvent {
   @override
   List<Object?> get props => [orden];
 }
+
+class CompartirPdfOrderListEvent extends OrderListEvent {
+  final Order orden;
+  const CompartirPdfOrderListEvent({required this.orden});
+  @override
+  List<Object?> get props => [orden];
+}
+
+class ClearPdfOrderListEvent extends OrderListEvent {
+  const ClearPdfOrderListEvent();
+}
