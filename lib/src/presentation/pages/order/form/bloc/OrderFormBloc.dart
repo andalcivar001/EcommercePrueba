@@ -85,6 +85,11 @@ class OrderFormBloc extends Bloc<OrderFormEvent, OrderFormState> {
 
     if (index != -1) {
       final itemActual = nuevaLista[index];
+      final int stock = itemActual.producto?.stock ?? 0;
+      if (itemActual.cantidad + 1 > stock) {
+        AppToast.warning('Stock insuficiente');
+        return;
+      }
       itemActual.cantidad = itemActual.cantidad + 1;
       nuevaLista[index] = itemActual;
 

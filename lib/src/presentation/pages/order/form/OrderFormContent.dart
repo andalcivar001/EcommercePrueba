@@ -112,7 +112,7 @@ class OrderFormContent extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           const Text(
-            "Nueva Orden",
+            "Nueva Venta",
             style: TextStyle(
               fontSize: 22,
               color: Colors.white,

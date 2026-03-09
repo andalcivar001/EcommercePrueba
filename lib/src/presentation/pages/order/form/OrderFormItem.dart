@@ -11,7 +11,7 @@ class OrderFormItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final subtotal = detalle.precio * detalle.cantidad;
-
+    final int stock = detalle.producto?.stock ?? 0;
     return Container(
       padding: EdgeInsets.all(12),
       margin: EdgeInsets.only(bottom: 5),
@@ -45,9 +45,33 @@ class OrderFormItem extends StatelessWidget {
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(height: 4),
-                Text(
-                  'Unit. \$${detalle.precio.toString()}',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                Row(
+                  children: [
+                    Text(
+                      'Unit. \$${detalle.precio.toString()}',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                    SizedBox(width: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: stock <= 0
+                            ? Colors.red.shade50
+                            : Colors.blue.shade50,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        'Stock $stock',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: stock <= 0 ? Colors.red : Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

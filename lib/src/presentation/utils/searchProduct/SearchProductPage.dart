@@ -40,7 +40,7 @@ class _SearchProductPageState extends State<SearchProductPage> {
       initialChildSize: 0.88,
       minChildSize: 0.65,
       maxChildSize: 0.95,
-      expand: false,
+      expand: true,
       builder: (_, scrollController) {
         return Container(
           decoration: const BoxDecoration(

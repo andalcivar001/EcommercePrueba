@@ -33,9 +33,19 @@ class _OrderListPageState extends State<OrderListPage> {
       body: BlocListener<OrderListBloc, OrderListState>(
         listener: (context, state) async {
           final response = state.response;
+          final responseDelete = state.responseDelete;
 
           if (response is Error) {
             AppToast.error(response.message);
+          }
+
+          if (responseDelete is Success) {
+            AppToast.success('Orden eliminada correctamente');
+            bloc?.add(InitOrderListEvent());
+          } else if (responseDelete is Error) {
+            AppToast.error(
+              'Error al eliminar el servicio ${responseDelete.message}',
+            );
           }
 
           if (state.pdfBytes != null && state.accion == 'COMPARTIR') {
@@ -55,6 +65,10 @@ class _OrderListPageState extends State<OrderListPage> {
         child: BlocBuilder<OrderListBloc, OrderListState>(
           builder: (context, state) {
             final response = state.response;
+            if (response is Loading || state.loading == true) {
+              return Center(child: CircularProgressIndicator());
+            }
+
             if (response is Success) {
               List<Order> listaOrder = response.data as List<Order>;
 
@@ -106,10 +120,6 @@ class _OrderListPageState extends State<OrderListPage> {
                   ],
                 ),
               );
-            }
-
-            if (response is Loading || state.loading) {
-              return Center(child: CircularProgressIndicator());
             }
             return Container();
           },

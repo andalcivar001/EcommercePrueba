@@ -101,5 +101,15 @@ class OrderListBloc extends Bloc<OrderListEvent, OrderListState> {
   Future<void> _onDelete(
     DeleteOrderListEvent event,
     Emitter<OrderListState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(loading: true, formKey: formKey));
+    final response = await orderUseCases.delete.run(event.id);
+    emit(
+      state.copyWith(
+        responseDelete: response,
+        loading: false,
+        formKey: formKey,
+      ),
+    );
+  }
 }

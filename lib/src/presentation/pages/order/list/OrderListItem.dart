@@ -2,6 +2,9 @@ import 'package:ecommerce_prueba/src/domain/models/Order.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/list/bloc/OrderListState.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/view/OrderViewPage.dart';
+import 'package:ecommerce_prueba/src/presentation/utils/SelectConfirmDialog.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -105,7 +108,7 @@ class OrderListItem extends StatelessWidget {
                 _infoItem(
                   Icons.calendar_today,
                   'Fecha',
-                  DateFormat('yyyy-MM-dd').format(order.fecha),
+                  DateFormat('yyyy-MM-dd HH:mm').format(order.fecha),
                 ),
                 _infoItem(Icons.shopping_bag, 'Productos', '$productos'),
               ],
@@ -115,6 +118,20 @@ class OrderListItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                _actionButton(
+                  icon: Icons.remove_red_eye,
+                  color: Colors.brown,
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (_) => OrderViewPage(order: order),
+                    );
+                  },
+                ),
+
+                const SizedBox(width: 8),
                 _actionButton(
                   icon: Icons.print,
                   color: Colors.black87,
@@ -138,7 +155,16 @@ class OrderListItem extends StatelessWidget {
                 _actionButton(
                   icon: Icons.close,
                   color: Colors.red,
-                  onPressed: () {},
+                  onPressed: () {
+                    if (order.estado == 'X') {
+                      AppToast.warning('Venta ya se encuentra eliminada');
+                    } else {
+                      selectConfirmDialog(
+                        context,
+                        () => bloc?.add(DeleteOrderListEvent(id: order.id!)),
+                      );
+                    }
+                  },
                 ),
               ],
             ),

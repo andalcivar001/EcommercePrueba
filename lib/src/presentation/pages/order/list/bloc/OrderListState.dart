@@ -42,7 +42,7 @@ class OrderListState extends Equatable {
     return OrderListState(
       busqueda: busqueda ?? this.busqueda,
       response: response ?? this.response,
-      responseDelete: response ?? this.responseDelete,
+      responseDelete: responseDelete,
       formKey: formKey,
       listaOrder: listaOrder ?? this.listaOrder,
       loading: loading ?? this.loading,

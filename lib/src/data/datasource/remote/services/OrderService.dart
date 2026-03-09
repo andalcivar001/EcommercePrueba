@@ -109,8 +109,11 @@ class OrderService {
         "Authorization": await token,
       };
 
+      print('elimiando desde el servicio');
       final response = await http.delete(url, headers: headers);
+      print('respuesta del servicio ${response.body}');
       final data = json.decode(response.body);
+
       if (response.statusCode == 201 || response.statusCode == 200) {
         bool deletedResponse = data as bool;
         return Success(deletedResponse);
