@@ -7,6 +7,7 @@ class OrderPaymentListContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    orden.totalPagado = 60;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -82,17 +83,17 @@ class OrderPaymentListContent extends StatelessWidget {
   Widget _cardOrden({required Widget chipEstado, required String nombre}) {
     return Positioned(
       top: 10,
-      left: 10,
-      right: 10,
+      left: 5,
+      right: 5,
       child: Card(
         elevation: 2,
 
         color: Colors.white,
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        margin: EdgeInsets.symmetric(horizontal: 3, vertical: 10),
 
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -103,7 +104,7 @@ class OrderPaymentListContent extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       CircleAvatar(
-                        radius: 25,
+                        radius: 20,
                         backgroundColor: Colors.blueAccent,
                         child: Icon(Icons.person, color: Colors.white),
                       ),
@@ -123,7 +124,10 @@ class OrderPaymentListContent extends StatelessWidget {
                                 color: Colors.grey,
                               ),
                               SizedBox(width: 5),
-                              Text('#${orden.secuencia.toString()}'),
+                              Text(
+                                'Venta #${orden.secuencia.toString()}',
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ],
                           ),
                         ],
@@ -140,53 +144,63 @@ class OrderPaymentListContent extends StatelessWidget {
                   border: Border.all(width: 0.5, color: Colors.grey.shade300),
                 ),
               ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: _cardValores(
-                      icon: Icons.attach_money,
-                      color: Colors.blue,
-                      label: 'Total Venta',
-                      value: '\$${orden.total.toStringAsFixed(2)}',
-                    ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: _cardValores(
-                      icon: Icons.check,
-                      color: Colors.green,
-                      label: 'Total Pagado',
-                      value: '\$50.00',
-                    ),
-                  ),
-                ],
-              ),
               SizedBox(height: 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: _cardValores(
-                      icon: Icons.error_outline,
-                      color: Colors.orange,
-                      label: 'Total Venta',
-                      value: '\$30.00',
+              _barraProgresiva(),
+              SizedBox(height: 5),
+              Container(
+                decoration: BoxDecoration(color: Colors.grey.shade200),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: _cardValores(
+                        icon: Icons.attach_money,
+                        color: Colors.blue,
+                        label: 'Total Venta',
+                        value: '\$${orden.total.toStringAsFixed(2)}',
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: _cardValores(
-                      icon: Icons.percent,
-                      color: Colors.teal,
-                      label: '% Pagado',
-                      value: '70.00',
+                    Expanded(
+                      flex: 5,
+                      child: _cardValores(
+                        icon: Icons.check,
+                        color: Colors.green,
+                        label: 'Total Pagado',
+                        value:
+                            '\$${(orden.totalPagado ?? 0).toStringAsFixed(2)}',
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(color: Colors.grey.shade200),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: _cardValores(
+                        icon: Icons.error_outline,
+                        color: Colors.orange,
+                        label: 'Pendiente',
+                        value:
+                            '\$${(orden.total - (orden.totalPagado ?? 0)).toStringAsFixed(2)}',
+                      ),
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: _cardValores(
+                        icon: Icons.percent,
+                        color: Colors.indigo,
+                        label: '% Pagado',
+                        value: ((orden.totalPagado ?? 0) * 100 / orden.total)
+                            .toStringAsFixed(2),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -207,10 +221,67 @@ class OrderPaymentListContent extends StatelessWidget {
         children: [
           Text(
             'Pago parcial',
-            style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: Colors.orange,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          SizedBox(width: 5),
+          SizedBox(width: 3),
           Icon(Icons.arrow_forward_ios, size: 17, color: Colors.orange),
+        ],
+      ),
+    );
+  }
+
+  Widget _barraProgresiva() {
+    double saldo = orden.total - (orden.totalPagado ?? 0);
+    double porcSaldo = (orden.totalPagado ?? 0) * 100 / orden.total;
+    Color color = Colors.blue;
+    if (porcSaldo >= 0 && porcSaldo <= 30) {
+      color = Colors.red;
+    } else if (porcSaldo >= 31 && porcSaldo <= 70) {
+      color = Colors.orange;
+    } else {
+      color = Colors.green;
+    }
+
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                'Pago: \$${(orden.totalPagado ?? 0).toStringAsFixed(2)}',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(width: 2),
+              Text('| Saldo. \$${saldo.toStringAsFixed(2)}'),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      '\$${(orden.totalPagado ?? 0).toStringAsFixed(2)}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(' | \$${orden.total.toStringAsFixed(2)}'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          LinearProgressIndicator(
+            value: porcSaldo / 100,
+            backgroundColor: Colors.grey.shade400,
+            color: color,
+            minHeight: 10,
+            borderRadius: BorderRadius.circular(50),
+          ),
         ],
       ),
     );
@@ -234,9 +305,9 @@ class OrderPaymentListContent extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              radius: 17,
+              radius: 12,
               backgroundColor: color,
-              child: Icon(icon, color: Colors.white),
+              child: Icon(icon, color: Colors.white, size: 15),
             ),
             SizedBox(width: 5),
             Column(
@@ -244,13 +315,13 @@ class OrderPaymentListContent extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                 ),
                 Text(
                   value,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -259,6 +330,15 @@ class OrderPaymentListContent extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _infoDetalle() {
+    return ListView.builder(
+      itemCount: orden.pagos.length,
+      itemBuilder: (context, index) {
+        return Container();
+      },
     );
   }
 }

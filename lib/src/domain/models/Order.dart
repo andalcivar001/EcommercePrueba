@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:ecommerce_prueba/src/domain/models/Client.dart';
 import 'package:ecommerce_prueba/src/domain/models/OrderDetail.dart';
+import 'package:ecommerce_prueba/src/domain/models/OrderPayment.dart';
 import 'package:ecommerce_prueba/src/domain/models/User.dart';
 
 Order orderFromJson(String str) => Order.fromJson(json.decode(str));
@@ -27,6 +28,8 @@ class Order {
   double total;
   String idUsuario;
   String? estado;
+  double? totalPagado;
+  List<OrderPayment> pagos;
 
   Order({
     this.id,
@@ -43,6 +46,8 @@ class Order {
     required this.total,
     required this.idUsuario,
     this.estado,
+    this.totalPagado,
+    this.pagos = const [],
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
@@ -52,9 +57,11 @@ class Order {
     idCliente: json["idCliente"],
     latitud: json["latitud"]?.toDouble(),
     longitud: json["longitud"]?.toDouble(),
-    detalles: (json["detalles"] as List)
-        .map((x) => OrderDetail.fromJson(x))
-        .toList(),
+    detalles: json["detalles"] != null
+        ? (json["detalles"] as List)
+              .map((x) => OrderDetail.fromJson(x))
+              .toList()
+        : [],
     cliente: json["cliente"] != null ? Client.fromJson(json["cliente"]) : null,
     usuario: json["usuario"] != null ? User.fromJson(json["usuario"]) : null,
     subtotal: json["subtotal"]?.toDouble(),
@@ -62,6 +69,10 @@ class Order {
     total: json["total"]?.toDouble(),
     idUsuario: json["idUsuario"],
     estado: json["estado"],
+    totalPagado: json["totalPagado"]?.toDouble(),
+    pagos: json["pagos"] != null
+        ? (json["pagos"] as List).map((x) => OrderPayment.fromJson(x)).toList()
+        : [],
   );
 
   Map<String, dynamic> toJson() => {
@@ -79,6 +90,8 @@ class Order {
     "total": total,
     "idUsuario": idUsuario,
     "estado": estado,
+    "totalPagado": totalPagado,
+    "pagos": pagos.map((x) => x.toJson()).toList(),
   };
 
   static List<Order> fromJsonList(List<dynamic> jsonList) {
