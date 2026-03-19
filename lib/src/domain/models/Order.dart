@@ -29,7 +29,6 @@ class Order {
   String idUsuario;
   String? estado;
   double? totalPagado;
-  List<OrderPayment> pagos;
 
   Order({
     this.id,
@@ -47,7 +46,6 @@ class Order {
     required this.idUsuario,
     this.estado,
     this.totalPagado,
-    this.pagos = const [],
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
@@ -70,9 +68,6 @@ class Order {
     idUsuario: json["idUsuario"],
     estado: json["estado"],
     totalPagado: json["totalPagado"]?.toDouble(),
-    pagos: json["pagos"] != null
-        ? (json["pagos"] as List).map((x) => OrderPayment.fromJson(x)).toList()
-        : [],
   );
 
   Map<String, dynamic> toJson() => {
@@ -91,7 +86,6 @@ class Order {
     "idUsuario": idUsuario,
     "estado": estado,
     "totalPagado": totalPagado,
-    "pagos": pagos.map((x) => x.toJson()).toList(),
   };
 
   static List<Order> fromJsonList(List<dynamic> jsonList) {

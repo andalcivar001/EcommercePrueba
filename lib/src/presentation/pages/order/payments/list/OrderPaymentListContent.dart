@@ -1,10 +1,16 @@
 import 'package:ecommerce_prueba/src/domain/models/Order.dart';
+import 'package:ecommerce_prueba/src/domain/models/OrderPayment.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class OrderPaymentListContent extends StatelessWidget {
   final Order orden;
-
-  OrderPaymentListContent({required this.orden, super.key});
+  final List<OrderPayment> listaPagos;
+  OrderPaymentListContent({
+    required this.orden,
+    required this.listaPagos,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -286,6 +292,34 @@ class OrderPaymentListContent extends StatelessWidget {
   }
 
   Widget _detallePagos() {
-    return Container(margin: EdgeInsets.symmetric(horizontal: 10));
+    return ListView.builder(
+      itemCount: listaPagos.length,
+      itemBuilder: (context, index) {
+        final OrderPayment pago = listaPagos[index];
+        IconData icon = Icons.money_off;
+        return Container(
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    Text(DateFormat('yyyy-MM-dd HH:mm').format(orden.fecha)),
+                    Text(
+                      '\$${orden.total.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:ecommerce_prueba/src/domain/models/Order.dart';
+import 'package:ecommerce_prueba/src/domain/models/OrderPayment.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/payments/list/OrderPaymentListContent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/payments/list/bloc/OrderPaymentListBloc.dart';
@@ -36,22 +37,29 @@ class _OrderPaymentListPageState extends State<OrderPaymentListPage> {
       body: Center(
         child: BlocListener<OrderPaymentListBloc, OrderPaymentListState>(
           listener: (context, state) {
-            final response = state.response;
-            if (response is Error) {
+            final responseOrden = state.responseOrden;
+            if (responseOrden is Error) {
               AppToast.error(
-                'Hubo un problema al consultar la orden ${response.message}',
+                'Hubo un problema al consultar la orden ${responseOrden.message}',
               );
             }
           },
           child: BlocBuilder<OrderPaymentListBloc, OrderPaymentListState>(
             builder: (context, state) {
-              final response = state.response;
-              if (response is Loading) {
+              final responseOrden = state.responseOrden;
+              final responsePagos = state.responsePagos;
+              if (state.loading is Loading) {
                 return Center(child: CircularProgressIndicator());
               }
-              if (response is Success) {
-                final Order orden = response.data as Order;
-                return OrderPaymentListContent(orden: orden);
+              if (responseOrden is Success && responsePagos is Success) {
+                final Order orden = responseOrden.data as Order;
+                final List<OrderPayment> listaPagos =
+                    responsePagos.data as List<OrderPayment>;
+
+                return OrderPaymentListContent(
+                  orden: orden,
+                  listaPagos: listaPagos,
+                );
               }
               return Container();
             },

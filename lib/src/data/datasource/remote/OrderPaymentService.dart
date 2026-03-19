@@ -16,7 +16,7 @@ class OrderPaymentService {
   ) async {
     try {
       Uri url = Uri.parse(
-        '${Apiconfig.API_ECOMMERCE}/payment-order/orden/$idOrden',
+        '${Apiconfig.API_ECOMMERCE}/payment-order/order/$idOrden',
       );
       Map<String, String> headers = {
         "Content-Type": "application/json",

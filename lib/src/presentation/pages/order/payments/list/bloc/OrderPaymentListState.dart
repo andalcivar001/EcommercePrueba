@@ -1,27 +1,45 @@
 import 'package:ecommerce_prueba/src/domain/models/Order.dart';
+import 'package:ecommerce_prueba/src/domain/models/OrderPayment.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 class OrderPaymentListState extends Equatable {
-  final Order? orden;
-  final Resource? response;
+  final Resource? responseOrden;
+  final Resource? responsePagos;
+  final bool loading;
+  final List<OrderPayment> listaPagos;
   final GlobalKey<FormState>? formKey;
 
-  OrderPaymentListState({this.orden, this.response, this.formKey});
+  OrderPaymentListState({
+    this.responseOrden,
+    this.responsePagos,
+    this.loading = false,
+    this.formKey,
+    this.listaPagos = const [],
+  });
 
   OrderPaymentListState copyWith({
-    Order? orden,
-    Resource? response,
+    Resource? responseOrden,
+    Resource? responsePagos,
+    bool? loading,
     GlobalKey<FormState>? formKey,
+    List<OrderPayment>? listaPagos,
   }) {
     return OrderPaymentListState(
-      orden: orden ?? this.orden,
-      response: response ?? this.response,
+      responseOrden: responseOrden ?? this.responseOrden,
+      responsePagos: responsePagos ?? this.responsePagos,
+      loading: loading ?? this.loading,
+      listaPagos: listaPagos ?? this.listaPagos,
       formKey: formKey,
     );
   }
 
   @override
-  List<Object?> get props => [orden, response];
+  List<Object?> get props => [
+    responseOrden,
+    responsePagos,
+    loading,
+    listaPagos,
+  ];
 }

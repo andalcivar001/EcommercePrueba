@@ -3,6 +3,7 @@ import 'package:ecommerce_prueba/src/data/services/PdfOrderService.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Category/CategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Client/ClientUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Order/OrderUseCases.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/OrderPaymentUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/ProductUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/SubCategory/SubCategoryUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/auth/AuthUseCases.dart';
@@ -125,6 +126,9 @@ List<BlocProvider> blocProviders = [
   ),
 
   BlocProvider<OrderPaymentListBloc>(
-    create: (context) => OrderPaymentListBloc(locator<OrderUseCases>()),
+    create: (context) => OrderPaymentListBloc(
+      locator<OrderUseCases>(),
+      locator<OrderPaymentUseCases>(),
+    ),
   ),
 ];
