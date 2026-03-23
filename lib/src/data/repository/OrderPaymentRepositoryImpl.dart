@@ -1,11 +1,22 @@
-import 'package:ecommerce_prueba/src/data/datasource/remote/OrderPaymentService.dart';
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/FinancialEntitiesService.dart';
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/OrderPaymentService.dart';
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/PaymentMethodService.dart';
+import 'package:ecommerce_prueba/src/domain/models/FinancialEntities.dart';
 import 'package:ecommerce_prueba/src/domain/models/OrderPayment.dart';
+import 'package:ecommerce_prueba/src/domain/models/PaymentMethod.dart';
 import 'package:ecommerce_prueba/src/domain/repository/OrderPaymentRepository.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 
 class OrderPaymentRepositoryImpl extends OrderPaymentRepository {
   OrderPaymentService orderPaymentService;
-  OrderPaymentRepositoryImpl(this.orderPaymentService);
+  PaymentMethodService paymentMethodService;
+  FinancialEntitiesService financialEntitiesService;
+
+  OrderPaymentRepositoryImpl(
+    this.orderPaymentService,
+    this.paymentMethodService,
+    this.financialEntitiesService,
+  );
 
   @override
   Future<Resource<OrderPayment>> create(OrderPayment orderPayment) async {
@@ -35,5 +46,15 @@ class OrderPaymentRepositoryImpl extends OrderPaymentRepository {
     String id,
   ) async {
     return await orderPaymentService.update(orderPayment, id);
+  }
+
+  @override
+  Future<Resource<List<FinancialEntities>>> getFinancialEntities() async {
+    return await financialEntitiesService.getFinancialEntities();
+  }
+
+  @override
+  Future<Resource<List<PaymentMethod>>> getPaymentMethods() async {
+    return await paymentMethodService.getPaymentMethods();
   }
 }

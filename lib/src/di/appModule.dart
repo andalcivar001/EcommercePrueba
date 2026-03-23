@@ -1,10 +1,12 @@
 import 'package:ecommerce_prueba/src/data/datasource/local/SharedPref.dart';
-import 'package:ecommerce_prueba/src/data/datasource/remote/OrderPaymentService.dart';
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/FinancialEntitiesService.dart';
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/OrderPaymentService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/AuthService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/CategoryService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/CityService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ClientService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/OrderService.dart';
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/PaymentMethodService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ProductService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ProvinceService.dart';
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/SubCategoryService.dart';
@@ -48,8 +50,10 @@ import 'package:ecommerce_prueba/src/domain/useCases/Order/OrderUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Order/UpdateOrderUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/CreateOrderPaymentUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/DeleteOrderPaymentUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/GetFinancialEntitiesUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/GetOrderPaymentByIdUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/GetOrderPaymentsByOrdenUseCase.dart';
+import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/GetPaymentMethodsUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/OrderPaymentUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/UpdateOrderPaymentUseCase.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Product/CreateProductUseCase.dart';
@@ -124,6 +128,13 @@ abstract class Appmodule {
   @injectable
   OrderPaymentService get orderPaymentService => OrderPaymentService(token);
 
+  @injectable
+  PaymentMethodService get paymentMethodService => PaymentMethodService(token);
+
+  @injectable
+  FinancialEntitiesService get financialEntitiesService =>
+      FinancialEntitiesService(token);
+
   /******** REPOSITORIOS *********** */ ////
   @injectable
   AuthRepository get authRepository =>
@@ -148,7 +159,11 @@ abstract class Appmodule {
   OrderRepository get orderRepository => OrderRepositoryImpl(orderService);
 
   OrderPaymentRepository get orderPaymentRepository =>
-      OrderPaymentRepositoryImpl(orderPaymentService);
+      OrderPaymentRepositoryImpl(
+        orderPaymentService,
+        paymentMethodService,
+        financialEntitiesService,
+      );
 
   /********* USECASE *******/
   ///
@@ -228,6 +243,10 @@ abstract class Appmodule {
       orderPaymentRepository,
     ),
     deleteOrderPaymentUseCase: DeleteOrderPaymentUseCase(
+      orderPaymentRepository,
+    ),
+    getPaymentMethodsUseCase: GetPaymentMethodsUseCase(orderPaymentRepository),
+    getFinancialEntitiesUseCase: GetFinancialEntitiesUseCase(
       orderPaymentRepository,
     ),
   );

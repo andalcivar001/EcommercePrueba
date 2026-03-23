@@ -1,4 +1,6 @@
+import 'package:ecommerce_prueba/src/domain/models/FinancialEntities.dart';
 import 'package:ecommerce_prueba/src/domain/models/OrderPayment.dart';
+import 'package:ecommerce_prueba/src/domain/models/PaymentMethod.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 
 abstract class OrderPaymentRepository {
@@ -7,4 +9,6 @@ abstract class OrderPaymentRepository {
   Future<Resource<OrderPayment>> create(OrderPayment orderPayment);
   Future<Resource<OrderPayment>> update(OrderPayment orderPayment, String id);
   Future<Resource<bool>> delete(String id);
+  Future<Resource<List<PaymentMethod>>> getPaymentMethods();
+  Future<Resource<List<FinancialEntities>>> getFinancialEntities();
 }

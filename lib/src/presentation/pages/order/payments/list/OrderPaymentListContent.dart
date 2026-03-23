@@ -85,7 +85,13 @@ class OrderPaymentListContent extends StatelessWidget {
 
           // ➕ ADD BUTTON
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                'order/payment/list',
+                arguments: {'idOrden': orden.id, 'id': ''},
+              );
+            },
             borderRadius: BorderRadius.circular(8),
             child: const Padding(
               padding: EdgeInsets.all(6),
@@ -109,7 +115,7 @@ class OrderPaymentListContent extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             blurRadius: 20,
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             offset: const Offset(0, 10),
           ),
         ],
@@ -250,7 +256,7 @@ class OrderPaymentListContent extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
       ),
       child: Column(
         children: [
@@ -292,7 +298,7 @@ class OrderPaymentListContent extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 blurRadius: 10,
-                color: Colors.black.withOpacity(0.04),
+                color: Colors.black.withValues(alpha: 0.04),
                 offset: const Offset(0, 6),
               ),
             ],

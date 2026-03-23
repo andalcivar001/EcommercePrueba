@@ -37,4 +37,13 @@ class FinancialEntities {
     "tipo": tipo,
     "isActive": isActive,
   };
+
+  static List<FinancialEntities> fromJsonList(List<dynamic> jsonList) {
+    List<FinancialEntities> toList = [];
+    jsonList.forEach((item) {
+      FinancialEntities client = FinancialEntities.fromJson(item);
+      toList.add(client);
+    });
+    return toList;
+  }
 }

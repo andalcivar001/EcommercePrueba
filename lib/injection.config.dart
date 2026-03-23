@@ -11,8 +11,6 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:ecommerce_prueba/src/data/datasource/local/SharedPref.dart'
     as _i195;
-import 'package:ecommerce_prueba/src/data/datasource/remote/OrderPaymentService.dart'
-    as _i899;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/AuthService.dart'
     as _i1032;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/CategoryService.dart'
@@ -21,8 +19,14 @@ import 'package:ecommerce_prueba/src/data/datasource/remote/services/CityService
     as _i164;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ClientService.dart'
     as _i218;
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/FinancialEntitiesService.dart'
+    as _i342;
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/OrderPaymentService.dart'
+    as _i45;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/OrderService.dart'
     as _i716;
+import 'package:ecommerce_prueba/src/data/datasource/remote/services/PaymentMethodService.dart'
+    as _i909;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ProductService.dart'
     as _i511;
 import 'package:ecommerce_prueba/src/data/datasource/remote/services/ProvinceService.dart'
@@ -89,7 +93,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i773.ProvinceService>(() => appmodule.provinceService);
     gh.factory<_i164.CityService>(() => appmodule.cityService);
     gh.factory<_i716.OrderService>(() => appmodule.orderService);
-    gh.factory<_i899.OrderPaymentService>(() => appmodule.orderPaymentService);
+    gh.factory<_i45.OrderPaymentService>(() => appmodule.orderPaymentService);
+    gh.factory<_i909.PaymentMethodService>(
+      () => appmodule.paymentMethodService,
+    );
+    gh.factory<_i342.FinancialEntitiesService>(
+      () => appmodule.financialEntitiesService,
+    );
     gh.factory<_i732.AuthRepository>(() => appmodule.authRepository);
     gh.factory<_i584.UserRepository>(() => appmodule.userRepository);
     gh.factory<_i596.CategoryRepository>(() => appmodule.categoryRepository);

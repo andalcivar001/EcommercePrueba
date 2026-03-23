@@ -21,6 +21,8 @@ class OrderPayment {
   String? referencia;
   String? idEntidadFinanciera;
   bool isActive;
+  String? observaciones;
+
   Order? order;
   PaymentMethod? metodoPago;
   FinancialEntities? entidadFinanciera;
@@ -36,6 +38,7 @@ class OrderPayment {
     this.order,
     this.metodoPago,
     this.entidadFinanciera,
+    this.observaciones,
   });
 
   factory OrderPayment.fromJson(Map<String, dynamic> json) => OrderPayment(
@@ -53,6 +56,7 @@ class OrderPayment {
     entidadFinanciera: json["entidadFinanciera"] != null
         ? FinancialEntities.fromJson(json["entidadFinanciera"])
         : null,
+    observaciones: json["observaciones"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {
@@ -66,6 +70,7 @@ class OrderPayment {
     "order": order,
     "metoodPago": metodoPago,
     "entidadFinanciera": entidadFinanciera,
+    "observaciones": observaciones,
   };
 
   static List<OrderPayment> fromJsonList(List<dynamic> jsonList) {

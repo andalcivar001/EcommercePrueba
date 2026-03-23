@@ -43,4 +43,13 @@ class PaymentMethod {
     "requiereReferencia": requiereReferencia,
     "isActive": isActive,
   };
+
+  static List<PaymentMethod> fromJsonList(List<dynamic> jsonList) {
+    List<PaymentMethod> toList = [];
+    jsonList.forEach((item) {
+      PaymentMethod client = PaymentMethod.fromJson(item);
+      toList.add(client);
+    });
+    return toList;
+  }
 }
