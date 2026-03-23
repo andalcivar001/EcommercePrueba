@@ -1,6 +1,7 @@
 import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/OrderPaymentUseCases.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/payments/form/bloc/OrderPaymentFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/payments/form/bloc/OrderPaymentFormState.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrderPaymentFormBloc
@@ -16,10 +17,14 @@ class OrderPaymentFormBloc
     on<ObservacionesOrderPaymentFormEvent>(_onObservacionesChanged);
   }
 
+  final formKey = GlobalKey<FormState>();
+
   Future<void> _onInit(
     InitOrderPaymentFormEvent event,
     Emitter<OrderPaymentFormState> emit,
-  ) async {}
+  ) async {
+    emit(state.copyWith(loading: true, formKey: formKey));
+  }
 
   Future<void> _onMontoChanged(
     MontoOrderPaymentFormEvent event,

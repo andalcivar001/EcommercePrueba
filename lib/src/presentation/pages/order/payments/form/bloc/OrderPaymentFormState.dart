@@ -1,3 +1,4 @@
+import 'package:ecommerce_prueba/src/domain/models/Order.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ class OrderPaymentFormState extends Equatable {
   final Resource? responseEntidadFinanciera;
   final Resource? response;
   final GlobalKey<FormState>? formKey;
+  final Order? orden;
+  final bool loading;
 
   OrderPaymentFormState({
     this.id,
@@ -27,6 +30,8 @@ class OrderPaymentFormState extends Equatable {
     this.response,
     this.observaciones,
     this.formKey,
+    this.orden,
+    this.loading = false,
   });
 
   OrderPaymentFormState copyWith({
@@ -41,6 +46,8 @@ class OrderPaymentFormState extends Equatable {
     Resource? response,
     String? observaciones,
     GlobalKey<FormState>? formKey,
+    Order? orden,
+    bool? loading,
   }) {
     return OrderPaymentFormState(
       id: id ?? this.id,
@@ -54,6 +61,8 @@ class OrderPaymentFormState extends Equatable {
       responseEntidadFinanciera:
           responseEntidadFinanciera ?? this.responseEntidadFinanciera,
       response: response ?? this.response,
+      orden: orden ?? this.orden,
+      loading: loading ?? this.loading,
       formKey: formKey,
     );
   }
@@ -69,5 +78,6 @@ class OrderPaymentFormState extends Equatable {
     observaciones,
     responseMetodoPago,
     responseEntidadFinanciera,
+    orden,
   ];
 }

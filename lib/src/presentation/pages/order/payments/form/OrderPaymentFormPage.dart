@@ -1,4 +1,5 @@
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/payments/form/OrderPaymentFormContent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/payments/form/bloc/OrderPaymentFormBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/payments/form/bloc/OrderPaymentFormEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/order/payments/form/bloc/OrderPaymentFormState.dart';
@@ -57,7 +58,30 @@ class _OrderPaymentFormPageState extends State<OrderPaymentFormPage> {
               'Hubo un error al consultar las entidades financieras  ${responseEntidadFinanciera.message}',
             );
           }
+
+          if (responseMetodoPago is Error) {
+            AppToast.error(
+              'Hubo un error al cargar los metodos de pago ${responseMetodoPago.message}',
+            );
+          }
         },
+        child: BlocBuilder<OrderPaymentFormBloc, OrderPaymentFormState>(
+          builder: (context, state) {
+            final response = state.response;
+            return Stack(
+              children: [
+                OrderPaymentFormcontent(bloc, state),
+                if (response is Loading)
+                  Positioned.fill(
+                    child: ColoredBox(
+                      color: Colors.black,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
