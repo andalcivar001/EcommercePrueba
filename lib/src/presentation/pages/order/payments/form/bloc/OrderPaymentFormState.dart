@@ -6,62 +6,62 @@ import 'package:flutter/material.dart';
 class OrderPaymentFormState extends Equatable {
   final String? id;
   final String? idOrden;
-  final String? metodoPago;
+  final String? idPaymentMethod;
   final double monto;
   final String? referencia;
-  final String? entidadFinanciera;
+  final String? idEntidadFinanciera;
   final String? observaciones;
+  final Resource? responseOrden;
   final Resource? responseMetodoPago;
   final Resource? responseEntidadFinanciera;
   final Resource? response;
   final GlobalKey<FormState>? formKey;
-  final Order? orden;
   final bool loading;
 
   OrderPaymentFormState({
     this.id,
     this.idOrden,
-    this.metodoPago,
+    this.idPaymentMethod,
     this.monto = 0,
     this.referencia,
-    this.entidadFinanciera,
+    this.idEntidadFinanciera,
     this.responseMetodoPago,
     this.responseEntidadFinanciera,
     this.response,
     this.observaciones,
     this.formKey,
-    this.orden,
+    this.responseOrden,
     this.loading = false,
   });
 
   OrderPaymentFormState copyWith({
     String? id,
     String? idOrden,
-    String? metodoPago,
+    String? idPaymentMethod,
     double? monto,
     String? referencia,
-    String? entidadFinanciera,
+    String? idEntidadFinanciera,
+    Resource? responseOrden,
     Resource? responseMetodoPago,
     Resource? responseEntidadFinanciera,
     Resource? response,
     String? observaciones,
     GlobalKey<FormState>? formKey,
-    Order? orden,
     bool? loading,
   }) {
     return OrderPaymentFormState(
       id: id ?? this.id,
       idOrden: idOrden ?? this.idOrden,
-      metodoPago: metodoPago ?? this.metodoPago,
+      idPaymentMethod: idPaymentMethod ?? this.idPaymentMethod,
       monto: monto ?? this.monto,
       referencia: referencia ?? this.referencia,
-      entidadFinanciera: entidadFinanciera ?? this.entidadFinanciera,
+      idEntidadFinanciera: idEntidadFinanciera ?? this.idEntidadFinanciera,
       observaciones: observaciones ?? this.observaciones,
       responseMetodoPago: responseMetodoPago ?? this.responseMetodoPago,
       responseEntidadFinanciera:
           responseEntidadFinanciera ?? this.responseEntidadFinanciera,
       response: response ?? this.response,
-      orden: orden ?? this.orden,
+      responseOrden: responseOrden ?? this.responseOrden,
       loading: loading ?? this.loading,
       formKey: formKey,
     );
@@ -71,13 +71,13 @@ class OrderPaymentFormState extends Equatable {
   List<Object?> get props => [
     id,
     idOrden,
-    metodoPago,
+    idPaymentMethod,
     monto,
     referencia,
-    entidadFinanciera,
+    idEntidadFinanciera,
     observaciones,
     responseMetodoPago,
     responseEntidadFinanciera,
-    orden,
+    responseOrden,
   ];
 }

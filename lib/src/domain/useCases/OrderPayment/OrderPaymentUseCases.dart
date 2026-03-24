@@ -7,20 +7,20 @@ import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/GetPaymentMeth
 import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/UpdateOrderPaymentUseCase.dart';
 
 class OrderPaymentUseCases {
-  GetOrderPaymentByIdUseCase getOrderPaymentByIdUseCase;
-  GetOrderPaymentsByOrdenUseCase getOrderPaymentsByOrdenUseCase;
-  CreateOrderPaymentUseCase createOrderPaymentUseCase;
-  UpdateOrderPaymentUseCase updateOrderPaymentUseCase;
-  DeleteOrderPaymentUseCase deleteOrderPaymentUseCase;
-  GetPaymentMethodsUseCase getPaymentMethodsUseCase;
-  GetFinancialEntitiesUseCase getFinancialEntitiesUseCase;
+  GetOrderPaymentByIdUseCase getOrderPaymentById;
+  GetOrderPaymentsByOrdenUseCase getOrderPaymentsByOrden;
+  CreateOrderPaymentUseCase createOrderPayment;
+  UpdateOrderPaymentUseCase updateOrderPayment;
+  DeleteOrderPaymentUseCase deleteOrderPayment;
+  GetPaymentMethodsUseCase getPaymentMethods;
+  GetFinancialEntitiesUseCase getFinancialEntities;
   OrderPaymentUseCases({
-    required this.getOrderPaymentByIdUseCase,
-    required this.getOrderPaymentsByOrdenUseCase,
-    required this.createOrderPaymentUseCase,
-    required this.updateOrderPaymentUseCase,
-    required this.deleteOrderPaymentUseCase,
-    required this.getPaymentMethodsUseCase,
-    required this.getFinancialEntitiesUseCase,
+    required this.getOrderPaymentById,
+    required this.getOrderPaymentsByOrden,
+    required this.createOrderPayment,
+    required this.updateOrderPayment,
+    required this.deleteOrderPayment,
+    required this.getPaymentMethods,
+    required this.getFinancialEntities,
   });
 }

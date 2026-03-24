@@ -230,24 +230,14 @@ abstract class Appmodule {
 
   @injectable
   OrderPaymentUseCases get orderPaymentUseCases => OrderPaymentUseCases(
-    getOrderPaymentByIdUseCase: GetOrderPaymentByIdUseCase(
+    getOrderPaymentById: GetOrderPaymentByIdUseCase(orderPaymentRepository),
+    getOrderPaymentsByOrden: GetOrderPaymentsByOrdenUseCase(
       orderPaymentRepository,
     ),
-    getOrderPaymentsByOrdenUseCase: GetOrderPaymentsByOrdenUseCase(
-      orderPaymentRepository,
-    ),
-    createOrderPaymentUseCase: CreateOrderPaymentUseCase(
-      orderPaymentRepository,
-    ),
-    updateOrderPaymentUseCase: UpdateOrderPaymentUseCase(
-      orderPaymentRepository,
-    ),
-    deleteOrderPaymentUseCase: DeleteOrderPaymentUseCase(
-      orderPaymentRepository,
-    ),
-    getPaymentMethodsUseCase: GetPaymentMethodsUseCase(orderPaymentRepository),
-    getFinancialEntitiesUseCase: GetFinancialEntitiesUseCase(
-      orderPaymentRepository,
-    ),
+    createOrderPayment: CreateOrderPaymentUseCase(orderPaymentRepository),
+    updateOrderPayment: UpdateOrderPaymentUseCase(orderPaymentRepository),
+    deleteOrderPayment: DeleteOrderPaymentUseCase(orderPaymentRepository),
+    getPaymentMethods: GetPaymentMethodsUseCase(orderPaymentRepository),
+    getFinancialEntities: GetFinancialEntitiesUseCase(orderPaymentRepository),
   );
 }

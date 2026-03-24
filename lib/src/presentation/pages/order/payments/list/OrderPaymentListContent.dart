@@ -88,7 +88,7 @@ class OrderPaymentListContent extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(
                 context,
-                'order/payment/list',
+                'order/payment/form',
                 arguments: {'idOrden': orden.id, 'id': ''},
               );
             },

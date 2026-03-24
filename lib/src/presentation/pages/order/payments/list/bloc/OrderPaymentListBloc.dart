@@ -1,5 +1,3 @@
-import 'package:ecommerce_prueba/src/domain/models/Order.dart';
-import 'package:ecommerce_prueba/src/domain/models/OrderPayment.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/Order/OrderUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/useCases/OrderPayment/OrderPaymentUseCases.dart';
 import 'package:ecommerce_prueba/src/domain/utils/Resource.dart';
@@ -26,7 +24,7 @@ class OrderPaymentListBloc
 
     final results = await Future.wait<Resource>([
       orderUseCases.getOrderById.run(event.idOrden),
-      orderPaymentUseCases.getOrderPaymentsByOrdenUseCase.run(event.idOrden),
+      orderPaymentUseCases.getOrderPaymentsByOrden.run(event.idOrden),
     ]);
 
     emit(
