@@ -136,6 +136,12 @@ class OrderListItem extends StatelessWidget {
                   icon: Icons.monetization_on_outlined,
                   color: Colors.green,
                   onPressed: () {
+                    if (order.estado == 'X') {
+                      AppToast.warning(
+                        'No puede aplicar pagos a una venta anulada',
+                      );
+                      return;
+                    }
                     Navigator.pushNamed(
                       context,
                       'order/payment/list',

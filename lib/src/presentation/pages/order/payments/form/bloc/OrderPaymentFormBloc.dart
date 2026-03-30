@@ -57,6 +57,7 @@ class OrderPaymentFormBloc
       }
     }
 
+    print('REQUIERE REFERENCIA $requiereReferencia'); 
     emit(
       state.copyWith(
         id: event.id,
@@ -71,7 +72,7 @@ class OrderPaymentFormBloc
         responseOrden: results[0],
         responseMetodoPago: results[1],
         responseEntidadFinanciera: results[2],
-        requiereReferencia: requiereReferencia,
+        requiereReferencia: true,
         formKey: formKey,
       ),
     );
@@ -185,7 +186,7 @@ class OrderPaymentFormBloc
     }
 
     final double totalPagado = orden?.totalPagado ?? 0;
-    final double totalOrden = orden?.total ?? 0;
+    final double totalOrden = ((orden?.total ?? 0) * 100).round() /100 ;
     if (state.monto + totalPagado > totalOrden) {
       AppToast.warning(
         'El valor del pago no puede ser mayor al total de la orden',

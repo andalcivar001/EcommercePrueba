@@ -13,3 +13,10 @@ class InitOrderPaymentListEvent extends OrderPaymentListEvent {
   @override
   List<Object?> get props => [idOrden];
 }
+
+class DeleteOrderPaymentListEvent extends OrderPaymentListEvent {
+  final String id;
+  const DeleteOrderPaymentListEvent({required this.id});
+  @override
+  List<Object?> get props => [id];
+}

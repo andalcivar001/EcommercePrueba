@@ -1,13 +1,19 @@
 import 'package:ecommerce_prueba/src/domain/models/Order.dart';
 import 'package:ecommerce_prueba/src/domain/models/OrderPayment.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/payments/list/bloc/OrderPaymentListBloc.dart';
+import 'package:ecommerce_prueba/src/presentation/pages/order/payments/list/bloc/OrderPaymentListEvent.dart';
+import 'package:ecommerce_prueba/src/presentation/utils/SelectConfirmDialog.dart';
+import 'package:ecommerce_prueba/src/presentation/widgets/AppToast.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class OrderPaymentListContent extends StatelessWidget {
+  final OrderPaymentListBloc? bloc;
   final Order orden;
   final List<OrderPayment> listaPagos;
 
-  const OrderPaymentListContent({
+  const OrderPaymentListContent(
+    this.bloc, {
     required this.orden,
     required this.listaPagos,
     super.key,
@@ -22,7 +28,10 @@ class OrderPaymentListContent extends StatelessWidget {
           children: [
             _header(context),
 
-            Padding(padding: const EdgeInsets.all(16), child: _cardOrden()),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: _cardOrden(orden),
+            ),
 
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
@@ -35,7 +44,7 @@ class OrderPaymentListContent extends StatelessWidget {
               ),
             ),
 
-            Expanded(child: _detallePagos(context)),
+            Expanded(child: _detallePagos(context, orden)),
           ],
         ),
       ),
@@ -113,7 +122,7 @@ class OrderPaymentListContent extends StatelessWidget {
   }
 
   // 💳 CARD PRINCIPAL (MEJORADA)
-  Widget _cardOrden() {
+  Widget _cardOrden(Order orden) {
     String nombre = orden.cliente?.nombre ?? 'Cliente';
 
     return Container(
@@ -165,7 +174,7 @@ class OrderPaymentListContent extends StatelessWidget {
                 ),
               ),
 
-              _chipEstado(),
+              _chipEstado(orden.total, orden.totalPagado ?? 0),
             ],
           ),
 
@@ -197,7 +206,7 @@ class OrderPaymentListContent extends StatelessWidget {
                 child: _cardValores(
                   label: 'Pendiente',
                   value:
-                      '\$${(orden.total - (orden.totalPagado ?? 0)).toStringAsFixed(2)}',
+                      '\$${(((orden.total * 100).round() / 100) - (orden.totalPagado ?? 0)).toStringAsFixed(2)}',
                   color: Colors.orange,
                   icon: Icons.warning,
                 ),
@@ -210,19 +219,19 @@ class OrderPaymentListContent extends StatelessWidget {
   }
 
   // 🟠 CHIP
-  Widget _chipEstado() {
+  Widget _chipEstado(double total, double totalPagado) {
+    final String estado = totalPagado == 0
+        ? 'Sin pagos'
+        : totalPagado > 0 && totalPagado < total
+        ? 'Parcial'
+        : 'Pagado';
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 13, vertical: 6),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Colors.orange, Colors.deepOrange],
-        ),
+        gradient: LinearGradient(colors: [Colors.orange, Colors.deepOrange]),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const Text(
-        'Parcial',
-        style: TextStyle(color: Colors.white, fontSize: 12),
-      ),
+      child: Text(estado, style: TextStyle(color: Colors.white, fontSize: 14)),
     );
   }
 
@@ -279,7 +288,7 @@ class OrderPaymentListContent extends StatelessWidget {
   }
 
   // 💳 LISTA DE PAGOS MÁS LIMPIA
-  Widget _detallePagos(BuildContext context) {
+  Widget _detallePagos(BuildContext context, Order orden) {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       itemCount: listaPagos.length,
@@ -301,67 +310,118 @@ class OrderPaymentListContent extends StatelessWidget {
             break;
         }
 
-        return GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              'order/payment/form',
-              arguments: {'idOrden': orden.id, 'id': pago.id},
-            );
-          },
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 10,
-                  color: Colors.black.withValues(alpha: 0.04),
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
+        return Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 10,
+                color: Colors.black.withValues(alpha: 0.04),
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Material(
+            color: Colors.transparent,
             child: Row(
               children: [
-                CircleAvatar(
-                  backgroundColor: Color(0xffEEF2FF),
-                  child: Icon(icon, color: Color(0xff4A6CF7)),
-                ),
-                const SizedBox(width: 12),
-
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        pago.entidadFinanciera?.nombre ?? 'Efectivo',
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+                  child: InkWell(
+                    borderRadius: const BorderRadius.horizontal(
+                      left: Radius.circular(16),
+                    ),
+                    onTap: () {
+                      if (orden.totalPagado == orden.total) {
+                        AppToast.warning(
+                          'Venta ya se encuentra totamente cobrada',
+                        );
+                        return;
+                      }
+
+                      Navigator.pushNamed(
+                        context,
+                        'order/payment/form',
+                        arguments: {'idOrden': orden.id, 'id': pago.id},
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(14),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 18,
+                            backgroundColor: Color(0xffEEF2FF),
+                            child: Icon(
+                              icon,
+                              color: Color(0xff4A6CF7),
+                              size: 18,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  pago.entidadFinanciera?.nombre ?? 'Efectivo',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                if (referencia.isNotEmpty)
+                                  Text(
+                                    referencia,
+                                    style: TextStyle(
+                                      color: Colors.grey.shade600,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                '\$${pago.monto.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              ),
+                              Text(
+                                DateFormat('dd MMM yyyy').format(orden.fecha),
+                                style: TextStyle(color: Colors.grey.shade600),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      Text(
-                        referencia,
-                        style: TextStyle(color: Colors.grey.shade600),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      '\$${pago.monto.toStringAsFixed(2)}',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
-                    Text(
-                      DateFormat('dd MMM yyyy').format(orden.fecha),
-                      style: TextStyle(color: Colors.grey.shade600),
-                    ),
-                  ],
+                Container(
+                  height: 52,
+                  margin: const EdgeInsets.only(right: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withValues(alpha: 0.10),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: IconButton(
+                    tooltip: 'Eliminar pago',
+                    splashRadius: 20,
+                    onPressed: () {
+                      selectConfirmDialog(
+                        context,
+                        () => {
+                          bloc?.add(DeleteOrderPaymentListEvent(id: pago.id!)),
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  ),
                 ),
               ],
             ),

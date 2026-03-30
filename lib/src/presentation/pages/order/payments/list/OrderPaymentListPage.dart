@@ -39,6 +39,7 @@ class _OrderPaymentListPageState extends State<OrderPaymentListPage> {
           listener: (context, state) {
             final responseOrden = state.responseOrden;
             final responsePagos = state.responsePagos;
+            final responseDelete = state.responseDelete;
             if (responseOrden is Error) {
               AppToast.error(
                 'Hubo un problema al consultar la orden ${responseOrden.message}',
@@ -50,25 +51,37 @@ class _OrderPaymentListPageState extends State<OrderPaymentListPage> {
                 'Hubo un problema al consultar los pagos ${responsePagos.message}',
               );
             }
+            if (responseDelete is Error) {
+              AppToast.error(
+                'Hubo un problema al eliminar el apgo ${responseDelete.message}',
+              );
+            } else if (responseDelete is Success) {
+              AppToast.success('Pago eliminado correctamente');
+              bloc?.add(InitOrderPaymentListEvent(idOrden: idOrden));
+            }
           },
           child: BlocBuilder<OrderPaymentListBloc, OrderPaymentListState>(
             builder: (context, state) {
               final responseOrden = state.responseOrden;
               final responsePagos = state.responsePagos;
-              if (state.loading is Loading) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (responseOrden is Success && responsePagos is Success) {
-                final Order orden = responseOrden.data as Order;
-                final List<OrderPayment> listaPagos =
-                    responsePagos.data as List<OrderPayment>;
-
-                return OrderPaymentListContent(
-                  orden: orden,
-                  listaPagos: listaPagos,
-                );
-              }
-              return Container();
+              final responseDelete = state.responseDelete;
+              return Stack(
+                children: [
+                  if (responseOrden is Success && responsePagos is Success)
+                    OrderPaymentListContent(
+                      bloc,
+                      orden: responseOrden.data as Order,
+                      listaPagos: responsePagos.data as List<OrderPayment>,
+                    ),
+                  if (state.loading || responseDelete is Loading)
+                    Positioned.fill(
+                      child: ColoredBox(
+                        color: Color(0x66000000),
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                    ),
+                ],
+              );
             },
           ),
         ),

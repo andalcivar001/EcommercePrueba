@@ -13,6 +13,7 @@ class OrderPaymentListBloc
   OrderPaymentListBloc(this.orderUseCases, this.orderPaymentUseCases)
     : super(OrderPaymentListState()) {
     on<InitOrderPaymentListEvent>(_onInit);
+    on<DeleteOrderPaymentListEvent>(_onDelete);
   }
   final formKey = GlobalKey<FormState>();
 
@@ -35,5 +36,16 @@ class OrderPaymentListBloc
         formKey: formKey,
       ),
     );
+  }
+
+  Future<void> _onDelete(
+    DeleteOrderPaymentListEvent event,
+    Emitter<OrderPaymentListState> emit,
+  ) async {
+    emit(state.copyWith(responseDelete: Loading(), formKey: formKey));
+    final response = await orderPaymentUseCases.deleteOrderPayment.run(
+      event.id,
+    );
+    emit(state.copyWith(responseDelete: response, formKey: formKey));
   }
 }

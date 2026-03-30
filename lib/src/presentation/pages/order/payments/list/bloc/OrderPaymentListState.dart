@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 class OrderPaymentListState extends Equatable {
   final Resource? responseOrden;
   final Resource? responsePagos;
+  final Resource? responseDelete;
   final bool loading;
   final List<OrderPayment> listaPagos;
   final GlobalKey<FormState>? formKey;
@@ -17,6 +18,7 @@ class OrderPaymentListState extends Equatable {
     this.loading = false,
     this.formKey,
     this.listaPagos = const [],
+    this.responseDelete,
   });
 
   OrderPaymentListState copyWith({
@@ -25,10 +27,12 @@ class OrderPaymentListState extends Equatable {
     bool? loading,
     GlobalKey<FormState>? formKey,
     List<OrderPayment>? listaPagos,
+    Resource? responseDelete,
   }) {
     return OrderPaymentListState(
       responseOrden: responseOrden ?? this.responseOrden,
       responsePagos: responsePagos ?? this.responsePagos,
+      responseDelete: responseDelete,
       loading: loading ?? this.loading,
       listaPagos: listaPagos ?? this.listaPagos,
       formKey: formKey,
@@ -39,6 +43,7 @@ class OrderPaymentListState extends Equatable {
   List<Object?> get props => [
     responseOrden,
     responsePagos,
+    responseDelete,
     loading,
     listaPagos,
   ];

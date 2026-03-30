@@ -123,7 +123,7 @@ class OrderPaymentFormcontent extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 13,
+                    fontSize: 14,
                   ),
                 ),
               ),
@@ -367,7 +367,7 @@ class OrderPaymentFormcontent extends StatelessWidget {
             SizedBox(height: 16),
 
             if (requiereReferencia) ...[
-              _sectionLabel('Entidad financiera'),
+              _sectionLabel('Entidad financiera 22ds333'),
               SizedBox(height: 8),
               _entidadFinancieraSearch(),
               SizedBox(height: 16),
@@ -535,6 +535,8 @@ class OrderPaymentFormcontent extends StatelessWidget {
     final entidades = entidadesFinancieras
         .where((x) => x.tipo == tipoMetodoPago)
         .toList();
+
+    print('TIPO METODO PAGO $tipoMetodoPago');
 
     return tipoMetodoPago.isEmpty || tipoMetodoPago == 'E'
         ? Container()
