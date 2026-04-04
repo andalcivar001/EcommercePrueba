@@ -97,8 +97,6 @@ class CategoryListItem extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          _StatusChip(isActive: category.isActive),
                         ],
                       ),
                       const SizedBox(height: 8),
@@ -135,28 +133,35 @@ class CategoryListItem extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                Container(
-                  width: 52,
-                  height: 52,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffFEECEE),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      selectConfirmDialog(
-                        context,
-                        () =>
-                            bloc?.add(DeleteCategoryListEvent(id: category.id)),
-                      );
-                    },
-                    tooltip: 'Eliminar registro',
-                    splashRadius: 22,
-                    icon: const Icon(
-                      Icons.delete_outline_rounded,
-                      color: Color(0xffD92D20),
+                Column(
+                  children: [
+                    Container(
+                      width: 52,
+                      height: 52,
+                      decoration: BoxDecoration(
+                        color: const Color(0xffFEECEE),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          selectConfirmDialog(
+                            context,
+                            () => bloc?.add(
+                              DeleteCategoryListEvent(id: category.id),
+                            ),
+                          );
+                        },
+                        tooltip: 'Eliminar registro',
+                        splashRadius: 22,
+                        icon: const Icon(
+                          Icons.delete_outline_rounded,
+                          color: Color(0xffD92D20),
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 10),
+                    _StatusChip(isActive: category.isActive),
+                  ],
                 ),
               ],
             ),

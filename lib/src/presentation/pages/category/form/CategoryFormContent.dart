@@ -51,7 +51,6 @@ class CategoryFormContent extends StatelessWidget {
                 colors: [Color(0xffEAF7F1), Color(0xffF5FBF7)],
               ),
             ),
-            DefaultIconBack(left: 18, top: 12, color: const Color(0xff243B6B)),
             SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(22, 72, 22, 24),
               child: Form(
@@ -124,6 +123,11 @@ class CategoryFormContent extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
+            Positioned(
+              top: 12,
+              left: 18,
+              child: DefaultIconBack(left: 0, top: 0, color: Color(0xff243B6B)),
             ),
           ],
         ),

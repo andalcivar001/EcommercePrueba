@@ -1,8 +1,8 @@
+import 'package:ecommerce_prueba/src/domain/models/Client.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListBloc.dart';
 import 'package:ecommerce_prueba/src/presentation/pages/client/list/bloc/ClientListEvent.dart';
 import 'package:ecommerce_prueba/src/presentation/utils/SelectConfirmDialog.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_prueba/src/domain/models/Client.dart';
 
 class ClientListItem extends StatelessWidget {
   final ClientListBloc? bloc;
@@ -13,86 +13,155 @@ class ClientListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final String tipoIdentificacion = client.tipoIdentificacion == 'C'
-        ? 'Cédula'
+    final isActive = client.isActive ?? true;
+    final tipoIdentificacion = client.tipoIdentificacion == 'C'
+        ? 'Cedula'
         : client.tipoIdentificacion == 'R'
         ? 'Ruc'
         : 'Pasaporte';
-    final identificacion =
-        tipoIdentificacion + ' ' + client.numeroIdentificacion;
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(width: 12),
+    final identificacion = client.numeroIdentificacion;
+    final telefono = (client.telefono ?? '').trim();
 
-            // Centro: texto con espacio real
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    client.nombre,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(22),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.white, Color(0xffF6F9FF)],
+        ),
+        border: Border.all(color: const Color(0xffDCE6F8)),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 24,
+            spreadRadius: -8,
+            color: const Color(0xff24408E).withValues(alpha: 0.18),
+            offset: const Offset(0, 16),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(22),
+          onTap: () {
+            Navigator.pushNamed(context, 'client/form', arguments: client.id);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Container(
+                  width: 6,
+                  height: 72,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: isActive
+                          ? const [Color(0xff4A6CF7), Color(0xff6EA8FE)]
+                          : const [Color(0xffC5CEDB), Color(0xffE1E7F0)],
                     ),
                   ),
-                  const SizedBox(height: 6),
-
-                  Wrap(
-                    spacing: 10,
-                    runSpacing: 6,
+                ),
+                const SizedBox(width: 14),
+                Container(
+                  width: 52,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: isActive
+                          ? const [Color(0xff3154F6), Color(0xff6AA4FF)]
+                          : const [Color(0xffAEB7C4), Color(0xffD3DBE6)],
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.person_rounded,
+                    color: Colors.white,
+                    size: 26,
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _InfoChip(label: 'Email', value: client.email),
-                      _InfoChip(
-                        label: 'Identificacion:',
-                        value: identificacion,
+                      Text(
+                        client.nombre,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xff1E293B),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        client.email,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: const Color(0xff64748B),
+                          height: 1.35,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          _InfoChip(
+                            icon: Icons.badge_outlined,
+                            text: identificacion,
+                          ),
+                          if (telefono.isNotEmpty)
+                            _InfoChip(
+                              icon: Icons.phone_outlined,
+                              text: telefono,
+                            ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-
-            const SizedBox(width: 8),
-
-            // Derecha: botones más grandes + mejor tap target
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  visualDensity: VisualDensity.compact,
-                  tooltip: 'Editar',
-                  icon: Icon(Icons.edit, color: Colors.blue),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      'client/form',
-                      arguments: client.id,
-                    );
-                  },
                 ),
-                IconButton(
-                  visualDensity: VisualDensity.compact,
-                  tooltip: 'Eliminar',
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  color: theme.colorScheme.error,
-                  onPressed: () {
-                    selectConfirmDialog(
-                      context,
-                      () => bloc?.add(DeleteClientListEvent(id: client.id)),
-                    );
-                  },
+                const SizedBox(width: 12),
+                Column(
+                  children: [
+                    Container(
+                      width: 52,
+                      height: 52,
+                      decoration: BoxDecoration(
+                        color: const Color(0xffFEECEE),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          selectConfirmDialog(
+                            context,
+                            () =>
+                                bloc?.add(DeleteClientListEvent(id: client.id)),
+                          );
+                        },
+                        tooltip: 'Eliminar registro',
+                        splashRadius: 22,
+                        icon: const Icon(
+                          Icons.delete_outline_rounded,
+                          color: Color(0xffD92D20),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    _StatusChip(isActive: isActive),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -100,22 +169,78 @@ class ClientListItem extends StatelessWidget {
 }
 
 class _InfoChip extends StatelessWidget {
-  final String label;
-  final String value;
+  final IconData icon;
+  final String text;
 
-  const _InfoChip({required this.label, required this.value});
+  const _InfoChip({required this.icon, required this.text});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: const Color(0xffEEF4FF),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 15, color: const Color(0xff4A6CF7)),
+          const SizedBox(width: 6),
+          Text(
+            text,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: const Color(0xff335CFF),
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatusChip extends StatelessWidget {
+  final bool isActive;
+
+  const _StatusChip({required this.isActive});
+
+  @override
+  Widget build(BuildContext context) {
+    final backgroundColor = isActive
+        ? const Color(0xffE8F7EE)
+        : const Color(0xffEEF2F6);
+    final foregroundColor = isActive
+        ? const Color(0xff157347)
+        : const Color(0xff667085);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(999),
       ),
-      child: Text('$label: $value', style: theme.textTheme.labelMedium),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: foregroundColor,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            isActive ? 'Activo' : 'Inactivo',
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: foregroundColor,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
